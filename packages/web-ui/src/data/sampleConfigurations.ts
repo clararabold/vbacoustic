@@ -346,7 +346,7 @@ export const sampleCalculationParameters: (CalculationParameters & BuildingConte
     
     // Building Context
     buildingType: 'residential',
-    usageCategory: 'Wohngebäude',
+    usageCategory: 'living',
     requiredAirborneInsulation: 53,
     requiredImpactInsulation: 53,
     temperature: 20,
@@ -361,7 +361,7 @@ export const sampleCalculationParameters: (CalculationParameters & BuildingConte
     
     // Building Context
     buildingType: 'office',
-    usageCategory: 'Bürogebäude',
+    usageCategory: 'open-office',
     requiredAirborneInsulation: 47,
     requiredImpactInsulation: 57,
     temperature: 22,
@@ -376,7 +376,7 @@ export const sampleCalculationParameters: (CalculationParameters & BuildingConte
     
     // Building Context
     buildingType: 'educational',
-    usageCategory: 'Schulgebäude',
+    usageCategory: 'classroom',
     requiredAirborneInsulation: 50,
     requiredImpactInsulation: 50,
     temperature: 21,

@@ -86,43 +86,43 @@ export function ResultsDisplay({
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Airborne Sound Insulation */}
-          {results.combined.Rw && (
+          {typeof results.combined.Rw === 'number' && Number.isFinite(results.combined.Rw) && (
             <div className="bg-blue-50 p-4 rounded-lg">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-blue-900">Luftschalldämmung</p>
-                  <p className="text-2xl font-bold text-blue-600">
-                    {results.combined.Rw.toFixed(1)} dB
-                  </p>
-                  <p className="text-xs text-blue-700">R'w</p>
-                </div>
-                <Calculator className="h-8 w-8 text-blue-400" />
+            <div>
+              <p className="text-sm font-medium text-blue-900">Luftschalldämmung</p>
+              <p className="text-2xl font-bold text-blue-600">
+                {results.combined.Rw.toFixed(1)} dB
+              </p>
+              <p className="text-xs text-blue-700">R'w</p>
+            </div>
+            <Calculator className="h-8 w-8 text-blue-400" />
               </div>
-              {results.combined.C && (
-                <p className="text-xs text-blue-600 mt-1">
-                  C = {results.combined.C > 0 ? '+' : ''}{results.combined.C.toFixed(1)} dB
-                </p>
+              {typeof results.combined.C === 'number' && Number.isFinite(results.combined.C) && results.combined.C !== 0 && (
+            <p className="text-xs text-blue-600 mt-1">
+              C = {results.combined.C > 0 ? '+' : ''}{results.combined.C.toFixed(1)} dB
+            </p>
               )}
             </div>
           )}
 
           {/* Impact Sound Insulation */}
-          {results.combined.Lnw && (
+          {typeof results.combined.Lnw === 'number' && Number.isFinite(results.combined.Lnw) && (
             <div className="bg-purple-50 p-4 rounded-lg">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-purple-900">Trittschalldämmung</p>
-                  <p className="text-2xl font-bold text-purple-600">
-                    {results.combined.Lnw.toFixed(1)} dB
-                  </p>
-                  <p className="text-xs text-purple-700">L'n,w</p>
-                </div>
-                <Calculator className="h-8 w-8 text-purple-400" />
+            <div>
+              <p className="text-sm font-medium text-purple-900">Trittschalldämmung</p>
+              <p className="text-2xl font-bold text-purple-600">
+                {results.combined.Lnw.toFixed(1)} dB
+              </p>
+              <p className="text-xs text-purple-700">L'n,w</p>
+            </div>
+            <Calculator className="h-8 w-8 text-purple-400" />
               </div>
-              {results.combined.CI && (
-                <p className="text-xs text-purple-600 mt-1">
-                  CI = {results.combined.CI > 0 ? '+' : ''}{results.combined.CI.toFixed(1)} dB
-                </p>
+              {typeof results.combined.CI === 'number' && Number.isFinite(results.combined.CI) && results.combined.CI !== 0 && (
+            <p className="text-xs text-purple-600 mt-1">
+              CI = {results.combined.CI > 0 ? '+' : ''}{results.combined.CI.toFixed(1)} dB
+            </p>
               )}
             </div>
           )}
@@ -188,19 +188,19 @@ export function ResultsDisplay({
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-semibold mb-4">Direkter Übertragungsweg</h3>
           <div className="space-y-3">
-            {results.separating.Rw && (
+            {typeof results.separating.Rw === 'number' && Number.isFinite(results.separating.Rw) && (
               <div className="flex justify-between">
                 <span className="text-gray-600">Schalldämmmaß Rw:</span>
                 <span className="font-medium">{results.separating.Rw.toFixed(1)} dB</span>
               </div>
             )}
-            {results.separating.Lnw && (
+            {typeof results.separating.Lnw === 'number' && Number.isFinite(results.separating.Lnw) && (
               <div className="flex justify-between">
                 <span className="text-gray-600">Trittschallpegel L'n,w:</span>
                 <span className="font-medium">{results.separating.Lnw.toFixed(1)} dB</span>
               </div>
             )}
-            {results.separating.C && (
+            {typeof results.separating.C === 'number' && Number.isFinite(results.separating.C) && (
               <div className="flex justify-between">
                 <span className="text-gray-600">Spektrum-Anpassungswert C:</span>
                 <span className="font-medium">
@@ -220,8 +220,8 @@ export function ResultsDisplay({
             ) : (
               results.flanking
                 .filter(p => p.isActive)
-                .map((path) => (
-                  <div key={path.id} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+                .map((path, index) => (
+                  <div key={`${path.id}-${index}`} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
                     <div>
                       <span className="font-medium text-sm">{path.pathType}</span>
                       <p className="text-xs text-gray-600">{path.description}</p>
