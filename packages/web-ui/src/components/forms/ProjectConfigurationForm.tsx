@@ -104,6 +104,9 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
               </div>
             </label>
           </div>
+          {errors.inputMode && (
+            <p className="text-red-500 text-sm mt-1">{errors.inputMode.message}</p>
+          )}
         </div>
 
         {/* Construction Method - mirrors "Bauweise" */}
@@ -151,6 +154,9 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
               </div>
             </label>
           </div>
+          {errors.constructionMethod && (
+            <p className="text-red-500 text-sm mt-1">{errors.constructionMethod.message}</p>
+          )}
         </div>
 
         {/* Element Type - mirrors "Trennbauteil" */}
@@ -183,6 +189,9 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
               </div>
             </label>
           </div>
+          {errors.elementType && (
+            <p className="text-red-500 text-sm mt-1">{errors.elementType.message}</p>
+          )}
         </div>
 
         {/* Calculation Standard - mirrors "Berechnungsmethode" */}
@@ -215,6 +224,9 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
               </div>
             </label>
           </div>
+          {errors.calculationStandard && (
+            <p className="text-red-500 text-sm mt-1">{errors.calculationStandard.message}</p>
+          )}
         </div>
 
         {/* Calculation Type */}
@@ -248,6 +260,9 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
               </div>
             </label>
           </div>
+          {errors.calculationType && (
+            <p className="text-red-500 text-sm mt-1">{errors.calculationType.message}</p>
+          )}
         </div>
 
         {/* Visual indicator for selected element type */}
@@ -259,18 +274,6 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
             </span>
           </div>
         </div>
-
-        {/* Error messages */}
-        {Object.keys(errors).length > 0 && (
-          <div className="alert-error">
-            <p className="font-medium">Please complete all required fields:</p>
-            <ul className="list-disc list-inside mt-2">
-              {Object.entries(errors).map(([key, error]) => (
-                <li key={key} className="text-sm">{error?.message}</li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
 
       <div className="flex justify-end">

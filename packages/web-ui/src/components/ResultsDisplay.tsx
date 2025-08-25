@@ -1,4 +1,4 @@
-import { CheckCircle, AlertTriangle, XCircle, Download, Calculator, Info } from 'lucide-react';
+import { CheckCircle, AlertTriangle, XCircle, Calculator, Info } from 'lucide-react';
 import { 
   CalculationResults
 } from '../types/CalculationTypes';
@@ -22,14 +22,12 @@ interface ResultsDisplayProps {
     buildingClass?: BuildingClass;
   };
   onStartNew?: () => void;
-  onExportResults?: () => void;
 }
 
 export function ResultsDisplay({ 
   results, 
   requirements, 
-  onStartNew, 
-  onExportResults 
+  onStartNew
 }: ResultsDisplayProps) {
   
   // Calculate requirement compliance
@@ -283,15 +281,6 @@ export function ResultsDisplay({
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               >
                 Neue Berechnung
-              </button>
-            )}
-            {onExportResults && (
-              <button
-                onClick={onExportResults}
-                className="flex items-center px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Ergebnisse exportieren
               </button>
             )}
           </div>

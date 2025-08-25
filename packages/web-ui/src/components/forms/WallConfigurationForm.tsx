@@ -108,6 +108,9 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
               <option value={WallConstructionType.TimberFrame}>HSTW - Holzständerwand (Timber Stud Wall)</option>
               <option value={WallConstructionType.MetalStud}>MSTW - Metallständerwand (Metal Stud Wall)</option>
             </select>
+            {errors.wallType && (
+              <p className="text-red-500 text-sm mt-1">{errors.wallType.message}</p>
+            )}
             <p className="text-sm text-gray-500 mt-1">
               {getWallTypeDescription(wallType)}
             </p>
@@ -123,6 +126,9 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
                 <option value="interior">Interior Wall</option>
                 <option value="exterior">Exterior Wall</option>
               </select>
+              {errors.applicationContext && (
+                <p className="text-red-500 text-sm mt-1">{errors.applicationContext.message}</p>
+              )}
             </div>
 
             <div className="form-group">
@@ -135,6 +141,9 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
                 <option value="linear">Linear Connection</option>
                 <option value="surface">Surface Connection</option>
               </select>
+              {errors.connectionType && (
+                <p className="text-red-500 text-sm mt-1">{errors.connectionType.message}</p>
+              )}
             </div>
           </div>
         </div>

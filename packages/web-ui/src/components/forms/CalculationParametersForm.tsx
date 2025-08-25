@@ -4,6 +4,7 @@ import { CalculationParameters, BuildingContext } from '../../types';
 
 interface CalculationParametersFormProps {
   onSubmit: (data: CalculationParameters & BuildingContext) => void;
+  onPrev?: () => void;
   defaultValues?: Partial<CalculationParameters & BuildingContext>;
 }
 
@@ -13,6 +14,7 @@ interface CalculationParametersFormProps {
  */
 export const CalculationParametersForm: React.FC<CalculationParametersFormProps> = ({
   onSubmit,
+  onPrev,
   defaultValues
 }) => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<CalculationParameters & BuildingContext>({
@@ -372,7 +374,11 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
 
       {/* Action Buttons */}
       <div className="flex justify-between">
-        <button type="button" className="btn-secondary">
+        <button 
+          type="button" 
+          className="btn-secondary"
+          onClick={onPrev}
+        >
           Back to Element Configuration
         </button>
         <button type="submit" className="btn-primary">

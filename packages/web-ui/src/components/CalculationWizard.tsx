@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { ProjectConfigurationForm, WallConfigurationForm, CeilingConfigurationForm, CalculationParametersForm } from './forms';
 import { ResultsDisplay } from './ResultsDisplay';
 import { acousticCalculationService } from '../services/AcousticCalculationService';
@@ -66,24 +66,24 @@ export const CalculationWizard: React.FC = () => {
   ];
 
   const currentStepIndex = steps.findIndex(step => step.id === currentStep);
-  const canGoNext = currentStepIndex < steps.length - 1;
-  const canGoPrevious = currentStepIndex > 0;
-
-  const handleNext = () => {
-    if (canGoNext) {
-      const nextStep = steps[currentStepIndex + 1];
-      if (nextStep) {
-        setCurrentStep(nextStep.id);
-      }
-    }
-  };
 
   const handlePrevious = () => {
-    if (canGoPrevious) {
+    if (currentStepIndex > 0) {
       const previousStep = steps[currentStepIndex - 1];
       if (previousStep) {
         setCurrentStep(previousStep.id);
       }
+    }
+  };
+
+  const handleStepClick = (stepId: CalculationStep) => {
+    const targetStepIndex = steps.findIndex(step => step.id === stepId);
+    const targetStep = steps[targetStepIndex];
+    
+    // Allow navigation to any step that is completed or the current step
+    // Also allow going back to any previous step
+    if (targetStep && (targetStep.completed || stepId === currentStep || targetStepIndex < currentStepIndex)) {
+      setCurrentStep(stepId);
     }
   };
 
@@ -97,15 +97,13 @@ export const CalculationWizard: React.FC = () => {
     element: WallConfiguration | CeilingConfiguration;
     parameters: CalculationParameters & BuildingContext;
   }) => {
-    // Set all the state synchronously
+    // Set all the state synchronously but don't navigate away
     setProjectConfig(sampleConfig.project);
     setElementConfig(sampleConfig.element);
     setCalculationParams(sampleConfig.parameters);
     
-    // Navigate to element config step after setting the state
-    setTimeout(() => {
-      setCurrentStep('element-config');
-    }, 0);
+    // Stay on the current step - don't navigate automatically
+    // User can proceed when ready by clicking "Continue"
   };
 
   const handleElementConfigSubmit = (data: WallConfiguration | CeilingConfiguration) => {
@@ -145,51 +143,72 @@ export const CalculationWizard: React.FC = () => {
     }
   };
 
-  const renderStepIndicator = () => (
-    <div className="mb-8">
-      <nav aria-label="Progress">
-        <ol className="flex items-center">
-          {steps.map((step, stepIdx) => (
-            <li key={step.id} className={`relative ${stepIdx !== steps.length - 1 ? 'pr-8 sm:pr-20' : ''}`}>
-              {/* Connector line */}
-              {stepIdx !== steps.length - 1 && (
-                <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                  <div className={`h-0.5 w-full ${step.completed ? 'bg-primary-600' : 'bg-gray-200'}`} />
-                </div>
-              )}
+  const renderStepIndicator = () => {
+    return (
+      <div className="mb-8">
+        <nav aria-label="Progress">
+          <div className="relative">
+            {/* Simple connector line - just connects all dots */}
+            <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-300" style={{ 
+              left: 'calc(10% + 20px)',
+              right: 'calc(10% + 20px)',
+              zIndex: 0
+            }} />
+          
+            <ol className="relative flex items-start justify-between" style={{ zIndex: 1 }}>
+              {steps.map((step) => {
+                const isCompleted = step.completed;
+                const isCurrent = currentStep === step.id;
+                const isClickable = isCompleted || isCurrent || steps.findIndex(s => s.id === step.id) < currentStepIndex;
+                
+                return (
+                  <li key={step.id} className="flex flex-col items-center flex-1">
+                    {/* Step indicator circle */}
+                    <div 
+                      className={`relative z-10 mb-3 ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}
+                      onClick={() => isClickable && handleStepClick(step.id)}
+                    >
+                      {isCompleted ? (
+                        <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
+                          <CheckCircle className="h-6 w-6 text-white" />
+                        </div>
+                      ) : isCurrent ? (
+                        <div className="h-10 w-10 rounded-full border-4 border-primary-600 bg-white flex items-center justify-center shadow-md">
+                          <div className="h-3 w-3 rounded-full bg-primary-600" />
+                        </div>
+                      ) : (
+                        <div className="h-10 w-10 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center shadow-sm">
+                          <div className="h-2 w-2 rounded-full bg-gray-400" />
+                        </div>
+                      )}
+                    </div>
 
-              {/* Step indicator */}
-              <div className="relative flex items-center">
-                {step.completed ? (
-                  <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                  </div>
-                ) : currentStep === step.id ? (
-                  <div className="h-8 w-8 rounded-full border-2 border-primary-600 bg-white flex items-center justify-center">
-                    <div className="h-2.5 w-2.5 rounded-full bg-primary-600" />
-                  </div>
-                ) : (
-                  <div className="h-8 w-8 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center">
-                    <div className="h-2.5 w-2.5 rounded-full bg-transparent" />
-                  </div>
-                )}
-
-                {/* Step content */}
-                <div className="ml-4">
-                  <div className={`text-sm font-medium ${
-                    step.completed || currentStep === step.id ? 'text-primary-600' : 'text-gray-500'
-                  }`}>
-                    {step.title}
-                  </div>
-                  <div className="text-sm text-gray-500">{step.description}</div>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </nav>
-    </div>
-  );
+                    {/* Step content */}
+                    <div 
+                      className={`text-center ${isClickable ? 'cursor-pointer' : 'cursor-default'}`} 
+                      style={{ maxWidth: '120px' }}
+                      onClick={() => isClickable && handleStepClick(step.id)}
+                    >
+                      <div className={`text-sm font-semibold mb-1 ${
+                        isCurrent ? 'text-primary-700' : 'text-gray-500'
+                      }`}>
+                        {step.title}
+                      </div>
+                      <div className={`text-xs leading-tight ${
+                        isCurrent ? 'text-gray-600' : 'text-gray-400'
+                      }`}>
+                        {step.description}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </nav>
+      </div>
+    );
+  };
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -257,6 +276,7 @@ export const CalculationWizard: React.FC = () => {
         return (
           <CalculationParametersForm
             onSubmit={handleCalculationParamsSubmit}
+            onPrev={handlePrevious}
             defaultValues={calculationParams || undefined}
           />
         );
@@ -295,10 +315,6 @@ export const CalculationWizard: React.FC = () => {
               setCalculationParams(null);
               setCalculationResults(null);
             }}
-            onExportResults={() => {
-              // TODO: Implement export functionality
-              console.log('Export results:', calculationResults);
-            }}
           />
         );
 
@@ -322,29 +338,6 @@ export const CalculationWizard: React.FC = () => {
       <div className="bg-white">
         {renderStepContent()}
       </div>
-
-      {/* Global Navigation (only shown on non-form steps) */}
-      {!['project-config', 'element-config'].includes(currentStep) && (
-        <div className="flex justify-between mt-8">
-          <button 
-            onClick={handlePrevious}
-            disabled={!canGoPrevious}
-            className="btn-secondary flex items-center space-x-2 disabled:opacity-50"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Previous</span>
-          </button>
-          
-          <button 
-            onClick={handleNext}
-            disabled={!canGoNext}
-            className="btn-primary flex items-center space-x-2 disabled:opacity-50"
-          >
-            <span>Next</span>
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
-      )}
     </div>
   );
 };
