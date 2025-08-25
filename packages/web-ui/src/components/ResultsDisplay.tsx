@@ -1,4 +1,5 @@
 import { CheckCircle, AlertTriangle, XCircle, Calculator, Info } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { 
   CalculationResults
 } from '../types/CalculationTypes';
@@ -29,13 +30,14 @@ export function ResultsDisplay({
   requirements, 
   onStartNew
 }: ResultsDisplayProps) {
+  const { t } = useTranslation();
   
   // Calculate requirement compliance
   const requirementChecks: RequirementCheck[] = [];
   
   if (requirements?.Rw && results.combined.Rw) {
     requirementChecks.push({
-      parameter: 'Luftschalldämmung R\'w',
+      parameter: t('results.airborneInsulationParam'),
       required: requirements.Rw,
       actual: results.combined.Rw,
       unit: 'dB',
@@ -46,7 +48,7 @@ export function ResultsDisplay({
   
   if (requirements?.Lnw && results.combined.Lnw) {
     requirementChecks.push({
-      parameter: 'Trittschalldämmung L\'n,w',
+      parameter: t('results.impactInsulationParam'),
       required: requirements.Lnw,
       actual: results.combined.Lnw,
       unit: 'dB',
@@ -64,7 +66,7 @@ export function ResultsDisplay({
       {/* Header with Overall Status */}
       <div className="bg-white p-6 rounded-lg shadow">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Berechnungsergebnisse</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{t('results.title')}</h2>
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-500">
               {results.timestamp.toLocaleString('de-DE')}
@@ -72,12 +74,12 @@ export function ResultsDisplay({
             {allRequirementsPassed && !hasErrors ? (
               <div className="flex items-center text-green-600">
                 <CheckCircle className="h-5 w-5 mr-1" />
-                <span className="font-medium">Anforderungen erfüllt</span>
+                <span className="font-medium">{t('results.requirementsMet')}</span>
               </div>
             ) : (
               <div className="flex items-center text-red-600">
                 <XCircle className="h-5 w-5 mr-1" />
-                <span className="font-medium">Anforderungen nicht erfüllt</span>
+                <span className="font-medium">{t('results.requirementsNotMet')}</span>
               </div>
             )}
           </div>
@@ -90,7 +92,7 @@ export function ResultsDisplay({
             <div className="bg-blue-50 p-4 rounded-lg">
               <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-blue-900">Luftschalldämmung</p>
+              <p className="text-sm font-medium text-blue-900">{t('results.airborneSound')}</p>
               <p className="text-2xl font-bold text-blue-600">
                 {results.combined.Rw.toFixed(1)} dB
               </p>
@@ -111,7 +113,7 @@ export function ResultsDisplay({
             <div className="bg-purple-50 p-4 rounded-lg">
               <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-purple-900">Trittschalldämmung</p>
+              <p className="text-sm font-medium text-purple-900">{t('results.impactSound')}</p>
               <p className="text-2xl font-bold text-purple-600">
                 {results.combined.Lnw.toFixed(1)} dB
               </p>
@@ -131,11 +133,11 @@ export function ResultsDisplay({
           <div className="bg-gray-50 p-4 rounded-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-900">Nebenwege</p>
+                <p className="text-sm font-medium text-gray-900">{t('results.flankingPaths')}</p>
                 <p className="text-2xl font-bold text-gray-600">
                   {results.flanking.filter(p => p.isActive).length}
                 </p>
-                <p className="text-xs text-gray-700">aktive Pfade</p>
+                <p className="text-xs text-gray-700">{t('results.activePaths')}</p>
               </div>
               <Info className="h-8 w-8 text-gray-400" />
             </div>
@@ -146,7 +148,7 @@ export function ResultsDisplay({
       {/* Requirements Compliance */}
       {requirementChecks.length > 0 && (
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Anforderungsvergleich ({requirements?.standard})</h3>
+          <h3 className="text-lg font-semibold mb-4">{t('results.requirementComparison')} ({requirements?.standard})</h3>
           <div className="space-y-3">
             {requirementChecks.map((check, index) => (
               <div 
@@ -164,7 +166,7 @@ export function ResultsDisplay({
                   <div>
                     <p className="font-medium text-gray-900">{check.parameter}</p>
                     <p className="text-sm text-gray-600">
-                      Anforderung: {check.parameter.includes('Trittschall') ? '≤' : '≥'} {check.required} {check.unit}
+                      {t('results.requirementPrefix')} {check.parameter.includes('Trittschall') || check.parameter.toLowerCase().includes('impact') ? t('results.lessEqual') : t('results.greaterEqual')} {check.required} {check.unit}
                     </p>
                   </div>
                 </div>
@@ -186,23 +188,23 @@ export function ResultsDisplay({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Direct Transmission */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Direkter Übertragungsweg</h3>
+          <h3 className="text-lg font-semibold mb-4">{t('results.directTransmission')}</h3>
           <div className="space-y-3">
             {typeof results.separating.Rw === 'number' && Number.isFinite(results.separating.Rw) && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Schalldämmmaß Rw:</span>
+                <span className="text-gray-600">{t('results.soundReductionIndex')} Rw:</span>
                 <span className="font-medium">{results.separating.Rw.toFixed(1)} dB</span>
               </div>
             )}
             {typeof results.separating.Lnw === 'number' && Number.isFinite(results.separating.Lnw) && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Trittschallpegel L'n,w:</span>
+                <span className="text-gray-600">{t('results.impactSoundLevel')} L'n,w:</span>
                 <span className="font-medium">{results.separating.Lnw.toFixed(1)} dB</span>
               </div>
             )}
             {typeof results.separating.C === 'number' && Number.isFinite(results.separating.C) && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Spektrum-Anpassungswert C:</span>
+                <span className="text-gray-600">{t('results.spectrumAdaptationValue')} C:</span>
                 <span className="font-medium">
                   {results.separating.C > 0 ? '+' : ''}{results.separating.C.toFixed(1)} dB
                 </span>
@@ -213,10 +215,10 @@ export function ResultsDisplay({
 
         {/* Flanking Transmission */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Flankenübertragung</h3>
+          <h3 className="text-lg font-semibold mb-4">{t('results.flankingTransmission')}</h3>
           <div className="space-y-2">
             {results.flanking.filter(p => p.isActive).length === 0 ? (
-              <p className="text-gray-500 italic">Keine aktiven Nebenwege</p>
+              <p className="text-gray-500 italic">{t('results.noActiveFlankingPaths')}</p>
             ) : (
               results.flanking
                 .filter(p => p.isActive)
@@ -237,7 +239,7 @@ export function ResultsDisplay({
       {/* Validation Messages */}
       {(hasErrors || hasWarnings) && (
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Validierung</h3>
+          <h3 className="text-lg font-semibold mb-4">{t('results.validation')}</h3>
           <div className="space-y-2">
             {results.validationErrors?.map((error, index) => (
               <div 
@@ -280,15 +282,15 @@ export function ResultsDisplay({
                 onClick={onStartNew}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               >
-                Neue Berechnung
+                {t('results.newCalculation')}
               </button>
             )}
           </div>
           
           <div className="text-sm text-gray-500">
-            <p>Berechnung nach {requirements?.standard || StandardType.DIN4109}</p>
+            <p>{t('results.calculationAccordingTo')} {requirements?.standard || StandardType.DIN4109}</p>
             {requirements?.buildingClass && (
-              <p>Gebäudeklasse: {requirements.buildingClass}</p>
+              <p>{t('results.buildingClass')}: {requirements.buildingClass}</p>
             )}
           </div>
         </div>

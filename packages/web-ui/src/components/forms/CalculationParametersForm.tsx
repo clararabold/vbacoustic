@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { CalculationParameters, BuildingContext } from '../../types';
 
 interface CalculationParametersFormProps {
@@ -17,6 +18,7 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
   onPrev,
   defaultValues
 }) => {
+  const { t } = useTranslation();
   const { register, handleSubmit, watch, formState: { errors } } = useForm<CalculationParameters & BuildingContext>({
     defaultValues: {
       // Calculation parameters
@@ -43,28 +45,28 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
   const getBuildingTypeOptions = () => {
     const options = {
       residential: [
-        { value: 'living', label: 'Living Areas' },
-        { value: 'sleeping', label: 'Sleeping Areas' },
-        { value: 'kitchen', label: 'Kitchen/Dining' },
-        { value: 'bathroom', label: 'Bathroom/WC' }
+        { value: 'living', label: t('calculationParams.livingAreas') },
+        { value: 'sleeping', label: t('calculationParams.sleepingAreas') },
+        { value: 'kitchen', label: t('calculationParams.kitchenDining') },
+        { value: 'bathroom', label: t('calculationParams.bathroomWC') }
       ],
       office: [
-        { value: 'open-office', label: 'Open Office' },
-        { value: 'meeting-room', label: 'Meeting Room' },
-        { value: 'private-office', label: 'Private Office' },
-        { value: 'corridor', label: 'Corridor' }
+        { value: 'open-office', label: t('calculationParams.openOffice') },
+        { value: 'meeting-room', label: t('calculationParams.meetingRoom') },
+        { value: 'private-office', label: t('calculationParams.privateOffice') },
+        { value: 'corridor', label: t('calculationParams.corridor') }
       ],
       educational: [
-        { value: 'classroom', label: 'Classroom' },
-        { value: 'lecture-hall', label: 'Lecture Hall' },
-        { value: 'library', label: 'Library' },
-        { value: 'laboratory', label: 'Laboratory' }
+        { value: 'classroom', label: t('calculationParams.classroom') },
+        { value: 'lecture-hall', label: t('calculationParams.lectureHall') },
+        { value: 'library', label: t('calculationParams.library') },
+        { value: 'laboratory', label: t('calculationParams.laboratory') }
       ],
       healthcare: [
-        { value: 'patient-room', label: 'Patient Room' },
-        { value: 'operating-room', label: 'Operating Room' },
-        { value: 'waiting-area', label: 'Waiting Area' },
-        { value: 'treatment-room', label: 'Treatment Room' }
+        { value: 'patient-room', label: t('calculationParams.patientRoom') },
+        { value: 'operating-room', label: t('calculationParams.operatingRoom') },
+        { value: 'waiting-area', label: t('calculationParams.waitingArea') },
+        { value: 'treatment-room', label: t('calculationParams.treatmentRoom') }
       ]
     };
     return options[buildingType as keyof typeof options] || [];
@@ -111,26 +113,26 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
       
       {/* Building Context */}
       <div className="card">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Building Context</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('calculationParams.buildingContext')}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="form-group">
-            <label className="form-label">Building Type</label>
+            <label className="form-label">{t('calculationParams.buildingType')}</label>
             <select 
-              {...register('buildingType', { required: 'Building type is required' })}
+              {...register('buildingType', { required: t('calculationParams.errors.buildingTypeRequired') })}
               className="form-select"
             >
-              <option value="residential">Residential</option>
-              <option value="office">Office</option>
-              <option value="educational">Educational</option>
-              <option value="healthcare">Healthcare</option>
+              <option value="residential">{t('calculationParams.residential')}</option>
+              <option value="office">{t('calculationParams.office')}</option>
+              <option value="educational">{t('calculationParams.educational')}</option>
+              <option value="healthcare">{t('calculationParams.healthcare')}</option>
             </select>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Usage Category</label>
+            <label className="form-label">{t('calculationParams.usageCategory')}</label>
             <select 
-              {...register('usageCategory', { required: 'Usage category is required' })}
+              {...register('usageCategory', { required: t('calculationParams.errors.usageCategoryRequired') })}
               className="form-select"
             >
               {getBuildingTypeOptions().map(option => (
@@ -145,12 +147,12 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
 
       {/* Acoustic Requirements */}
       <div className="card">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Acoustic Requirements</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('calculationParams.acousticRequirements')}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="form-group">
             <label className="form-label">
-              Required Airborne Sound Insulation (DnT,w) [dB]
+              {t('calculationParams.requiredAirborneInsulation')}
             </label>
             <input
               type="number"
@@ -158,21 +160,21 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
               min="30"
               max="70"
               {...register('requiredAirborneInsulation', { 
-                required: 'Airborne insulation requirement is required',
-                min: { value: 30, message: 'Minimum value is 30 dB' },
-                max: { value: 70, message: 'Maximum value is 70 dB' }
+                required: t('calculationParams.errors.airborneInsulationRequired'),
+                min: { value: 30, message: t('calculationParams.errors.airborneInsulationMin') },
+                max: { value: 70, message: t('calculationParams.errors.airborneInsulationMax') }
               })}
               className="form-input"
               placeholder="55"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Standard requirement for selected usage type
+              {t('calculationParams.standardRequirement')}
             </p>
           </div>
 
           <div className="form-group">
             <label className="form-label">
-              Required Impact Sound Insulation (L'nT,w) [dB]
+              {t('calculationParams.requiredImpactInsulation')}
             </label>
             <input
               type="number"
@@ -180,65 +182,69 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
               min="40"
               max="65"
               {...register('requiredImpactInsulation', { 
-                required: 'Impact insulation requirement is required',
-                min: { value: 40, message: 'Minimum value is 40 dB' },
-                max: { value: 65, message: 'Maximum value is 65 dB' }
+                required: t('calculationParams.errors.impactInsulationRequired'),
+                min: { value: 40, message: t('calculationParams.errors.impactInsulationMin') },
+                max: { value: 65, message: t('calculationParams.errors.impactInsulationMax') }
               })}
               className="form-input"
               placeholder="53"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Maximum allowed impact sound level
+              {t('calculationParams.maxImpactSoundLevel')}
             </p>
           </div>
         </div>
 
         <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-          <h4 className="font-medium text-blue-900 mb-2">DIN 4109 Reference Values</h4>
+          <h4 className="font-medium text-blue-900 mb-2">{t('calculationParams.din4109Reference')}</h4>
           <p className="text-sm text-blue-800">
-            For {buildingType} buildings with {getBuildingTypeOptions().find(opt => opt.value === watch('usageCategory'))?.label.toLowerCase()} usage:
+            {t('calculationParams.din4109RefText', {
+              buildingType: t(`calculationParams.${buildingType}`),
+              usageCategory: getBuildingTypeOptions().find(opt => opt.value === watch('usageCategory'))?.label?.toLowerCase()
+            })}
             <br />
-            • Airborne: {getRequiredInsulationValues(buildingType, watch('usageCategory')).airborne} dB
-            • Impact: {getRequiredInsulationValues(buildingType, watch('usageCategory')).impact} dB
+            • {t('calculationParams.airborne')}: {getRequiredInsulationValues(buildingType, watch('usageCategory')).airborne} dB
+            <br />
+            • {t('calculationParams.impact')}: {getRequiredInsulationValues(buildingType, watch('usageCategory')).impact} dB
           </p>
         </div>
       </div>
 
       {/* Calculation Settings */}
       <div className="card">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Calculation Settings</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('calculationParams.calculationSettings')}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="form-group">
-            <label className="form-label">Frequency Range</label>
+            <label className="form-label">{t('calculationParams.frequencyRange')}</label>
             <select 
-              {...register('frequencyRange', { required: 'Frequency range is required' })}
+              {...register('frequencyRange', { required: t('calculationParams.errors.frequencyRangeRequired') })}
               className="form-select"
             >
-              <option value="100-3150">100 - 3150 Hz (Standard)</option>
-              <option value="50-5000">50 - 5000 Hz (Extended)</option>
+              <option value="100-3150">{t('calculationParams.standardRange')}</option>
+              <option value="50-5000">{t('calculationParams.extendedRange')}</option>
             </select>
             <p className="text-xs text-gray-500 mt-1">
-              Standard range covers most building acoustics applications
+              {t('calculationParams.frequencyRangeNote')}
             </p>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Safety Margin [dB]</label>
+            <label className="form-label">{t('calculationParams.safetyMargin')}</label>
             <input
               type="number"
               step="0.5"
               min="0"
               max="10"
               {...register('safetyMargin', { 
-                min: { value: 0, message: 'Minimum safety margin is 0 dB' },
-                max: { value: 10, message: 'Maximum safety margin is 10 dB' }
+                min: { value: 0, message: t('calculationParams.errors.safetyMarginMin') },
+                max: { value: 10, message: t('calculationParams.errors.safetyMarginMax') }
               })}
               className="form-input"
               placeholder="0"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Additional margin for calculation uncertainty
+              {t('calculationParams.safetyMarginNote')}
             </p>
           </div>
         </div>
@@ -252,12 +258,12 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
               className="h-4 w-4 text-primary-600 rounded"
             />
             <label htmlFor="includeFlankingTransmission" className="text-sm font-medium text-gray-700">
-              Include Flanking Transmission
+              {t('calculationParams.includeFlankingTransmission')}
             </label>
           </div>
           {includeFlankingTransmission && (
             <p className="text-xs text-gray-500 ml-7">
-              Calculates sound transmission through flanking elements according to ISO 12354
+              {t('calculationParams.flankingTransmissionNote')}
             </p>
           )}
 
@@ -269,7 +275,7 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
               className="h-4 w-4 text-primary-600 rounded"
             />
             <label htmlFor="includeStructuralResonances" className="text-sm font-medium text-gray-700">
-              Include Structural Resonances
+              {t('calculationParams.includeStructuralResonances')}
             </label>
           </div>
         </div>
@@ -277,19 +283,19 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
 
       {/* Environmental Conditions */}
       <div className="card">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Environmental Conditions</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('calculationParams.environmentalConditions')}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="form-group">
-            <label className="form-label">Temperature [°C]</label>
+            <label className="form-label">{t('calculationParams.temperature')}</label>
             <input
               type="number"
               step="1"
               min="15"
               max="30"
               {...register('temperature', { 
-                min: { value: 15, message: 'Minimum temperature is 15°C' },
-                max: { value: 30, message: 'Maximum temperature is 30°C' }
+                min: { value: 15, message: t('calculationParams.errors.temperatureMin') },
+                max: { value: 30, message: t('calculationParams.errors.temperatureMax') }
               })}
               className="form-input"
               placeholder="20"
@@ -297,15 +303,15 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Relative Humidity [%]</label>
+            <label className="form-label">{t('calculationParams.humidity')}</label>
             <input
               type="number"
               step="5"
               min="30"
               max="80"
               {...register('humidity', { 
-                min: { value: 30, message: 'Minimum humidity is 30%' },
-                max: { value: 80, message: 'Maximum humidity is 80%' }
+                min: { value: 30, message: t('calculationParams.errors.humidityMin') },
+                max: { value: 80, message: t('calculationParams.errors.humidityMax') }
               })}
               className="form-input"
               placeholder="50"
@@ -316,45 +322,45 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
 
       {/* Measurement Data (Optional) */}
       <div className="card">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Measurement Data (Optional)</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('calculationParams.measurementData')}</h3>
         
         <div className="space-y-4">
           <p className="text-sm text-gray-600">
-            If you have measurement data available, you can input it here for comparison with calculated values.
+            {t('calculationParams.measurementDataNote')}
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="form-group">
-              <label className="form-label">Measured Airborne Insulation [dB]</label>
+              <label className="form-label">{t('calculationParams.measuredAirborneInsulation')}</label>
               <input
                 type="number"
                 step="0.1"
                 {...register('measurementData.airborneInsulation')}
                 className="form-input"
-                placeholder="Optional"
+                placeholder={t('calculationParams.optional')}
               />
             </div>
 
             <div className="form-group">
-              <label className="form-label">Measured Impact Insulation [dB]</label>
+              <label className="form-label">{t('calculationParams.measuredImpactInsulation')}</label>
               <input
                 type="number"
                 step="0.1"
                 {...register('measurementData.impactInsulation')}
                 className="form-input"
-                placeholder="Optional"
+                placeholder={t('calculationParams.optional')}
               />
             </div>
 
             <div className="form-group">
-              <label className="form-label">Measurement Standard</label>
+              <label className="form-label">{t('calculationParams.measurementStandard')}</label>
               <select 
                 {...register('measurementData.measurementStandard')}
                 className="form-select"
               >
-                <option value="">Select standard</option>
-                <option value="iso140">ISO 140 (Laboratory)</option>
-                <option value="iso16283">ISO 16283 (Field)</option>
+                <option value="">{t('calculationParams.selectStandard')}</option>
+                <option value="iso140">{t('calculationParams.iso140')}</option>
+                <option value="iso16283">{t('calculationParams.iso16283')}</option>
               </select>
             </div>
           </div>
@@ -364,7 +370,7 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
       {/* Error Summary */}
       {Object.keys(errors).length > 0 && (
         <div className="alert-error">
-          <p className="font-medium">Please correct the following errors:</p>
+          <p className="font-medium">{t('calculationParams.errorSummary')}</p>
           <ul className="list-disc list-inside mt-2 text-sm">
             {Object.entries(errors).map(([key, error]) => (
               <li key={key}>{error?.message}</li>
@@ -382,10 +388,10 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
             className="btn-secondary"
             onClick={onPrev}
           >
-            Back to Element Configuration
+            {t('calculationParams.backToElementConfig')}
           </button>
           <button type="submit" form="calculation-form" className="btn-primary">
-            Calculate Acoustic Performance
+            {t('calculationParams.calculateAcousticPerformance')}
           </button>
         </div>
       </div>

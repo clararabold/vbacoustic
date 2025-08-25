@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { ProjectConfiguration, WallConfiguration, CeilingConfiguration, CalculationParameters, BuildingContext } from '../../types';
 import { getSampleConfiguration } from '../../data/sampleConfigurations';
 import { ElementType } from '@vbacoustic/lib/src/models/AcousticTypes';
@@ -24,6 +25,7 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
   onSampleConfigurationLoad,
   defaultValues
 }) => {
+  const { t } = useTranslation();
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<ProjectConfiguration>({
     defaultValues: {
       inputMode: 'manual',
@@ -64,30 +66,30 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
       <form id="project-form" onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <div className="card">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-medium text-gray-900">Project Configuration</h3>
+          <h3 className="text-lg font-medium text-gray-900">{t('projectConfig.title')}</h3>
           <button
             type="button"
             onClick={loadSampleConfiguration}
             className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
           >
-            Load Sample Configuration
+            {t('projectConfig.loadSampleConfiguration')}
           </button>
         </div>
         
         {/* Building Input Mode - mirrors "Gebäudeeingabe" */}
         <div className="space-y-4 mb-8">
-          <h4 className="text-md font-medium text-gray-800">Building Input Mode</h4>
+          <h4 className="text-md font-medium text-gray-800">{t('projectConfig.buildingInputMode')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
               <input
                 type="radio"
                 value="manual"
-                {...register('inputMode', { required: 'Input mode is required' })}
+                {...register('inputMode', { required: t('projectConfig.errors.inputModeRequired') })}
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">Manual Input</div>
-                <div className="text-sm text-gray-500">Enter building elements manually</div>
+                <div className="font-medium">{t('projectConfig.manualInput')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.manualInputDesc')}</div>
               </div>
             </label>
             
@@ -100,8 +102,8 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">IFC Import</div>
-                <div className="text-sm text-gray-500">Import from IFC file (coming soon)</div>
+                <div className="font-medium">{t('projectConfig.ifcImport')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.ifcImportDesc')}</div>
               </div>
             </label>
           </div>
@@ -112,18 +114,18 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
 
         {/* Construction Method - mirrors "Bauweise" */}
         <div className="space-y-4 mb-8">
-          <h4 className="text-md font-medium text-gray-800">Construction Method</h4>
+          <h4 className="text-md font-medium text-gray-800">{t('projectConfig.constructionMethod')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
               <input
                 type="radio"
                 value="holzbau"
-                {...register('constructionMethod', { required: 'Construction method is required' })}
+                {...register('constructionMethod', { required: t('projectConfig.errors.constructionMethodRequired') })}
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">Holzbau</div>
-                <div className="text-sm text-gray-500">Timber construction</div>
+                <div className="font-medium">{t('projectConfig.holzbau')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.holzbauDesc')}</div>
               </div>
             </label>
             
@@ -136,8 +138,8 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">Massivbau</div>
-                <div className="text-sm text-gray-500">Solid construction (coming soon)</div>
+                <div className="font-medium">{t('projectConfig.massivbau')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.massivbauDesc')}</div>
               </div>
             </label>
             
@@ -150,8 +152,8 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">Leichtbau</div>
-                <div className="text-sm text-gray-500">Lightweight construction (coming soon)</div>
+                <div className="font-medium">{t('projectConfig.leichtbau')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.leichtbauDesc')}</div>
               </div>
             </label>
           </div>
@@ -162,18 +164,18 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
 
         {/* Element Type - mirrors "Trennbauteil" */}
         <div className="space-y-4 mb-8">
-          <h4 className="text-md font-medium text-gray-800">Element Type</h4>
+          <h4 className="text-md font-medium text-gray-800">{t('projectConfig.elementType')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
               <input
                 type="radio"
                 value={ElementType.Wall}
-                {...register('elementType', { required: 'Element type is required' })}
+                {...register('elementType', { required: t('projectConfig.errors.elementTypeRequired') })}
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">Separating Wall</div>
-                <div className="text-sm text-gray-500">Trennwand analysis</div>
+                <div className="font-medium">{t('projectConfig.separatingWall')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.separatingWallDesc')}</div>
               </div>
             </label>
             
@@ -185,8 +187,8 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">Separating Ceiling</div>
-                <div className="text-sm text-gray-500">Trenndecke analysis</div>
+                <div className="font-medium">{t('projectConfig.separatingCeiling')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.separatingCeilingDesc')}</div>
               </div>
             </label>
           </div>
@@ -197,18 +199,18 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
 
         {/* Calculation Standard - mirrors "Berechnungsmethode" */}
         <div className="space-y-4 mb-8">
-          <h4 className="text-md font-medium text-gray-800">Calculation Standard</h4>
+          <h4 className="text-md font-medium text-gray-800">{t('projectConfig.calculationStandard')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
               <input
                 type="radio"
                 value={StandardType.ISO12354}
-                {...register('calculationStandard', { required: 'Calculation standard is required' })}
+                {...register('calculationStandard', { required: t('projectConfig.errors.standardRequired') })}
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">ISO 12354</div>
-                <div className="text-sm text-gray-500">Single-value calculation according to ISO 12354</div>
+                <div className="font-medium">{t('projectConfig.iso12354')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.iso12354Desc')}</div>
               </div>
             </label>
             
@@ -220,8 +222,8 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">DIN 4109</div>
-                <div className="text-sm text-gray-500">Single-value calculation according to DIN 4109</div>
+                <div className="font-medium">{t('projectConfig.din4109')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.din4109Desc')}</div>
               </div>
             </label>
           </div>
@@ -232,18 +234,18 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
 
         {/* Calculation Type */}
         <div className="space-y-4">
-          <h4 className="text-md font-medium text-gray-800">Calculation Type</h4>
+          <h4 className="text-md font-medium text-gray-800">{t('projectConfig.calculationType')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
               <input
                 type="radio"
                 value="single-value"
-                {...register('calculationType', { required: 'Calculation type is required' })}
+                {...register('calculationType', { required: t('projectConfig.errors.calculationTypeRequired') })}
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">Single Value</div>
-                <div className="text-sm text-gray-500">Weighted sound reduction index</div>
+                <div className="font-medium">{t('projectConfig.singleValue')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.singleValueDesc')}</div>
               </div>
             </label>
             
@@ -256,8 +258,8 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
                 className="text-primary-600"
               />
               <div>
-                <div className="font-medium">Frequency Dependent</div>
-                <div className="text-sm text-gray-500">Third-octave analysis (coming soon)</div>
+                <div className="font-medium">{t('projectConfig.frequencySpectrum')}</div>
+                <div className="text-sm text-gray-500">{t('projectConfig.frequencySpectrumDesc')}</div>
               </div>
             </label>
           </div>
@@ -269,8 +271,8 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
         {/* Visual indicator for selected element type */}
         <div className="mt-8 p-4 bg-gray-50 rounded-lg">
           <div className="text-sm text-gray-600">
-            Selected Configuration: <span className="font-medium">
-              {elementType === ElementType.Wall ? 'Wall' : 'Ceiling'} · 
+            {t('projectConfig.selectedConfiguration')}: <span className="font-medium">
+              {elementType === ElementType.Wall ? t('projectConfig.wall') : t('projectConfig.ceiling')} · 
               {calculationStandard === StandardType.ISO12354 ? ' ISO 12354' : ' DIN 4109'}
             </span>
           </div>
@@ -282,7 +284,7 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
       <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
         <div className="flex justify-end">
           <button type="submit" form="project-form" className="btn-primary">
-            Continue to Element Configuration
+            {t('projectConfig.continueToElementConfig')}
           </button>
         </div>
       </div>

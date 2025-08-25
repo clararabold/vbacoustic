@@ -1,13 +1,16 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Calculator, Home, Info } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from './LanguageSelector';
 
 const Navigation = () => {
   const location = useLocation();
+  const { t } = useTranslation();
 
   const navItems = [
-    { path: '/', label: 'Home', icon: Home },
-    { path: '/calculator', label: 'Calculator', icon: Calculator },
-    { path: '/about', label: 'About', icon: Info },
+    { path: '/', label: t('navigation.home'), icon: Home },
+    { path: '/calculator', label: t('navigation.calculator'), icon: Calculator },
+    { path: '/about', label: t('navigation.about'), icon: Info },
   ];
 
   return (
@@ -21,21 +24,26 @@ const Navigation = () => {
           </Link>
 
           {/* Navigation Links */}
-          <div className="flex space-x-8">
-            {navItems.map(({ path, label, icon: Icon }) => (
-              <Link
-                key={path}
-                to={path}
-                className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                  location.pathname === path
-                    ? 'text-primary-600 bg-primary-50'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                <Icon className="h-4 w-4" />
-                <span>{label}</span>
-              </Link>
-            ))}
+          <div className="flex items-center space-x-8">
+            <div className="flex space-x-8">
+              {navItems.map(({ path, label, icon: Icon }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                    location.pathname === path
+                      ? 'text-primary-600 bg-primary-50'
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span>{label}</span>
+                </Link>
+              ))}
+            </div>
+            
+            {/* Language Selector */}
+            <LanguageSelector />
           </div>
         </div>
       </div>

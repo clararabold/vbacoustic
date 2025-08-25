@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Plus, Trash2 } from 'lucide-react';
 import { WallConfiguration } from '../../types/CalculationTypes';
 import { WallConstructionType, ElementType } from '@vbacoustic/lib/src/models/AcousticTypes';
@@ -20,6 +21,7 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
   onPrev,
   defaultValues
 }) => {
+  const { t } = useTranslation();
   const { register, control, handleSubmit, watch, formState: { errors } } = useForm<WallConfiguration>({
     defaultValues: {
       wallType: WallConstructionType.MassTimberWall,
@@ -83,9 +85,9 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
 
   const getWallTypeDescription = (type: WallConstructionType) => {
     switch (type) {
-      case WallConstructionType.MassTimberWall: return 'Massivholzwand (Mass Timber Wall)';
-      case WallConstructionType.TimberFrame: return 'Holzständerwand (Timber Stud Wall)';
-      case WallConstructionType.MetalStud: return 'Metallständerwand (Metal Stud Wall)';
+      case WallConstructionType.MassTimberWall: return t('wallConfig.massTimberWallDesc');
+      case WallConstructionType.TimberFrame: return t('wallConfig.timberFrameDesc');
+      case WallConstructionType.MetalStud: return t('wallConfig.metalStudDesc');
       default: return '';
     }
   };
@@ -96,18 +98,18 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
       
       {/* Wall Type Selection - mirrors cboWandtyp */}
       <div className="card">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Wall Type Configuration</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('wallConfig.title')}</h3>
         
         <div className="space-y-4">
           <div className="form-group">
-            <label className="form-label">Wall Type (Wandtyp)</label>
+            <label className="form-label">{t('wallConfig.wallType')}</label>
             <select 
-              {...register('wallType', { required: 'Wall type is required' })}
+              {...register('wallType', { required: t('wallConfig.errors.wallTypeRequired') })}
               className="form-select"
             >
-              <option value={WallConstructionType.MassTimberWall}>MHW - Massivholzwand (Mass Timber Wall)</option>
-              <option value={WallConstructionType.TimberFrame}>HSTW - Holzständerwand (Timber Stud Wall)</option>
-              <option value={WallConstructionType.MetalStud}>MSTW - Metallständerwand (Metal Stud Wall)</option>
+              <option value={WallConstructionType.MassTimberWall}>{t('wallConfig.massTimberWall')}</option>
+              <option value={WallConstructionType.TimberFrame}>{t('wallConfig.timberFrame')}</option>
+              <option value={WallConstructionType.MetalStud}>{t('wallConfig.metalStud')}</option>
             </select>
             {errors.wallType && (
               <p className="text-red-500 text-sm mt-1">{errors.wallType.message}</p>
@@ -119,13 +121,13 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="form-group">
-              <label className="form-label">Application Context</label>
+              <label className="form-label">{t('wallConfig.applicationContext')}</label>
               <select 
-                {...register('applicationContext', { required: 'Application context is required' })}
+                {...register('applicationContext', { required: t('wallConfig.errors.applicationContextRequired') })}
                 className="form-select"
               >
-                <option value="interior">Interior Wall</option>
-                <option value="exterior">Exterior Wall</option>
+                <option value="interior">{t('wallConfig.interiorWall')}</option>
+                <option value="exterior">{t('wallConfig.exteriorWall')}</option>
               </select>
               {errors.applicationContext && (
                 <p className="text-red-500 text-sm mt-1">{errors.applicationContext.message}</p>
@@ -133,14 +135,14 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
             </div>
 
             <div className="form-group">
-              <label className="form-label">Connection Type</label>
+              <label className="form-label">{t('wallConfig.connectionType')}</label>
               <select 
-                {...register('connectionType', { required: 'Connection type is required' })}
+                {...register('connectionType', { required: t('wallConfig.errors.connectionTypeRequired') })}
                 className="form-select"
               >
-                <option value="point">Point Connection</option>
-                <option value="linear">Linear Connection</option>
-                <option value="surface">Surface Connection</option>
+                <option value="point">{t('wallConfig.pointConnection')}</option>
+                <option value="linear">{t('wallConfig.linearConnection')}</option>
+                <option value="surface">{t('wallConfig.surfaceConnection')}</option>
               </select>
               {errors.connectionType && (
                 <p className="text-red-500 text-sm mt-1">{errors.connectionType.message}</p>
@@ -152,20 +154,20 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
 
       {/* Dimensions - mirrors txtWandDicke, txtHoehe, txtBreite */}
       <div className="card">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Wall Dimensions</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('wallConfig.wallDimensions')}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="form-group">
-            <label className="form-label">Thickness (mm)</label>
+            <label className="form-label">{t('wallConfig.thickness')}</label>
             <input
               type="number"
               step="1"
               min="50"
               max="1000"
               {...register('dimensions.thickness', { 
-                required: 'Thickness is required',
-                min: { value: 50, message: 'Minimum thickness is 50mm' },
-                max: { value: 1000, message: 'Maximum thickness is 1000mm' }
+                required: t('wallConfig.errors.thicknessRequired'),
+                min: { value: 50, message: `${t('wallConfig.errors.thicknessMin')} 50mm` },
+                max: { value: 1000, message: `${t('wallConfig.errors.thicknessMax')} 1000mm` }
               })}
               className="form-input"
               placeholder="200"
@@ -173,16 +175,16 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label">Height (m)</label>
+            <label className="form-label">{t('wallConfig.height')}</label>
             <input
               type="number"
               step="0.1"
               min="2.0"
               max="6.0"
               {...register('dimensions.height', { 
-                required: 'Height is required',
-                min: { value: 2.0, message: 'Minimum height is 2.0m' },
-                max: { value: 6.0, message: 'Maximum height is 6.0m' }
+                required: t('wallConfig.errors.heightRequired'),
+                min: { value: 2.0, message: `${t('wallConfig.errors.heightMin')} 2.0m` },
+                max: { value: 6.0, message: `${t('wallConfig.errors.heightMax')} 6.0m` }
               })}
               className="form-input"
               placeholder="2.5"
@@ -190,16 +192,16 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label">Width (m)</label>
+            <label className="form-label">{t('wallConfig.width')}</label>
             <input
               type="number"
               step="0.1"
               min="1.0"
               max="20.0"
               {...register('dimensions.width', { 
-                required: 'Width is required',
-                min: { value: 1.0, message: 'Minimum width is 1.0m' },
-                max: { value: 20.0, message: 'Maximum width is 20.0m' }
+                required: t('wallConfig.errors.widthRequired'),
+                min: { value: 1.0, message: `${t('wallConfig.errors.widthMin')} 1.0m` },
+                max: { value: 20.0, message: `${t('wallConfig.errors.widthMax')} 20.0m` }
               })}
               className="form-input"
               placeholder="4.0"
@@ -207,7 +209,7 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label">Area (m²)</label>
+            <label className="form-label">{t('wallConfig.area')}</label>
             <input
               type="number"
               step="0.1"
@@ -216,7 +218,7 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
               placeholder="Calculated"
               readOnly
             />
-            <p className="text-xs text-gray-500 mt-1">Auto-calculated from height × width</p>
+            <p className="text-xs text-gray-500 mt-1">{t('wallConfig.autoCalculated')}</p>
           </div>
         </div>
       </div>
@@ -224,27 +226,27 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
       {/* Wall Layers */}
       <div className="card">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-medium text-gray-900">Wall Layers</h3>
+          <h3 className="text-lg font-medium text-gray-900">{t('wallConfig.wallLayers')}</h3>
           <button
             type="button"
             onClick={addLayer}
             className="btn-secondary flex items-center space-x-2"
           >
             <Plus className="h-4 w-4" />
-            <span>Add Layer</span>
+            <span>{t('wallConfig.addLayer')}</span>
           </button>
         </div>
 
         {layerFields.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            <p>No layers added yet. Click "Add Layer" to start building your wall composition.</p>
+            <p>{t('wallConfig.noLayersYet')}</p>
           </div>
         ) : (
           <div className="space-y-4">
             {layerFields.map((field, index) => (
               <div key={field.id} className="border rounded-lg p-4">
                 <div className="flex justify-between items-start mb-4">
-                  <h4 className="font-medium text-gray-900">Layer {index + 1}</h4>
+                  <h4 className="font-medium text-gray-900">{t('wallConfig.layer')} {index + 1}</h4>
                   <button
                     type="button"
                     onClick={() => removeLayer(index)}
@@ -256,23 +258,23 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="form-group">
-                    <label className="form-label">Material</label>
+                    <label className="form-label">{t('wallConfig.material')}</label>
                     <input
-                      {...register(`layers.${index}.material`, { required: 'Material is required' })}
+                      {...register(`layers.${index}.material`, { required: t('wallConfig.errors.materialRequired') })}
                       className="form-input"
-                      placeholder="e.g., CLT, Gypsum board"
+                      placeholder={t('wallConfig.materialPlaceholder')}
                     />
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Thickness (mm)</label>
+                    <label className="form-label">{t('wallConfig.thickness')}</label>
                     <input
                       type="number"
                       step="0.1"
                       min="0.1"
                       {...register(`layers.${index}.thickness`, { 
-                        required: 'Thickness is required',
-                        min: { value: 0.1, message: 'Minimum thickness is 0.1mm' }
+                        required: t('wallConfig.errors.thicknessRequired'),
+                        min: { value: 0.1, message: `${t('wallConfig.errors.thicknessMin')} 0.1mm` }
                       })}
                       className="form-input"
                       placeholder="20"
@@ -280,7 +282,7 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Density (kg/m³)</label>
+                    <label className="form-label">{t('wallConfig.density')}</label>
                     <input
                       type="number"
                       step="1"
@@ -300,27 +302,27 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
       {/* Flanking Elements - mirrors the 4 flanking directions */}
       <div className="card">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-medium text-gray-900">Flanking Elements</h3>
+          <h3 className="text-lg font-medium text-gray-900">{t('wallConfig.flankingElements')}</h3>
           <button
             type="button"
             onClick={addFlankingElement}
             className="btn-secondary flex items-center space-x-2"
           >
             <Plus className="h-4 w-4" />
-            <span>Add Flanking Element</span>
+            <span>{t('wallConfig.addFlankingElement')}</span>
           </button>
         </div>
 
         {flankingFields.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            <p>No flanking elements added yet. Add surrounding structural elements for transmission path analysis.</p>
+            <p>{t('wallConfig.noFlankingElementsYet')}</p>
           </div>
         ) : (
           <div className="space-y-4">
             {flankingFields.map((field, index) => (
               <div key={field.id} className="border rounded-lg p-4">
                 <div className="flex justify-between items-start mb-4">
-                  <h4 className="font-medium text-gray-900">Flanking Element {index + 1}</h4>
+                  <h4 className="font-medium text-gray-900">{t('wallConfig.flankingElement')} {index + 1}</h4>
                   <button
                     type="button"
                     onClick={() => removeFlanking(index)}
@@ -332,39 +334,39 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="form-group">
-                    <label className="form-label">Position</label>
+                    <label className="form-label">{t('wallConfig.position')}</label>
                     <select 
-                      {...register(`flankingElements.${index}.position`, { required: 'Position is required' })}
+                      {...register(`flankingElements.${index}.position`, { required: t('wallConfig.errors.positionRequired') })}
                       className="form-select"
                     >
-                      <option value="top">Top</option>
-                      <option value="bottom">Bottom</option>
-                      <option value="left">Left</option>
-                      <option value="right">Right</option>
+                      <option value="top">{t('wallConfig.top')}</option>
+                      <option value="bottom">{t('wallConfig.bottom')}</option>
+                      <option value="left">{t('wallConfig.left')}</option>
+                      <option value="right">{t('wallConfig.right')}</option>
                     </select>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Element Type</label>
+                    <label className="form-label">{t('wallConfig.elementType')}</label>
                     <select 
-                      {...register(`flankingElements.${index}.elementType`, { required: 'Element type is required' })}
+                      {...register(`flankingElements.${index}.elementType`, { required: t('wallConfig.errors.elementTypeRequired') })}
                       className="form-select"
                     >
-                      <option value="wall">Wall</option>
-                      <option value="ceiling">Ceiling</option>
-                      <option value="floor">Floor</option>
+                      <option value="wall">{t('wallConfig.wall')}</option>
+                      <option value="ceiling">{t('wallConfig.ceiling')}</option>
+                      <option value="floor">{t('wallConfig.floor')}</option>
                     </select>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Thickness (mm)</label>
+                    <label className="form-label">{t('wallConfig.thickness')}</label>
                     <input
                       type="number"
                       step="1"
                       min="50"
                       {...register(`flankingElements.${index}.thickness`, { 
-                        required: 'Thickness is required',
-                        min: { value: 50, message: 'Minimum thickness is 50mm' }
+                        required: t('wallConfig.errors.thicknessRequired'),
+                        min: { value: 50, message: `${t('wallConfig.errors.thicknessMin')} 50mm` }
                       })}
                       className="form-input"
                       placeholder="200"
@@ -372,14 +374,14 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Length (m)</label>
+                    <label className="form-label">{t('wallConfig.length')}</label>
                     <input
                       type="number"
                       step="0.1"
                       min="0.1"
                       {...register(`flankingElements.${index}.length`, { 
-                        required: 'Length is required',
-                        min: { value: 0.1, message: 'Minimum length is 0.1m' }
+                        required: t('wallConfig.errors.lengthRequired'),
+                        min: { value: 0.1, message: `${t('wallConfig.errors.lengthMin')} 0.1m` }
                       })}
                       className="form-input"
                       placeholder="4.0"
@@ -389,23 +391,23 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                   <div className="form-group">
-                    <label className="form-label">Junction Type</label>
+                    <label className="form-label">{t('wallConfig.junctionType')}</label>
                     <select 
-                      {...register(`flankingElements.${index}.junctionType`, { required: 'Junction type is required' })}
+                      {...register(`flankingElements.${index}.junctionType`, { required: t('wallConfig.errors.junctionTypeRequired') })}
                       className="form-select"
                     >
-                      <option value={JunctionStiffness.RIGID}>Rigid Connection</option>
-                      <option value={JunctionStiffness.FLEXIBLE}>Elastic Connection</option>
-                      <option value={JunctionStiffness.DAMPED}>Isolated Connection</option>
+                      <option value={JunctionStiffness.RIGID}>{t('wallConfig.rigidConnection')}</option>
+                      <option value={JunctionStiffness.FLEXIBLE}>{t('wallConfig.elasticConnection')}</option>
+                      <option value={JunctionStiffness.DAMPED}>{t('wallConfig.isolatedConnection')}</option>
                     </select>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Connection Details</label>
+                    <label className="form-label">{t('wallConfig.connectionDetails')}</label>
                     <input
                       {...register(`flankingElements.${index}.connectionDetails`)}
                       className="form-input"
-                      placeholder="Description of connection method"
+                      placeholder={t('wallConfig.connectionDetailsPlaceholder')}
                     />
                   </div>
                 </div>
@@ -418,7 +420,7 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
       {/* Error Summary */}
       {Object.keys(errors).length > 0 && (
         <div className="alert-error">
-          <p className="font-medium">Please correct the following errors:</p>
+          <p className="font-medium">{t('wallConfig.errorSummary')}</p>
           <ul className="list-disc list-inside mt-2 text-sm">
             {Object.entries(errors).map(([key, error]) => (
               <li key={key}>{error?.message}</li>
@@ -436,14 +438,14 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
           onClick={onPrev}
           className="btn-secondary"
         >
-          Back to Project Configuration
+          {t('wallConfig.backToProjectConfig')}
         </button>
         <button 
           type="submit" 
           form="wall-form"
           className="btn-primary"
         >
-          Continue to Calculation Parameters
+          {t('wallConfig.continueToCalculationParams')}
         </button>
       </div>
     </div>

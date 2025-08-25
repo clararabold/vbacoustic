@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ProjectConfigurationForm, WallConfigurationForm, CeilingConfigurationForm, CalculationParametersForm } from './forms';
 import { ResultsDisplay } from './ResultsDisplay';
 import { acousticCalculationService } from '../services/AcousticCalculationService';
@@ -32,6 +33,7 @@ interface StepInfo {
  * Mirrors the workflow from the VBA forms: frmVBAcoustic → frmVBAcousticTrennwand/Trenndecke → Results
  */
 export const CalculationWizard: React.FC = () => {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState<CalculationStep>('project-config');
   const [projectConfig, setProjectConfig] = useState<ProjectConfiguration | null>(null);
   const [elementConfig, setElementConfig] = useState<WallConfiguration | CeilingConfiguration | null>(null);
@@ -41,26 +43,26 @@ export const CalculationWizard: React.FC = () => {
   const steps: StepInfo[] = [
     {
       id: 'project-config',
-      title: 'Project Configuration',
-      description: 'Define construction method and calculation standards',
+      title: t('wizard.projectConfiguration'),
+      description: t('wizard.projectConfigurationDesc'),
       completed: projectConfig !== null
     },
     {
       id: 'element-config',
-      title: 'Element Configuration',
-      description: 'Configure wall or ceiling properties',
+      title: t('wizard.elementConfiguration'),
+      description: t('wizard.elementConfigurationDesc'),
       completed: elementConfig !== null
     },
     {
       id: 'calculation-params',
-      title: 'Calculation Parameters',
-      description: 'Set measurement conditions and requirements',
+      title: t('wizard.calculationParameters'),
+      description: t('wizard.calculationParametersDesc'),
       completed: calculationParams !== null
     },
     {
       id: 'results',
-      title: 'Results',
-      description: 'View acoustic calculation results',
+      title: t('wizard.results'),
+      description: t('wizard.resultsDesc'),
       completed: calculationResults !== null
     }
   ];
@@ -325,14 +327,6 @@ export const CalculationWizard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Acoustic Calculation</h1>
-        <p className="text-gray-600 mt-2">
-          Configure your building element and calculate acoustic performance according to {' '}
-          {projectConfig?.calculationStandard === StandardType.DIN4109 ? 'DIN 4109' : 'ISO 12354'}
-        </p>
-      </div>
-
       {renderStepIndicator()}
       
       <div className="bg-white rounded-lg shadow-sm">
