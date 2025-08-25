@@ -8,7 +8,7 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
-  base: process.env.VITE_BASE_PATH || (process.env.NODE_ENV === 'production' ? '/vbacoustic/' : '/'),
+  base: '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
