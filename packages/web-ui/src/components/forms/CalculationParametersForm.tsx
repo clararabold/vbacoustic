@@ -106,7 +106,8 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <div>
+      <form id="calculation-form" onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       
       {/* Building Context */}
       <div className="card">
@@ -371,20 +372,23 @@ export const CalculationParametersForm: React.FC<CalculationParametersFormProps>
           </ul>
         </div>
       )}
+      </form>
 
       {/* Action Buttons */}
-      <div className="flex justify-between">
-        <button 
-          type="button" 
-          className="btn-secondary"
-          onClick={onPrev}
-        >
-          Back to Element Configuration
-        </button>
-        <button type="submit" className="btn-primary">
-          Calculate Acoustic Performance
-        </button>
+      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+        <div className="flex justify-between">
+          <button 
+            type="button" 
+            className="btn-secondary"
+            onClick={onPrev}
+          >
+            Back to Element Configuration
+          </button>
+          <button type="submit" form="calculation-form" className="btn-primary">
+            Calculate Acoustic Performance
+          </button>
+        </div>
       </div>
-    </form>
+    </div>
   );
 };

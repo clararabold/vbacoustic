@@ -60,7 +60,8 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <div>
+      <form id="project-form" onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <div className="card">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-medium text-gray-900">Project Configuration</h3>
@@ -275,12 +276,16 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
           </div>
         </div>
       </div>
-
-      <div className="flex justify-end">
-        <button type="submit" className="btn-primary">
-          Continue to Element Configuration
-        </button>
+      </form>
+      
+      {/* Button area with gray background */}
+      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+        <div className="flex justify-end">
+          <button type="submit" form="project-form" className="btn-primary">
+            Continue to Element Configuration
+          </button>
+        </div>
       </div>
-    </form>
+    </div>
   );
 };

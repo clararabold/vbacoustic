@@ -56,7 +56,7 @@ export function CeilingConfigurationForm({ onNext, onPrev, defaultValues }: Ceil
       <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">Deckenkonfiguration</h2>
         
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form id="ceiling-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Ceiling Type Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">Deckensystem</label>
@@ -374,9 +374,11 @@ export function CeilingConfigurationForm({ onNext, onPrev, defaultValues }: Ceil
               ))}
             </div>
           </div>
-
-          {/* Navigation */}
-          <div className="flex justify-between pt-6 border-t">
+        </form>
+        
+        {/* Navigation */}
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+          <div className="flex justify-between">
             <button
               type="button"
               onClick={onPrev}
@@ -386,12 +388,13 @@ export function CeilingConfigurationForm({ onNext, onPrev, defaultValues }: Ceil
             </button>
             <button
               type="submit"
+              form="ceiling-form"
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               Weiter
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

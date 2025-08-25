@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Calculator, Home, BarChart3, Info } from 'lucide-react';
+import { Calculator, Home, Info } from 'lucide-react';
 
 const Navigation = () => {
   const location = useLocation();
@@ -7,7 +7,6 @@ const Navigation = () => {
   const navItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/calculator', label: 'Calculator', icon: Calculator },
-    { path: '/results', label: 'Results', icon: BarChart3 },
     { path: '/about', label: 'About', icon: Info },
   ];
 
@@ -17,7 +16,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <Calculator className="h-8 w-8 text-primary-600" />
+            <img src="/vbacoustic.svg" alt="VBAcoustic" className="h-8 w-8" />
             <span className="text-xl font-bold text-gray-900">VBAcoustic</span>
           </Link>
 

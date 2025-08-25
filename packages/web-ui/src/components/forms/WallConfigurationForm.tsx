@@ -91,7 +91,8 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onNext)} className="space-y-8">
+    <div>
+      <form id="wall-form" onSubmit={handleSubmit(onNext)} className="space-y-8">
       
       {/* Wall Type Selection - mirrors cboWandtyp */}
       <div className="card">
@@ -425,8 +426,10 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
           </ul>
         </div>
       )}
+    </form>
 
-      {/* Action Buttons */}
+    {/* Action Buttons */}
+    <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
       <div className="flex justify-between">
         <button 
           type="button" 
@@ -435,10 +438,15 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
         >
           Back to Project Configuration
         </button>
-        <button type="submit" className="btn-primary">
+        <button 
+          type="submit" 
+          form="wall-form"
+          className="btn-primary"
+        >
           Continue to Calculation Parameters
         </button>
       </div>
-    </form>
+    </div>
+    </div>
   );
 };
