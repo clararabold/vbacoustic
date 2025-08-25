@@ -11,9 +11,7 @@ import {
   ScreedType,
   CladdingType,
   ElementType,
-  MaterialType,
-  JunctionType,
-  AcousticStandard
+  MaterialType
 } from '@vbacoustic/lib/src/models/AcousticTypes';
 import { StandardType, JunctionStiffness } from '@vbacoustic/lib/src/standards/AcousticStandard';
 
