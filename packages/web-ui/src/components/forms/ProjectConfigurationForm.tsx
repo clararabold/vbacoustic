@@ -1,12 +1,17 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { ProjectConfiguration } from '../../types';
+import { ProjectConfiguration, WallConfiguration, CeilingConfiguration, CalculationParameters, BuildingContext } from '../../types';
 import { getSampleConfiguration } from '../../data/sampleConfigurations';
 import { ElementType } from '@vbacoustic/lib/src/models/AcousticTypes';
 import { StandardType } from '@vbacoustic/lib/src/standards/AcousticStandard';
 
 interface ProjectConfigurationFormProps {
   onSubmit: (data: ProjectConfiguration) => void;
+  onSampleConfigurationLoad?: (sampleConfig: {
+    project: ProjectConfiguration;
+    element: WallConfiguration | CeilingConfiguration;
+    parameters: CalculationParameters & BuildingContext;
+  }) => void;
   defaultValues?: Partial<ProjectConfiguration>;
 }
 
@@ -16,6 +21,7 @@ interface ProjectConfigurationFormProps {
  */
 export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> = ({
   onSubmit,
+  onSampleConfigurationLoad,
   defaultValues
 }) => {
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<ProjectConfiguration>({
@@ -34,12 +40,22 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
 
   const loadSampleConfiguration = () => {
     const sample = getSampleConfiguration(0);
-    if (sample?.project) {
-      setValue('inputMode', sample.project.inputMode);
-      setValue('constructionMethod', sample.project.constructionMethod);
-      setValue('elementType', sample.project.elementType);
-      setValue('calculationStandard', sample.project.calculationStandard);
-      setValue('calculationType', sample.project.calculationType);
+    if (sample?.project && sample?.element && sample?.parameters) {
+      if (onSampleConfigurationLoad) {
+        // If we have the sample configuration load handler, use it to load the complete config
+        onSampleConfigurationLoad(sample as {
+          project: ProjectConfiguration;
+          element: WallConfiguration | CeilingConfiguration;
+          parameters: CalculationParameters & BuildingContext;
+        });
+      } else {
+        // Fallback to just loading project config
+        setValue('inputMode', sample.project.inputMode);
+        setValue('constructionMethod', sample.project.constructionMethod);
+        setValue('elementType', sample.project.elementType);
+        setValue('calculationStandard', sample.project.calculationStandard);
+        setValue('calculationType', sample.project.calculationType);
+      }
     }
   };
 

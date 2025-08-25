@@ -12,7 +12,7 @@ import {
   BuildingContext
 } from '../types';
 import { ElementType } from '@vbacoustic/lib/src/models/AcousticTypes';
-import { StandardType } from '@vbacoustic/lib/src/standards/AcousticStandard';
+import { StandardType, BuildingClass } from '@vbacoustic/lib/src/standards/AcousticStandard';
 
 type CalculationStep = 
   | 'project-config'
@@ -90,6 +90,22 @@ export const CalculationWizard: React.FC = () => {
   const handleProjectConfigSubmit = (data: ProjectConfiguration) => {
     setProjectConfig(data);
     setCurrentStep('element-config');
+  };
+
+  const handleSampleConfigurationLoad = (sampleConfig: {
+    project: ProjectConfiguration;
+    element: WallConfiguration | CeilingConfiguration;
+    parameters: CalculationParameters & BuildingContext;
+  }) => {
+    // Set all the state synchronously
+    setProjectConfig(sampleConfig.project);
+    setElementConfig(sampleConfig.element);
+    setCalculationParams(sampleConfig.parameters);
+    
+    // Navigate to element config step after setting the state
+    setTimeout(() => {
+      setCurrentStep('element-config');
+    }, 0);
   };
 
   const handleElementConfigSubmit = (data: WallConfiguration | CeilingConfiguration) => {
@@ -181,6 +197,7 @@ export const CalculationWizard: React.FC = () => {
         return (
           <ProjectConfigurationForm
             onSubmit={handleProjectConfigSubmit}
+            onSampleConfigurationLoad={handleSampleConfigurationLoad}
             defaultValues={projectConfig || undefined}
           />
         );
@@ -268,7 +285,7 @@ export const CalculationWizard: React.FC = () => {
               Rw: calculationParams.requiredAirborneInsulation,
               Lnw: calculationParams.requiredImpactInsulation,
               standard: projectConfig?.calculationStandard === StandardType.DIN4109 ? StandardType.DIN4109 : StandardType.ISO12354,
-              buildingClass: calculationParams.buildingType
+              buildingClass: BuildingClass.STANDARD // Default to standard class, this could be mapped from buildingType
             } : undefined}
             onStartNew={() => {
               // Reset all state for new calculation
