@@ -1,29 +1,34 @@
 {
-  "name": "vbacoustic-ts-3",
+  "name": "vbacoustic-monorepo",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "npm run dev --workspace=@vbacoustic/web-ui",
+    "build": "npm run build --workspaces",
+    "build:lib": "npm run build --workspace=@vbacoustic/lib",
+    "build:ui": "npm run build --workspace=@vbacoustic/web-ui",
+    "test": "npm run test --workspace=@vbacoustic/lib",
+    "test:coverage": "npm run test:coverage --workspace=@vbacoustic/lib",
+    "lint": "npm run lint --workspaces",
+    "deploy": "npm run deploy --workspace=@vbacoustic/web-ui",
+    "publish:lib": "npm publish --workspace=@vbacoustic/lib"
   },
-  "dependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.33.0",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^5.0.0",
-    "eslint": "^9.33.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^16.3.0",
-    "typescript": "~5.8.3",
-    "typescript-eslint": "^8.39.1",
-    "vite": "^7.1.2"
+  "keywords": [
+    "acoustics",
+    "building",
+    "sound",
+    "DIN4109",
+    "ISO12354",
+    "react",
+    "typescript"
+  ],
+  "author": "VBAcoustic Implementation Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
