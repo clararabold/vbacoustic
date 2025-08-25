@@ -9,8 +9,11 @@
   "scripts": {
     "dev": "npm run dev --workspace=@vbacoustic/web-ui",
     "build": "npm run build --workspaces",
+    "build:ci": "npm run build:ci --workspaces",
     "build:lib": "npm run build --workspace=@vbacoustic/lib",
+    "build:lib:ci": "npm run build:ci --workspace=@vbacoustic/lib",
     "build:ui": "npm run build --workspace=@vbacoustic/web-ui",
+    "build:ui:ci": "npm run build:ci --workspace=@vbacoustic/web-ui",
     "test": "npm run test --workspace=@vbacoustic/lib",
     "test:coverage": "npm run test:coverage --workspace=@vbacoustic/lib",
     "lint": "npm run lint --workspaces",
