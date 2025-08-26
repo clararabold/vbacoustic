@@ -23,7 +23,8 @@
   "navigation": {
     "home": "Home",
     "calculator": "Calculator",
-    "about": "About"
+    "about": "About",
+    "logout": "Logout"
   },
   "home": {
     "title": "Building Acoustic Calculator",
@@ -402,5 +403,16 @@
     "invalidInput": "Invalid input",
     "missingData": "Missing data",
     "networkError": "Network error"
+  },
+  "login": {
+    "subtitle": "Please sign in to access the calculator",
+    "username": "Username",
+    "password": "Password",
+    "usernamePlaceholder": "Enter username",
+    "passwordPlaceholder": "Enter password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "error": "Invalid username or password",
+    "testCredentials": "Test Credentials"
   }
 }

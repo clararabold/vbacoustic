@@ -1,10 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Layout from './components/common/Layout';
+import LoginScreen from './components/auth/LoginScreen';
 import Home from './pages/Home';
 import Calculator from './pages/Calculator';
 import About from './pages/About';
 
-function App() {
+const AuthenticatedApp = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <LoginScreen />;
+  }
+
   return (
     <Router>
       <Layout>
@@ -15,6 +23,14 @@ function App() {
         </Routes>
       </Layout>
     </Router>
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <AuthenticatedApp />
+    </AuthProvider>
   );
 }
 

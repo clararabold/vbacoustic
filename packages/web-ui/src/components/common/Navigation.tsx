@@ -1,11 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Calculator, Home, Info } from 'lucide-react';
+import { Calculator, Home, Info, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../contexts/AuthContext';
+import { AUTH_CONFIG } from '../../config/appConfig';
 import LanguageSelector from './LanguageSelector';
 
 const Navigation = () => {
   const location = useLocation();
   const { t } = useTranslation();
+  const { logout } = useAuth();
 
   const navItems = [
     { path: '/', label: t('navigation.home'), icon: Home },
@@ -44,6 +47,18 @@ const Navigation = () => {
             
             {/* Language Selector */}
             <LanguageSelector />
+            
+            {/* Logout Button - Only show if login is enabled */}
+            {AUTH_CONFIG.enabled && (
+              <button
+                onClick={logout}
+                className="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+                title={t('navigation.logout')}
+              >
+                <LogOut className="h-4 w-4" />
+                <span>{t('navigation.logout')}</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

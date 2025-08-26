@@ -23,7 +23,8 @@
   "navigation": {
     "home": "Start",
     "calculator": "Rechner",
-    "about": "Über"
+    "about": "Über",
+    "logout": "Abmelden"
   },
   "home": {
     "title": "Bauakustik-Rechner",
@@ -370,5 +371,16 @@
     "invalidInput": "Ungültige Eingabe",
     "missingData": "Fehlende Daten",
     "networkError": "Netzwerkfehler"
+  },
+  "login": {
+    "subtitle": "Bitte melden Sie sich an, um den Rechner zu verwenden",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "usernamePlaceholder": "Benutzername eingeben",
+    "passwordPlaceholder": "Passwort eingeben",
+    "signIn": "Anmelden",
+    "signingIn": "Anmeldung läuft...",
+    "error": "Ungültiger Benutzername oder Passwort",
+    "testCredentials": "Test-Zugangsdaten"
   }
 }
