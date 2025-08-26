@@ -267,16 +267,6 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
             <p className="text-red-500 text-sm mt-1">{errors.calculationType.message}</p>
           )}
         </div>
-
-        {/* Visual indicator for selected element type */}
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <div className="text-sm text-gray-600">
-            {t('projectConfig.selectedConfiguration')}: <span className="font-medium">
-              {elementType === ElementType.Wall ? t('projectConfig.wall') : t('projectConfig.ceiling')} · 
-              {calculationStandard === StandardType.ISO12354 ? ' ISO 12354' : ' DIN 4109'}
-            </span>
-          </div>
-        </div>
       </div>
       </form>
       

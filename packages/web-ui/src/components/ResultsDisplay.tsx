@@ -68,9 +68,6 @@ export function ResultsDisplay({
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-gray-900">{t('results.title')}</h2>
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-500">
-              {results.timestamp.toLocaleString('de-DE')}
-            </span>
             {allRequirementsPassed && !hasErrors ? (
               <div className="flex items-center text-green-600">
                 <CheckCircle className="h-5 w-5 mr-1" />
@@ -284,13 +281,6 @@ export function ResultsDisplay({
               >
                 {t('results.newCalculation')}
               </button>
-            )}
-          </div>
-          
-          <div className="text-sm text-gray-500">
-            <p>{t('results.calculationAccordingTo')} {requirements?.standard || StandardType.DIN4109}</p>
-            {requirements?.buildingClass && (
-              <p>{t('results.buildingClass')}: {requirements.buildingClass}</p>
             )}
           </div>
         </div>

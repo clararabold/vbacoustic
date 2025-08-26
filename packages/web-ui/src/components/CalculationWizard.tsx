@@ -188,10 +188,10 @@ export const CalculationWizard: React.FC = () => {
                     {/* Step content */}
                     <div 
                       className={`text-center ${isClickable ? 'cursor-pointer' : 'cursor-default'}`} 
-                      style={{ maxWidth: '120px' }}
+                      style={{ maxWidth: '150px', minWidth: '120px' }}
                       onClick={() => isClickable && handleStepClick(step.id)}
                     >
-                      <div className={`text-sm font-semibold mb-1 ${
+                      <div className={`text-sm font-semibold mb-1 leading-tight ${
                         isCurrent ? 'text-primary-700' : 'text-gray-500'
                       }`}>
                         {step.title}
