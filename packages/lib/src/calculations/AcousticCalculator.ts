@@ -25,7 +25,6 @@ import {
     FlankingPath,
     ElementType,
     ConstructionType,
-    ConstructionCategory,
     ValidationError,
     MaterialType,
     ScreedType,
@@ -54,7 +53,7 @@ export interface CalculationInput {
  */
 export interface VBACalculationParameters {
     configuration: {
-        constructionType: ConstructionCategory;          // Holzbau | Massivbau
+        constructionType: ConstructionType;          // Solid | MassTimber | Lightweight
         elementType: ElementType;                        // Floor | Wall  
         roomConfiguration: RoomConfiguration;            // Diagonal for special wall cases
         standard: AcousticStandard;                     // Standard selection

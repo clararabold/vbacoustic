@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { FloorSystemCalculator, FloorSystemType, LoadingType } from '../src/calculations/FloorSystemCalculator';
 import { ScreedType } from '../src/calculations/ImpactSoundCalculator';
-import { ConstructionCategory, ElementType } from '../src/models/AcousticTypes';
+import { ConstructionType, ElementType } from '../src/models/AcousticTypes';
 
 describe('FloorSystemCalculator', () => {
   it('throws on invalid inputs (non-positive base Rw or Lnw)', () => {
@@ -326,7 +326,7 @@ describe('FloorSystemCalculator', () => {
     expect(concreteElement).toHaveProperty('acousticParams');
     
     // Validate concrete floor specifics
-    expect(concreteElement.constructionType).toBe(ConstructionCategory.Massivbau);
+    expect(concreteElement.constructionType).toBe(ConstructionType.Solid);
     expect(concreteElement.type).toBe(ElementType.Floor); // Should be 'floor'
     expect(concreteElement.area).toBe(concreteParams.floorArea);
     expect(concreteElement.Rw).toBe(concreteResults.finalRw);
@@ -369,7 +369,7 @@ describe('FloorSystemCalculator', () => {
     const massTimberResults = calc.calculateFloorSystem(massTimberParams);
     const massTimberElement = calc.createFloorElement(massTimberParams, massTimberResults as any);
     
-    expect(massTimberElement.constructionType).toBe(ConstructionCategory.Massivholzbau);
+    expect(massTimberElement.constructionType).toBe(ConstructionType.MassTimber);
     expect(massTimberElement.massPerArea).toBe(massTimberParams.baseMass);
     expect(massTimberElement.area).toBe(massTimberParams.floorArea);
     expect(massTimberElement.Rw).toBe(massTimberResults.finalRw);
@@ -391,7 +391,7 @@ describe('FloorSystemCalculator', () => {
     const timberFrameResults = calc.calculateFloorSystem(timberFrameParams);
     const timberFrameElement = calc.createFloorElement(timberFrameParams, timberFrameResults as any);
     
-    expect(timberFrameElement.constructionType).toBe(ConstructionCategory.Leichtbau);
+    expect(timberFrameElement.constructionType).toBe(ConstructionType.Lightweight);
     expect(timberFrameElement.massPerArea).toBe(0); // No mass specified for HBD
     expect(timberFrameElement.area).toBe(timberFrameParams.floorArea);
     expect(timberFrameElement.Rw).toBe(timberFrameResults.finalRw);
@@ -409,7 +409,7 @@ describe('FloorSystemCalculator', () => {
     const hollowCoreResults = calc.calculateFloorSystem(hollowCoreParams);
     const hollowCoreElement = calc.createFloorElement(hollowCoreParams, hollowCoreResults as any);
     
-    expect(hollowCoreElement.constructionType).toBe(ConstructionCategory.Massivbau);
+    expect(hollowCoreElement.constructionType).toBe(ConstructionType.Solid);
     expect(hollowCoreElement.area).toBe(hollowCoreParams.floorArea);
     expect(hollowCoreElement.Rw).toBe(hollowCoreResults.finalRw);
     
@@ -442,15 +442,15 @@ describe('FloorSystemCalculator', () => {
         expect(element.acousticParams.rw).toBe(results.finalRw);
         expect(element.acousticParams.lnw).toBe(results.finalLnw);
       }
-      expect(Object.values(ConstructionCategory)).toContain(element.constructionType);
+      expect(Object.values(ConstructionType)).toContain(element.constructionType);
       
       // Validate construction category assignment
       if (systemType.startsWith('mhd')) {
-        expect(element.constructionType).toBe(ConstructionCategory.Massivholzbau);
+        expect(element.constructionType).toBe(ConstructionType.MassTimber);
       } else if (systemType.startsWith('hbd')) {
-        expect(element.constructionType).toBe(ConstructionCategory.Leichtbau);
+        expect(element.constructionType).toBe(ConstructionType.Lightweight);
       } else {
-        expect(element.constructionType).toBe(ConstructionCategory.Massivbau);
+        expect(element.constructionType).toBe(ConstructionType.Solid);
       }
     });
     
@@ -806,7 +806,7 @@ describe('FloorSystemCalculator', () => {
       expect(results.finalLnw).toBeLessThan(params.baseLnw);
       
       const element = calc.createFloorElement(params, results);
-      expect(element.constructionType).toBe(ConstructionCategory.Massivholzbau);
+      expect(element.constructionType).toBe(ConstructionType.MassTimber);
       expect(element.massPerArea).toBe(params.baseMass);
     });
     
@@ -833,7 +833,7 @@ describe('FloorSystemCalculator', () => {
       expect(results.finalLnw).toBe(params.baseLnw);
       
       const element = calc.createFloorElement(params, results);
-      expect(element.constructionType).toBe(ConstructionCategory.Leichtbau);
+      expect(element.constructionType).toBe(ConstructionType.Lightweight);
       expect(element.massPerArea).toBe(0); // No mass required for timber frame
     });
     

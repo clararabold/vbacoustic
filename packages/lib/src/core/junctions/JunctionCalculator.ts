@@ -12,7 +12,7 @@ import {
     TransmissionDirection,
     ConstructionConnection
 } from './JunctionTypes';
-import { FlankingPathType, ConstructionCategory } from '../../models/AcousticTypes';
+import { FlankingPathType, ConstructionType } from '../../models/AcousticTypes';
 
 /**
  * Solid Construction Junction Calculator
@@ -274,13 +274,13 @@ export class JunctionCalculator {
      */
     calculateSinglePath(params: JunctionCalculationParams): number {
         switch (params.junction.constructionType) {
-            case ConstructionCategory.Massivbau:
+            case ConstructionType.Solid:
                 return this.solidCalculator.calculate(params);
                 
-            case ConstructionCategory.Massivholzbau:
+            case ConstructionType.MassTimber:
                 return this.massTimberCalculator.calculate(params);
                 
-            case ConstructionCategory.Leichtbau:
+            case ConstructionType.Lightweight:
                 // Lightweight construction uses different approach (measured Dnfw values)
                 // Return basic approximation for Phase 2
                 return 5; // Placeholder - will be enhanced in later phases

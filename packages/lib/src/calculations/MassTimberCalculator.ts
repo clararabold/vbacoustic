@@ -1,5 +1,5 @@
 import { log10, roundToOneDecimal } from '../utils/MathUtils';
-import { ConstructionCategory, FlankingPathType } from '../models/AcousticTypes';
+import { ConstructionType, FlankingPathType } from '../models/AcousticTypes';
 
 /**
  * Mass Timber Sound Reduction Calculator - Complete VBA Holzbau implementation

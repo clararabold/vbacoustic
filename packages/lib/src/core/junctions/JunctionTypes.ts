@@ -1,5 +1,5 @@
 import { 
-    ConstructionCategory,
+    ConstructionType,
     JunctionDirection,
     JunctionConnection,
     ElementType,
@@ -37,7 +37,7 @@ export enum ConstructionConnection {
  */
 export interface Junction {
     type: JunctionType;
-    constructionType: ConstructionCategory;
+    constructionType: ConstructionType;
     direction: TransmissionDirection;
     connection: ConstructionConnection;
     elasticImprovement?: number; // Additional dB for elastic connections

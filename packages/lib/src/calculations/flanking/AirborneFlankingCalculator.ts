@@ -6,7 +6,7 @@
 import { 
     FlankingPathType,
     ElementType,
-    ConstructionCategory
+    ConstructionType
 } from '../../models/AcousticTypes';
 import { log10, max_, roundVBA } from '../../utils/VBAUtils';
 import { calculateCombinedLayerImprovement } from '../MassTimberCalculator';
@@ -305,26 +305,26 @@ export class AirborneFlankingCalculator {
 /**
  * Helper function to map construction types
  */
-export function mapConstructionType(constructionCategory: ConstructionCategory, elementType: ElementType): VBAConstructionType {
+export function mapConstructionType(constructionType: ConstructionType, elementType: ElementType): VBAConstructionType {
     
     if (elementType === ElementType.Floor) {
-        switch (constructionCategory) {
-            case ConstructionCategory.Massivbau:
+        switch (constructionType) {
+            case ConstructionType.Solid:
                 return VBAConstructionType.SBD;
-            case ConstructionCategory.Massivholzbau:
+            case ConstructionType.MassTimber:
                 return VBAConstructionType.MHD;
-            case ConstructionCategory.Leichtbau:
+            case ConstructionType.Lightweight:
                 return VBAConstructionType.HBD;
             default:
                 return VBAConstructionType.MHD;
         }
     } else {
-        switch (constructionCategory) {
-            case ConstructionCategory.Massivbau:
+        switch (constructionType) {
+            case ConstructionType.Solid:
                 return VBAConstructionType.MW;
-            case ConstructionCategory.Massivholzbau:
+            case ConstructionType.MassTimber:
                 return VBAConstructionType.MHW;
-            case ConstructionCategory.Leichtbau:
+            case ConstructionType.Lightweight:
                 return VBAConstructionType.HSTW;
             default:
                 return VBAConstructionType.MHW;

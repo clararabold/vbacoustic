@@ -19,7 +19,7 @@ import {
     validateFlankingElement,
     BuildingElementValidator
 } from '../src/validation/BuildingElementValidator';
-import { ElementType, ConstructionCategory } from '../src/models/AcousticTypes';
+import { ElementType, ConstructionType } from '../src/models/AcousticTypes';
 
 describe('Extra coverage tests - K1K2, AirborneFlanking, MassTimber, Validator', () => {
     const kcalc = new K1K2Calculator();
@@ -136,16 +136,16 @@ describe('Extra coverage tests - K1K2, AirborneFlanking, MassTimber, Validator',
 
     it('Validator covers >4 flanking elements warning and Rw/mass warnings', () => {
         const separating: any = {
-            id: 's1', type: ElementType.Wall, Rw: 90, area: 10, massPerArea: 1500, constructionType: ConstructionCategory.Massivbau, material: 'concrete', couplingLength: 0
+            id: 's1', type: ElementType.Wall, Rw: 90, area: 10, massPerArea: 1500, constructionType: ConstructionType.Solid, material: 'concrete', couplingLength: 0
         };
-        const flanks = new Array(5).fill(0).map((_, i) => ({ id: 'f'+i, type: ElementType.Wall, Rw: 45, area: 5, massPerArea: 100, constructionType: ConstructionCategory.Massivbau, material: 'concrete', couplingLength: 1 }));
+        const flanks = new Array(5).fill(0).map((_, i) => ({ id: 'f'+i, type: ElementType.Wall, Rw: 45, area: 5, massPerArea: 100, constructionType: ConstructionType.Solid, material: 'concrete', couplingLength: 1 }));
         const res = validateBuildingConfiguration({ separatingElement: separating, flankingElements: flanks as any });
         expect(res.warnings.length).toBeGreaterThanOrEqual(1);
         // individual validators
         const wallVal = validateSeparatingWall(separating);
         expect(wallVal.warnings.some(w => w.field === 'Rw' || w.field === 'massPerArea')).toBeTruthy();
 
-        const badFlank: any = { id: 'flx', /* missing type */ Rw: 30, area: 0, massPerArea: 10, constructionType: ConstructionCategory.Massivbau, material: 'concrete' };
+        const badFlank: any = { id: 'flx', /* missing type */ Rw: 30, area: 0, massPerArea: 10, constructionType: ConstructionType.Solid, material: 'concrete' };
         const fval = validateFlankingElement(badFlank, 0);
         expect(fval.errors.some(e => e.field === 'type' || e.field === 'area' || e.field === 'couplingLength')).toBeTruthy();
 

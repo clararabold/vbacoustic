@@ -4,7 +4,6 @@ import {
   FlankingElement, 
   ElementType,
   ConstructionType,
-  ConstructionCategory,
   MaterialType,
   WallConstructionType,
   FloorConstructionType,
@@ -53,7 +52,7 @@ export class AcousticCalculationService {
         length: elementConfig.length,
         Rw: this.estimateRw(elementConfig),
         massPerArea: this.calculateMass(elementConfig.layers),
-        constructionType: this.mapWallTypeToConstructionCategory(elementConfig.wallType),
+        constructionType: this.mapWallTypeToConstructionType(elementConfig.wallType),
         acousticParams: {
           rw: this.estimateRw(elementConfig)
         }
@@ -73,7 +72,7 @@ export class AcousticCalculationService {
         length: elementConfig.spanWidth,
         Rw: this.estimateRw(elementConfig),
         massPerArea: this.calculateMass(elementConfig.layers),
-        constructionType: this.mapCeilingTypeToConstructionCategory(elementConfig.ceilingType),
+        constructionType: this.mapCeilingTypeToConstructionType(elementConfig.ceilingType),
         acousticParams: {
           rw: this.estimateRw(elementConfig),
           lnw: this.estimateLnw(elementConfig)
@@ -103,29 +102,13 @@ export class AcousticCalculationService {
       length: 3.0,
       Rw: this.estimateFlankingRw(flanking.thickness, flanking.material),
       massPerArea: flanking.thickness * 500 / 1000,
-      constructionType: ConstructionCategory.Massivholzbau,
+      constructionType: ConstructionType.MassTimber,
       
       // FlankingElement specific properties
       commonLength: 3.0,
       senderSideRw: this.estimateFlankingRw(flanking.thickness, flanking.material),
       receiverSideRw: this.estimateFlankingRw(flanking.thickness, flanking.material)
     }));
-  }
-
-  /**
-   * Map wall types to library construction categories
-   */
-  private mapWallTypeToConstructionCategory(wallType: WallConstructionType): ConstructionCategory {
-    switch (wallType) {
-      case WallConstructionType.MassTimberWall:
-      case WallConstructionType.MassTimberElement:
-        return ConstructionCategory.Massivholzbau;
-      case WallConstructionType.TimberFrame:
-      case WallConstructionType.MetalStud:
-        return ConstructionCategory.Leichtbau;
-      default: 
-        return ConstructionCategory.Massivholzbau;
-    }
   }
 
   /**
@@ -141,26 +124,6 @@ export class AcousticCalculationService {
         return ConstructionType.Lightweight;
       default: 
         return ConstructionType.MassTimber;
-    }
-  }
-
-  /**
-   * Map ceiling types to library construction categories
-   */
-  private mapCeilingTypeToConstructionCategory(ceilingType: FloorConstructionType): ConstructionCategory {
-    switch (ceilingType) {
-      case FloorConstructionType.MassTimberFloor:
-      case FloorConstructionType.MassTimberWithCeiling:
-      case FloorConstructionType.MassTimberRibbed:
-      case FloorConstructionType.TimberConcreteComposite:
-        return ConstructionCategory.Massivholzbau;
-      case FloorConstructionType.TimberBeamOpen:
-      case FloorConstructionType.TimberBeamWithBattensGK:
-      case FloorConstructionType.TimberBeamWithCeilingGK:
-      case FloorConstructionType.TimberBeamWithCeiling2GK:
-        return ConstructionCategory.Leichtbau;
-      default:
-        return ConstructionCategory.Massivholzbau;
     }
   }
 

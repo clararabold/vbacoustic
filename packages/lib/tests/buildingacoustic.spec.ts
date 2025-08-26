@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { WallElementCalculator, BuildingAcousticCalculator } from '../src/calculations/BuildingAcousticCalculator';
-import { ElementType, MaterialType, ConstructionType, ConstructionCategory, FlankingPathType } from '../src/models/AcousticTypes';
+import { ElementType, MaterialType, ConstructionType, FlankingPathType } from '../src/models/AcousticTypes';
 
 describe('BuildingAcousticCalculator and WallElementCalculator', () => {
   let wallCalculator: WallElementCalculator;
@@ -24,7 +24,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 15,                    // 3m x 5m wall
         Rw: 58,                     // Realistic Rw for 350 kg/m² concrete wall
         massPerArea: 350,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: 58 }
       };
 
@@ -52,7 +52,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 15,                   // Same area as separating wall
         Rw: 54,                     // Masonry wall Rw
         massPerArea: 280,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: 54 }
       };
 
@@ -129,7 +129,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 12,
         Rw: 50,
         massPerArea: 240,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: 50 }
       };
 
@@ -144,7 +144,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 12,
         Rw: 48,
         massPerArea: 200,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: 48 }
       };
 
@@ -184,7 +184,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 10,
         Rw: 48,
         massPerArea: 200,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { 
           rw: 48,
           c50: -2,    // Spectrum adaptation term C50-3150
@@ -203,7 +203,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 10,
         Rw: 50,
         massPerArea: 250,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: 50 }
       };
 
@@ -278,7 +278,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 10,
         Rw: 50,
         massPerArea: 250,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: 50 }
       };
 
@@ -300,7 +300,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 18,                   // 3m x 6m wall
         Rw: 45,                     // Typical mass timber wall
         massPerArea: 140,
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
         acousticParams: { rw: 45 }
       };
 
@@ -315,7 +315,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 25,                   // Floor area
         Rw: 42,                     // Mass timber floor Rw
         massPerArea: 160,
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
         acousticParams: { rw: 42, lnw: 78 }  // Include impact sound for floor
       };
 
@@ -344,7 +344,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 20,
         Rw: 52,                     // Lightweight wall with good insulation
         massPerArea: 65,
-        constructionType: ConstructionCategory.Leichtbau,
+        constructionType: ConstructionType.Lightweight,
         acousticParams: { rw: 52 }
       };
 
@@ -359,7 +359,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 25,
         Rw: 60,                     // Heavy concrete floor
         massPerArea: 400,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: 60, lnw: 68 }
       };
 
@@ -389,7 +389,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 0,              // Invalid zero area
         Rw: -10,              // Invalid negative Rw
         massPerArea: -50,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: -10 }
       };
 
@@ -404,7 +404,7 @@ describe('BuildingAcousticCalculator and WallElementCalculator', () => {
         area: 20,
         Rw: 55,
         massPerArea: 300,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         acousticParams: { rw: 55 }
       };
 

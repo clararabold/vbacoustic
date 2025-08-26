@@ -5,7 +5,7 @@
  */
 
 import { log10, validatePositive, roundToOneDecimal } from '../utils/MathUtils';
-import { MaterialType, ConstructionType, ConstructionCategory, Material } from '../models/AcousticTypes';
+import { MaterialType, ConstructionType, Material } from '../models/AcousticTypes';
 
 /**
  * Timber construction sub-types based on VBA implementation

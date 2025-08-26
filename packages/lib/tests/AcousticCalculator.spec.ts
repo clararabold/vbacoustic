@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { AcousticCalculator } from '../src/calculations/AcousticCalculator';
-import { ConstructionCategory, ElementType, RoomConfiguration, AcousticStandard, ScreedType } from '../src/models/AcousticTypes';
+import { ConstructionType, ElementType, RoomConfiguration, AcousticStandard, ScreedType } from '../src/models/AcousticTypes';
 import { VBAConstructionType } from '../src/calculations/flanking/AirborneFlankingCalculator';
 
 describe('AcousticCalculator', () => {
@@ -14,7 +14,7 @@ describe('AcousticCalculator', () => {
     it('should calculate airborne sound insulation for concrete floor with realistic values', async () => {
       const params = {
         configuration: {
-          constructionType: ConstructionCategory.Massivbau,
+          constructionType: ConstructionType.Solid,
           elementType: ElementType.Floor,
           roomConfiguration: RoomConfiguration.WithoutOffset,
           standard: AcousticStandard.DIN4109
@@ -70,7 +70,7 @@ describe('AcousticCalculator', () => {
     it('should calculate complete floor with flanking elements', async () => {
       const params = {
         configuration: {
-          constructionType: ConstructionCategory.Massivbau,
+          constructionType: ConstructionType.Solid,
           elementType: ElementType.Floor,
           roomConfiguration: RoomConfiguration.WithoutOffset,
           standard: AcousticStandard.DIN4109  // Use supported standard
@@ -176,7 +176,7 @@ describe('AcousticCalculator', () => {
     it('should calculate airborne sound insulation for masonry wall', async () => {
       const params = {
         configuration: {
-          constructionType: ConstructionCategory.Massivbau,
+          constructionType: ConstructionType.Solid,
           elementType: ElementType.Wall,
           roomConfiguration: RoomConfiguration.WithoutOffset,
           standard: AcousticStandard.DIN4109
@@ -222,7 +222,7 @@ describe('AcousticCalculator', () => {
     it('should calculate mass timber floor with realistic parameters', async () => {
       const params = {
         configuration: {
-          constructionType: ConstructionCategory.Massivholzbau,
+          constructionType: ConstructionType.MassTimber,
           elementType: ElementType.Floor,
           roomConfiguration: RoomConfiguration.WithoutOffset,
           standard: AcousticStandard.DIN4109  // Use supported standard
@@ -341,7 +341,7 @@ describe('AcousticCalculator', () => {
     it('should handle invalid input data gracefully', async () => {
       const invalidParams = {
         configuration: {
-          constructionType: ConstructionCategory.Massivbau,
+          constructionType: ConstructionType.Solid,
           elementType: ElementType.Floor,
           roomConfiguration: RoomConfiguration.WithoutOffset,
           standard: AcousticStandard.DIN4109

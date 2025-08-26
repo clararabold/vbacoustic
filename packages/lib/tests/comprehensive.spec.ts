@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { AcousticCalculator, VBACalculationParameters } from '../src/calculations/AcousticCalculator';
 import { VBAConstructionType } from '../src/calculations/flanking/AirborneFlankingCalculator';
 import {
-  ConstructionCategory,
+  ConstructionType,
   ElementType,
   RoomConfiguration,
   AcousticStandard,
@@ -15,7 +15,7 @@ describe('Comprehensive example scenarios (from examples/comprehensive-test.ts)'
     const calculator = new AcousticCalculator();
     const params: VBACalculationParameters = {
       configuration: {
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
         elementType: ElementType.Floor,
         roomConfiguration: RoomConfiguration.WithoutOffset,
         standard: AcousticStandard.ISO12354
@@ -148,7 +148,7 @@ describe('Comprehensive example scenarios (from examples/comprehensive-test.ts)'
     const calculator = new AcousticCalculator();
     const params: VBACalculationParameters = {
       configuration: {
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
         elementType: ElementType.Wall,
         roomConfiguration: RoomConfiguration.WithoutOffset,
         standard: AcousticStandard.DIN4109
@@ -263,7 +263,7 @@ describe('Comprehensive example scenarios (from examples/comprehensive-test.ts)'
     const calculator = new AcousticCalculator();
     const params: VBACalculationParameters = {
       configuration: {
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         elementType: ElementType.Floor,
         roomConfiguration: RoomConfiguration.WithoutOffset,
         standard: AcousticStandard.DIN4109
@@ -379,7 +379,7 @@ describe('Comprehensive example scenarios (from examples/comprehensive-test.ts)'
     const calculator = new AcousticCalculator();
     const params: VBACalculationParameters = {
       configuration: {
-        constructionType: ConstructionCategory.Leichtbau,
+        constructionType: ConstructionType.Lightweight,
         elementType: ElementType.Wall,
         roomConfiguration: RoomConfiguration.WithoutOffset,
         standard: AcousticStandard.Vibroakustik
@@ -420,7 +420,7 @@ describe('Comprehensive example scenarios (from examples/comprehensive-test.ts)'
     const calculator = new AcousticCalculator();
     const params: VBACalculationParameters = {
       configuration: {
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
         elementType: ElementType.Floor,
         roomConfiguration: RoomConfiguration.WithoutOffset,
         standard: AcousticStandard.ISO12354
@@ -476,7 +476,7 @@ describe('Comprehensive example scenarios (from examples/comprehensive-test.ts)'
     const calculator = new AcousticCalculator();
     const params: VBACalculationParameters = {
       configuration: {
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         elementType: ElementType.Floor,
         roomConfiguration: RoomConfiguration.WithoutOffset,
         standard: AcousticStandard.DIN4109
@@ -518,7 +518,7 @@ describe('Comprehensive example scenarios (from examples/comprehensive-test.ts)'
 
     const params: VBACalculationParameters = {
       configuration: {
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         elementType: ElementType.Floor,
         roomConfiguration: RoomConfiguration.WithoutOffset,
         standard: AcousticStandard.ISO12354

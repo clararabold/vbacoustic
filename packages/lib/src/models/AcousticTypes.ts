@@ -6,8 +6,8 @@
 export enum MaterialType {
     // Concrete types - VBA: SB_KS_MZ, LEICHTB, PORENB
     Concrete = 'concrete',                                  // SB_KS_MZ "Beton, KS-Stein, Mauerziegel"
-    Masonry = 'masonry',
-    Brick = 'brick', 
+    Masonry = 'masonry',                                    // VBA: "Mauerwerk"
+    Brick = 'brick',                                        // VBA: "Ziegel"
     LightweightConcrete = 'lightweight_concrete',           // LEICHTB "Leichtbeton"
     AeratedConcrete = 'aerated_concrete',                   // PORENB "Porenbeton"
     
@@ -18,19 +18,9 @@ export enum MaterialType {
 }
 
 export enum ConstructionType {
-    Solid = 'solid',              // Massivbau - concrete, masonry
-    MassTimber = 'mass_timber',   // Massivholzbau - MHD, MHW, MHE
-    Lightweight = 'lightweight'   // Leichtbau - HSTW, MSTW, HBD
-}
-
-/**
- * Construction categories based on VBA implementation
- * Separate categories for each distinct construction type
- */
-export enum ConstructionCategory {
-    Massivbau = 'massivbau',           // VBA: "Massivbau" - solid construction (concrete, masonry)
-    Massivholzbau = 'massivholzbau',   // VBA: Mass timber construction (MHD, MHW, MHE)
-    Leichtbau = 'leichtbau'            // VBA: Lightweight construction (HBD, HSTW, MSTW)
+    Solid = 'solid',              // Massivbau - concrete, masonry (VBA: "Massivbau")
+    MassTimber = 'mass_timber',   // Massivholzbau - MHD, MHW, MHE (VBA: Mass timber construction)
+    Lightweight = 'lightweight'   // Leichtbau - HSTW, MSTW, HBD (VBA: Lightweight construction)
 }
 
 /**
@@ -217,7 +207,7 @@ export interface BuildingElement {
     length?: number;              // [m] - element length
     Rw: number;                   // Weighted sound reduction index [dB]
     massPerArea: number;          // [kg/m²] - surface mass
-    constructionType: ConstructionCategory; // Construction type from VBA
+    constructionType: ConstructionType; // Construction type (unified)
     acousticParams?: AcousticParameters;
 }
 

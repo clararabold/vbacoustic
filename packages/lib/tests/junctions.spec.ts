@@ -10,7 +10,7 @@ import {
     ConstructionConnection 
 } from '../src/core/junctions/JunctionTypes';
 import { 
-    ConstructionCategory, 
+    ConstructionType, 
     FlankingPathType 
 } from '../src/models/AcousticTypes';
 
@@ -426,7 +426,7 @@ describe('Junction Calculations - Comprehensive Tests', () => {
             // Test Massivbau routing to solid calculator
             const solidJunction = {
                 type: JunctionType.TJoint,
-                constructionType: ConstructionCategory.Massivbau,
+                constructionType: ConstructionType.Solid,
                 direction: TransmissionDirection.Vertical,
                 connection: ConstructionConnection.Continuous
             } as any;
@@ -446,7 +446,7 @@ describe('Junction Calculations - Comprehensive Tests', () => {
             // Test Massivholzbau routing to mass timber calculator
             const massTimberJunction = {
                 type: JunctionType.XJoint,
-                constructionType: ConstructionCategory.Massivholzbau,
+                constructionType: ConstructionType.MassTimber,
                 direction: TransmissionDirection.Vertical,
                 connection: ConstructionConnection.Separated
             } as any;
@@ -466,7 +466,7 @@ describe('Junction Calculations - Comprehensive Tests', () => {
             // Test Leichtbau fallback (should default to solid calculator)
             const lightweightJunction = {
                 type: JunctionType.TJoint,
-                constructionType: ConstructionCategory.Leichtbau,
+                constructionType: ConstructionType.Lightweight,
                 direction: TransmissionDirection.Horizontal,
                 connection: ConstructionConnection.Continuous
             } as any;
@@ -485,9 +485,9 @@ describe('Junction Calculations - Comprehensive Tests', () => {
 
             // Test comprehensive routing with all construction types
             const constructionTypes = [
-                ConstructionCategory.Massivbau,
-                ConstructionCategory.Massivholzbau,
-                ConstructionCategory.Leichtbau
+                ConstructionType.Solid,
+                ConstructionType.MassTimber,
+                ConstructionType.Lightweight
             ];
 
             const junctionTypes = [JunctionType.TJoint, JunctionType.XJoint];
@@ -525,7 +525,7 @@ describe('Junction Calculations - Comprehensive Tests', () => {
             extremeMassRatios.forEach(ratio => {
                 const junction = {
                     type: JunctionType.TJoint,
-                    constructionType: ConstructionCategory.Massivbau,
+                    constructionType: ConstructionType.Solid,
                     direction: TransmissionDirection.Vertical,
                     connection: ConstructionConnection.Continuous
                 } as any;
@@ -553,7 +553,7 @@ describe('Junction Calculations - Comprehensive Tests', () => {
             massConfigurations.forEach(config => {
                 const junction = {
                     type: JunctionType.XJoint,
-                    constructionType: ConstructionCategory.Massivholzbau,
+                    constructionType: ConstructionType.MassTimber,
                     direction: TransmissionDirection.Horizontal,
                     connection: ConstructionConnection.Separated
                 } as any;
@@ -576,7 +576,7 @@ describe('Junction Calculations - Comprehensive Tests', () => {
             elasticImprovements.forEach(improvement => {
                 const elasticJunction = {
                     type: JunctionType.ElasticTJoint,
-                    constructionType: ConstructionCategory.Massivbau,
+                    constructionType: ConstructionType.Solid,
                     direction: TransmissionDirection.Vertical,
                     connection: ConstructionConnection.Continuous,
                     elasticImprovement: improvement

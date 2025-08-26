@@ -1,7 +1,7 @@
 import { 
     BuildingElement, 
     AcousticParameters, 
-    ConstructionCategory,
+    ConstructionType,
     ElementType 
 } from '../models/AcousticTypes';
 
@@ -48,8 +48,8 @@ export function validateSeparatingWall(element: BuildingElement): ValidationResu
     }
     
     // VBA: Mass validation for specific construction types
-    if (element.constructionType === ConstructionCategory.Massivbau || 
-        element.constructionType === ConstructionCategory.Massivholzbau) {
+    if (element.constructionType === ConstructionType.Solid || 
+        element.constructionType === ConstructionType.MassTimber) {
         if (!element.massPerArea || element.massPerArea <= 0) {
             errors.push({
                 field: 'massPerArea',
@@ -127,7 +127,7 @@ export function validateSeparatingFloor(element: BuildingElement, acousticParams
     }
     
     // VBA: Mass validation for mass timber floors
-    if (element.constructionType === ConstructionCategory.Massivholzbau) {
+    if (element.constructionType === ConstructionType.MassTimber) {
         if (!element.massPerArea || element.massPerArea <= 0) {
             errors.push({
                 field: 'massPerArea',
@@ -205,7 +205,7 @@ export function validateFlankingElement(element: BuildingElement, couplingLength
     }
     
     // VBA: Mass validation for solid construction
-    if (element.constructionType === ConstructionCategory.Massivbau) {
+    if (element.constructionType === ConstructionType.Solid) {
         if (!element.massPerArea || element.massPerArea <= 0) {
             errors.push({
                 field: 'massPerArea',
@@ -234,7 +234,7 @@ export function validateFlankingElement(element: BuildingElement, couplingLength
     }
     
     // Physics-based validation
-    if (element.massPerArea && element.massPerArea < 50 && element.constructionType === ConstructionCategory.Massivbau) {
+    if (element.massPerArea && element.massPerArea < 50 && element.constructionType === ConstructionType.Solid) {
         warnings.push({
             field: 'massPerArea',
             message: 'Low mass for solid construction (<50 kg/m²) - please verify',

@@ -8,7 +8,7 @@ import {
 } from '../src/validation/BuildingElementValidator';
 import {
   BuildingElement,
-  ConstructionCategory,
+  ConstructionType,
   ElementType,
 } from '../src/models/AcousticTypes';
 
@@ -21,7 +21,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 90,
         massPerArea: 1200,
         area: 12,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
       
       const result = validateSeparatingWall(wall);
@@ -37,7 +37,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         // missing type
         Rw: -5,
         area: 0,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         // missing massPerArea
       };
 
@@ -55,7 +55,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         type: ElementType.Wall,
         Rw: 55,
         area: 10,
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
         // missing massPerArea - should trigger error
       } as any;
 
@@ -70,7 +70,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 85, // high but not extreme
         massPerArea: 1500, // very high
         area: 10,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
 
       const result = validateSeparatingWall(extremeWall);
@@ -87,7 +87,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 40,
         massPerArea: 200,
         area: 16,
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
       } as BuildingElement;
       
       const result = validateSeparatingFloor(floor, undefined as any);
@@ -102,7 +102,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 50,
         area: 20,
         massPerArea: 200,
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
       };
 
       const result = validateSeparatingFloor(floor, undefined);
@@ -116,7 +116,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 60,
         area: 20,
         massPerArea: 200,
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
       };
       
       const result = validateSeparatingFloor(floor, { rw: 60, lnw: 150 } as any);
@@ -129,7 +129,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         type: ElementType.Floor,
         Rw: 40,
         area: 20,
-        constructionType: ConstructionCategory.Massivholzbau,
+        constructionType: ConstructionType.MassTimber,
         // missing massPerArea and acousticParams
       };
 
@@ -146,7 +146,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 25, // below 30 dB threshold
         area: 20,
         massPerArea: 300,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
 
       const result = validateSeparatingFloor(lowRwFloor, { lnw: 65 } as any);
@@ -162,7 +162,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 45,
         massPerArea: 200,
         area: 8,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
       
       const result = validateFlankingElement(flankingElement, -1);
@@ -176,7 +176,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         // missing type
         Rw: 30,
         area: 10,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       };
 
       const result = validateFlankingElement(flankingElement as any, -1);
@@ -192,7 +192,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 40,
         area: 5,
         massPerArea: 0, // invalid for Massivbau
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       };
       
       const result = validateFlankingElement(flankingElement, 0); // zero coupling length
@@ -207,7 +207,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 45,
         area: 10,
         massPerArea: 40, // below 50 kg/m² threshold
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
 
       const result = validateFlankingElement(lowMassElement, 2.5);
@@ -240,7 +240,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 55,
         massPerArea: 420,
         area: 12,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
       
       const result = validateBuildingConfiguration({
@@ -259,7 +259,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 55,
         area: 10,
         massPerArea: 200,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       };
 
       const result = validateBuildingConfiguration({
@@ -278,7 +278,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 50,
         area: 10,
         massPerArea: 200,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       };
       
       const flankingElements = [{
@@ -287,7 +287,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 40,
         area: 5,
         massPerArea: 100,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         material: { type: 'concrete' as any, surfaceMass: 100 },
       }];
       
@@ -308,7 +308,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 55,
         area: 10,
         massPerArea: 200,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
       
       // Create 5 flanking elements (more than 4)
@@ -318,7 +318,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 45,
         area: 5,
         massPerArea: 100,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
         material: 'concrete',
         couplingLength: 1,
       }));
@@ -339,7 +339,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 50,
         area: 16,
         massPerArea: 300,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
 
       const result = validateBuildingConfiguration({
@@ -363,7 +363,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 55,
         massPerArea: 420,
         area: 12,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
       
       const result = validator.validate(floorElement, { lnw: 75 } as any);
@@ -378,7 +378,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 0, // invalid
         area: 5,
         massPerArea: 50,
-        constructionType: ConstructionCategory.Leichtbau,
+        constructionType: ConstructionType.Lightweight,
       };
 
       const result = validator.validate(invalidElement as any);
@@ -396,7 +396,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 85, // high value - should trigger warning
         area: 10,
         massPerArea: 1200, // very high - should trigger warning
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
 
       const result = validator.validate(warningElement);
@@ -411,7 +411,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 55,
         area: 12,
         massPerArea: 300,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
 
       const flanking = [{
@@ -420,7 +420,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 45,
         area: 8,
         massPerArea: 200,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       }] as BuildingElement[];
 
       const result = validator.validateBuilding({
@@ -445,7 +445,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: -10, // negative
         area: 0, // zero
         massPerArea: -5, // negative
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       };
 
       const result = validator.validate(complexInvalidElement);
@@ -464,7 +464,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 45,
         area: 8,
         massPerArea: 150,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
 
       const result = validator.validate(flankingElement, undefined, 2.0);
@@ -480,7 +480,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 25, // below 30 dB threshold to trigger warning
         area: 1, // very small but valid
         massPerArea: 50, // minimum for solid
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       } as BuildingElement;
 
       const result = validateSeparatingFloor(boundaryFloor, { lnw: 100 } as any);
@@ -496,7 +496,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 0, // invalid
         area: -1, // invalid
         massPerArea: 0, // invalid for Massivbau
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       };
 
       const problematicFlanking: any = [{
@@ -504,7 +504,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         // missing type
         Rw: -5,
         area: 0,
-        constructionType: ConstructionCategory.Massivbau,
+        constructionType: ConstructionType.Solid,
       }];
 
       const result = validateBuildingConfiguration({
@@ -524,7 +524,7 @@ describe('Building Element Validation - Comprehensive Tests', () => {
         Rw: 45,
         area: 10,
         massPerArea: 25, // low mass for lightweight construction
-        constructionType: ConstructionCategory.Leichtbau,
+        constructionType: ConstructionType.Lightweight,
       } as BuildingElement;
 
       // Leichtbau doesn't require mass validation

@@ -6,7 +6,7 @@ import {
   mapConstructionType,
 } from '../src/calculations/flanking/AirborneFlankingCalculator';
 import { AdvancedFlankingCalculator } from '../src/calculations/flanking/AdvancedFlankingCalculator';
-import { ElementType, ConstructionCategory } from '../src/models/AcousticTypes';
+import { ElementType, ConstructionType } from '../src/models/AcousticTypes';
 import { MaterialType, ConstructionType } from '../src/models/AcousticTypes';
 import { JunctionDirection, JunctionConnection } from '../src/models/AcousticTypes';
 
@@ -375,13 +375,13 @@ describe('Flanking Calculations - Comprehensive Tests', () => {
     const calc = new AirborneFlankingCalculator();
 
     it('mapConstructionType maps combinations correctly for floor and wall', () => {
-      expect(mapConstructionType(ConstructionCategory.Massivbau, ElementType.Floor)).toBe(VBAConstructionType.SBD);
-      expect(mapConstructionType(ConstructionCategory.Massivholzbau, ElementType.Floor)).toBe(VBAConstructionType.MHD);
-      expect(mapConstructionType(ConstructionCategory.Leichtbau, ElementType.Wall)).toBe(VBAConstructionType.HSTW);
+      expect(mapConstructionType(ConstructionType.Solid, ElementType.Floor)).toBe(VBAConstructionType.SBD);
+      expect(mapConstructionType(ConstructionType.MassTimber, ElementType.Floor)).toBe(VBAConstructionType.MHD);
+      expect(mapConstructionType(ConstructionType.Lightweight, ElementType.Wall)).toBe(VBAConstructionType.HSTW);
     });
 
     it('mapConstructionType maps categories to VBAConstructionType', () => {
-      const mapped = mapConstructionType(ConstructionCategory.Massivbau, ElementType.Wall);
+      const mapped = mapConstructionType(ConstructionType.Solid, ElementType.Wall);
       expect(typeof mapped).toBe('string');
     });
 
@@ -410,8 +410,8 @@ describe('Flanking Calculations - Comprehensive Tests', () => {
   describe('AdvancedFlankingCalculator', () => {
     it('calculates all paths and aggregates', () => {
       const calc = new AdvancedFlankingCalculator();
-      const separating = { id: 'sep1', type: ElementType.Floor, area: 16, length: 4, Rw: 54, massPerArea: 300, constructionType: ConstructionCategory.Massivbau, material: { type: MaterialType.Concrete, surfaceMass: 300, constructionType: ConstructionType.Solid } } as any;
-      const flanking = [{ element: { id: 'fl1', type: ElementType.Wall, area: 12, length: 3, Rw: 46, massPerArea: 200, constructionType: ConstructionCategory.Massivbau, material: { type: MaterialType.Masonry, surfaceMass: 200, constructionType: ConstructionType.Solid } }, junctions: [{ type: 't_joint' as any, direction: JunctionDirection.Vertical, connection: JunctionConnection.Continuous }] }];
+      const separating = { id: 'sep1', type: ElementType.Floor, area: 16, length: 4, Rw: 54, massPerArea: 300, constructionType: ConstructionType.Solid, material: { type: MaterialType.Concrete, surfaceMass: 300, constructionType: ConstructionType.Solid } } as any;
+      const flanking = [{ element: { id: 'fl1', type: ElementType.Wall, area: 12, length: 3, Rw: 46, massPerArea: 200, constructionType: ConstructionType.Solid, material: { type: MaterialType.Masonry, surfaceMass: 200, constructionType: ConstructionType.Solid } }, junctions: [{ type: 't_joint' as any, direction: JunctionDirection.Vertical, connection: JunctionConnection.Continuous }] }];
 
       const res = calc.calculateAllPaths({ separatingElement: separating, flankingElements: flanking });
       expect(res.airborne.Ff_paths.length).toBe(1);

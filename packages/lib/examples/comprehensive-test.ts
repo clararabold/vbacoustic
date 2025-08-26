@@ -1,7 +1,7 @@
 import { AcousticCalculator, VBACalculationParameters, UnifiedCalculationResults } from '../src/calculations/AcousticCalculator';
 import { VBAConstructionType } from '../src/calculations/flanking/AirborneFlankingCalculator';
 import {
-    ConstructionCategory,
+    ConstructionType,
     ElementType,
     RoomConfiguration,
     AcousticStandard,
@@ -24,7 +24,7 @@ async function test1_MassTimberFloorCalculation(): Promise<void> {
     
     const massTimberFloorParams: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Massivholzbau,
+            constructionType: ConstructionType.MassTimber,
             elementType: ElementType.Floor,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.ISO12354
@@ -96,7 +96,7 @@ async function test2_MassTimberWallCalculation(): Promise<void> {
     
     const massTimberWallParams: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Massivholzbau,
+            constructionType: ConstructionType.MassTimber,
             elementType: ElementType.Wall,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.DIN4109
@@ -152,7 +152,7 @@ async function test3_ConcreteFloorCalculation(): Promise<void> {
     
     const concreteFloorParams: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Massivbau,
+            constructionType: ConstructionType.Solid,
             elementType: ElementType.Floor,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.DIN4109
@@ -204,7 +204,7 @@ async function test4_LightweightWallCalculation(): Promise<void> {
     
     const lightweightWallParams: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Leichtbau,
+            constructionType: ConstructionType.Lightweight,
             elementType: ElementType.Wall,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.Vibroakustik
@@ -267,7 +267,7 @@ async function test5_MixedConstructionSystem(): Promise<void> {
     
     const mixedParams: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Massivholzbau,
+            constructionType: ConstructionType.MassTimber,
             elementType: ElementType.Floor,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.ISO12354
@@ -334,7 +334,7 @@ async function test6_FlankingOnlyScenario(): Promise<void> {
 
     const params = {
         configuration: {
-            constructionType: ConstructionCategory.Massivbau,
+            constructionType: ConstructionType.Solid,
             elementType: ElementType.Floor,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.DIN4109
@@ -373,7 +373,7 @@ async function test7_OffsetRoomConfiguration(): Promise<void> {
 
     const params: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Leichtbau,
+            constructionType: ConstructionType.Lightweight,
             elementType: ElementType.Wall,
             roomConfiguration: RoomConfiguration.WithOffset,
             standard: AcousticStandard.ISO12354
@@ -419,7 +419,7 @@ async function test8_ExtremeLightweight(): Promise<void> {
 
     const params: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Leichtbau,
+            constructionType: ConstructionType.Lightweight,
             elementType: ElementType.Floor,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.Vibroakustik
@@ -458,7 +458,7 @@ async function test9_ComplexFlankingMix(): Promise<void> {
 
     const params: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Massivholzbau,
+            constructionType: ConstructionType.MassTimber,
             elementType: ElementType.Floor,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.ISO12354
@@ -520,7 +520,7 @@ async function test10_HeavyConcreteSuspendedCeiling(): Promise<void> {
 
     const params: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Massivbau,
+            constructionType: ConstructionType.Solid,
             elementType: ElementType.Floor,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.DIN4109
@@ -580,7 +580,7 @@ async function test11_ManyFlankingStressTest(): Promise<void> {
 
     const params: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Massivbau,
+            constructionType: ConstructionType.Solid,
             elementType: ElementType.Floor,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.ISO12354
@@ -617,7 +617,7 @@ async function test12_InvalidParamsResilience(): Promise<void> {
 
     const params: VBACalculationParameters = {
         configuration: {
-            constructionType: ConstructionCategory.Leichtbau,
+            constructionType: ConstructionType.Lightweight,
             elementType: ElementType.Wall,
             roomConfiguration: RoomConfiguration.WithoutOffset,
             standard: AcousticStandard.Vibroakustik
@@ -672,7 +672,7 @@ async function test13_RandomizedSampling(): Promise<void> {
     for (let i = 0; i < 5; i++) {
         const params: VBACalculationParameters = {
             configuration: {
-                constructionType: Math.random() > 0.5 ? ConstructionCategory.Massivbau : ConstructionCategory.Massivholzbau,
+                constructionType: Math.random() > 0.5 ? ConstructionType.Solid : ConstructionType.MassTimber,
                 elementType: Math.random() > 0.5 ? ElementType.Floor : ElementType.Wall,
                 roomConfiguration: RoomConfiguration.WithoutOffset,
                 standard: AcousticStandard.ISO12354

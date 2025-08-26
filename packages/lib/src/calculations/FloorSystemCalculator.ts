@@ -1,7 +1,7 @@
 import { 
     BuildingElement, 
     AcousticParameters, 
-    ConstructionCategory,
+    ConstructionType,
     ElementType,
     MaterialType,
     Material
@@ -238,25 +238,25 @@ export class FloorSystemCalculator {
      * Create BuildingElement from floor system parameters
      */
     createFloorElement(params: FloorSystemParams, results: FloorSystemResults): BuildingElement {
-        let category: ConstructionCategory;
+        let category: ConstructionType;
         
         // Determine construction category based on floor type
         if (params.systemType.startsWith('mhd')) {
-            category = ConstructionCategory.Massivholzbau;
+            category = ConstructionType.MassTimber;
         } else if (params.systemType.startsWith('hbd')) {
-            category = ConstructionCategory.Leichtbau;
+            category = ConstructionType.Lightweight;
         } else {
-            category = ConstructionCategory.Massivbau;
+            category = ConstructionType.Solid;
         }
         
         const material: Material = {
             type: MaterialType.MassTimber,
             surfaceMass: params.baseMass || 0,
-            constructionType: category === ConstructionCategory.Massivbau ? 
-                              'solid' as any : 
-                              category === ConstructionCategory.Massivholzbau ? 
-                              'mass_timber' as any : 
-                              'lightweight' as any
+            constructionType: category === ConstructionType.Solid ? 
+                              ConstructionType.Solid : 
+                              category === ConstructionType.MassTimber ? 
+                              ConstructionType.MassTimber : 
+                              ConstructionType.Lightweight
         };
         
         const acousticParams: AcousticParameters = {

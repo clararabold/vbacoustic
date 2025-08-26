@@ -3,7 +3,7 @@ import {
     JunctionData,
     JunctionDirection,
     JunctionConnection,
-    ConstructionCategory,
+    ConstructionType,
     JunctionType as AcousticJunctionType
 } from '../../models/AcousticTypes';
 import { 
@@ -254,7 +254,7 @@ export class AdvancedFlankingCalculator {
         };
         
         // Use appropriate calculator based on construction type
-        const calculator = separatingElement.constructionType === ConstructionCategory.Massivbau 
+        const calculator = separatingElement.constructionType === ConstructionType.Solid 
             ? this.solidJunctionCalc 
             : this.massTimberJunctionCalc;
             
