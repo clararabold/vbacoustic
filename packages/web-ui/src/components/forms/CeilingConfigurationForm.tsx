@@ -1,5 +1,7 @@
+import React from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Trash2, Plus } from 'lucide-react';
 import { CeilingConfiguration } from '../../types/CalculationTypes';
 import { 
   FloorConstructionType, 
@@ -15,7 +17,15 @@ interface CeilingConfigurationFormProps {
   defaultValues?: Partial<CeilingConfiguration>;
 }
 
-export function CeilingConfigurationForm({ onNext, onPrev, defaultValues }: CeilingConfigurationFormProps) {
+/**
+ * Ceiling configuration form - mirrors WallConfigurationForm structure
+ * This includes ceiling type selection, dimensions, layers, and flanking elements
+ */
+export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> = ({
+  onNext,
+  onPrev,
+  defaultValues
+}) => {
   const { t } = useTranslation();
   const { register, control, watch, handleSubmit, formState: { errors } } = useForm<CeilingConfiguration>({
     defaultValues: {
@@ -47,21 +57,42 @@ export function CeilingConfigurationForm({ onNext, onPrev, defaultValues }: Ceil
     FloorConstructionType.MassTimberRibbed, 
     FloorConstructionType.TimberConcreteComposite
   ].includes(ceilingType);
-  const showUnderdecke = ceilingType === FloorConstructionType.MassTimberWithCeiling;
+  const showUnterdecke = ceilingType === FloorConstructionType.MassTimberWithCeiling;
 
-  const onSubmit = (data: CeilingConfiguration) => {
-    onNext(data);
+  const addLayerHandler = () => {
+    addLayer({
+      id: `layer-${Date.now()}`,
+      name: '',
+      thickness: 0,
+      material: '',
+      density: 0
+    });
+  };
+
+  const addFlankingElementHandler = () => {
+    addFlankingElement({ 
+      id: `flanking-${Date.now()}`,
+      elementType: ElementType.Wall, 
+      thickness: 0, 
+      length: 4.0,
+      material: '', 
+      position: 'left',
+      junctionType: JunctionStiffness.RIGID,
+      connectionDetails: ''
+    });
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">{t('ceilingConfig.title')}</h2>
+    <div>
+      <form id="ceiling-form" onSubmit={handleSubmit(onNext)} className="space-y-8">
+      
+      {/* Ceiling Type Selection */}
+      <div className="card">
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('ceilingConfig.title')}</h3>
         
-        <form id="ceiling-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Ceiling Type Selection */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">{t('ceilingConfig.ceilingSystem')}</label>
+        <div className="space-y-4">
+          <div className="form-group">
+            <label className="form-label">{t('ceilingConfig.ceilingSystem')}</label>
             <div className="space-y-2">
               {[
                 { value: FloorConstructionType.TimberBeamOpen, label: t('ceilingConfig.timberBeamOpen') },
@@ -88,273 +119,301 @@ export function CeilingConfigurationForm({ onNext, onPrev, defaultValues }: Ceil
               <p className="text-red-500 text-sm mt-1">{errors.ceilingType.message}</p>
             )}
           </div>
+        </div>
+      </div>
 
-          {/* Basic Dimensions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('ceilingConfig.thickness')} {t('ceilingConfig.thicknessUnit')}
-              </label>
-              <input
-                type="number"
-                {...register('thickness', { 
-                  required: t('ceilingConfig.errors.thicknessRequired'),
-                  min: { value: 10, message: t('ceilingConfig.errors.thicknessMin') },
-                  max: { value: 1000, message: t('ceilingConfig.errors.thicknessMax') }
-                })}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                step="1"
-              />
-              {errors.thickness && (
-                <p className="text-red-500 text-sm mt-1">{errors.thickness.message}</p>
-              )}
+      {/* Basic Dimensions */}
+      <div className="card">
+        <h3 className="text-lg font-medium text-gray-900 mb-6">{t('ceilingConfig.dimensions')}</h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="form-group">
+            <label className="form-label">{t('ceilingConfig.thickness')}</label>
+            <input
+              type="number"
+              step="1"
+              min="10"
+              max="1000"
+              {...register('thickness', { 
+                required: t('ceilingConfig.errors.thicknessRequired'),
+                min: { value: 10, message: t('ceilingConfig.errors.thicknessMin') },
+                max: { value: 1000, message: t('ceilingConfig.errors.thicknessMax') }
+              })}
+              className="form-input"
+              placeholder="160"
+            />
+            {errors.thickness && (
+              <p className="text-red-500 text-sm mt-1">{errors.thickness.message}</p>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">{t('ceilingConfig.spanWidth')}</label>
+            <input
+              type="number"
+              step="0.1"
+              min="1.0"
+              max="20.0"
+              {...register('spanWidth', { 
+                required: t('ceilingConfig.errors.spanWidthRequired'),
+                min: { value: 1.0, message: t('ceilingConfig.errors.spanWidthMin') },
+                max: { value: 20.0, message: t('ceilingConfig.errors.spanWidthMax') }
+              })}
+              className="form-input"
+              placeholder="4.0"
+            />
+            {errors.spanWidth && (
+              <p className="text-red-500 text-sm mt-1">{errors.spanWidth.message}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Estrich Configuration */}
+      {showEstrich && (
+        <div className="card">
+          <h3 className="text-lg font-medium text-gray-900 mb-6">{t('ceilingConfig.estrich')}</h3>
+          
+          <div className="space-y-4">
+            <div className="form-group">
+              <label className="form-label">{t('ceilingConfig.estrichType')}</label>
+              <div className="space-y-2">
+                {[
+                  { value: ScreedType.CementOnMineralFiber, label: t('ceilingConfig.cementOnMineralFiber') },
+                  { value: ScreedType.CementOnWoodFiber, label: t('ceilingConfig.cementOnWoodFiber') },
+                  { value: ScreedType.DryScreed, label: t('ceilingConfig.dryScreed') }
+                ].map((option) => (
+                  <label key={option.value} className="flex items-center">
+                    <input
+                      type="radio"
+                      value={option.value}
+                      {...register('estrichType')}
+                      className="mr-2"
+                    />
+                    <span className="text-sm">{option.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('ceilingConfig.spanWidth')} {t('ceilingConfig.spanWidthUnit')}
-              </label>
+            <div className="form-group">
+              <label className="form-label">{t('ceilingConfig.estrichThickness')}</label>
               <input
                 type="number"
-                {...register('spanWidth', { 
-                  required: t('ceilingConfig.errors.spanWidthRequired'),
-                  min: { value: 1.0, message: t('ceilingConfig.errors.spanWidthMin') },
-                  max: { value: 20.0, message: t('ceilingConfig.errors.spanWidthMax') }
+                step="1"
+                min="10"
+                max="200"
+                {...register('estrichThickness', { 
+                  min: { value: 10, message: t('ceilingConfig.errors.estrichThicknessMin') },
+                  max: { value: 200, message: t('ceilingConfig.errors.estrichThicknessMax') }
                 })}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                step="0.1"
+                className="form-input"
+                placeholder="50"
               />
-              {errors.spanWidth && (
-                <p className="text-red-500 text-sm mt-1">{errors.spanWidth.message}</p>
+              {errors.estrichThickness && (
+                <p className="text-red-500 text-sm mt-1">{errors.estrichThickness.message}</p>
               )}
             </div>
           </div>
+        </div>
+      )}
 
-          {/* Estrich Configuration */}
-          {showEstrich && (
-            <div className="border-t pt-4">
-              <h3 className="text-lg font-medium mb-4">{t('ceilingConfig.estrich')}</h3>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">{t('ceilingConfig.estrichType')}</label>
-                <div className="space-y-2">
-                  {[
-                    { value: ScreedType.CementOnMineralFiber, label: t('ceilingConfig.cementOnMineralFiber') },
-                    { value: ScreedType.CementOnWoodFiber, label: t('ceilingConfig.cementOnWoodFiber') },
-                    { value: ScreedType.DryScreed, label: t('ceilingConfig.dryScreed') }
-                  ].map((option) => (
-                    <label key={option.value} className="flex items-center">
-                      <input
-                        type="radio"
-                        value={option.value}
-                        {...register('estrichType')}
-                        className="mr-2"
-                      />
-                      <span className="text-sm">{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('ceilingConfig.estrichThickness')} {t('ceilingConfig.thicknessUnit')}
-                </label>
-                <input
-                  type="number"
-                  {...register('estrichThickness', { 
-                    min: { value: 10, message: t('ceilingConfig.errors.estrichThicknessMin') },
-                    max: { value: 200, message: t('ceilingConfig.errors.estrichThicknessMax') }
-                  })}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  step="1"
-                />
-                {errors.estrichThickness && (
-                  <p className="text-red-500 text-sm mt-1">{errors.estrichThickness.message}</p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Unterdecke Configuration */}
-          {showUnderdecke && (
-            <div className="border-t pt-4">
-              <h3 className="text-lg font-medium mb-4">{t('ceilingConfig.unterdecke')}</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('ceilingConfig.cavityHeight')} {t('ceilingConfig.thicknessUnit')}
-                  </label>
-                  <input
-                    type="number"
-                    {...register('cavityHeight', { 
-                      min: { value: 10, message: t('ceilingConfig.errors.cavityHeightMin') },
-                      max: { value: 500, message: t('ceilingConfig.errors.cavityHeightMax') }
-                    })}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    step="1"
-                  />
-                  {errors.cavityHeight && (
-                    <p className="text-red-500 text-sm mt-1">{errors.cavityHeight.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('ceilingConfig.underCeilingType')}
-                  </label>
-                  <select
-                    {...register('underCeilingType')}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  >
-                    <option value="">{t('ceilingConfig.selectOption')}</option>
-                    <option value={CladdingType.WoodBoardPlusGK}>{t('ceilingConfig.woodBoardPlusGK')}</option>
-                    <option value={CladdingType.GypsusFiber}>{t('ceilingConfig.gypsusFiber')}</option>
-                    <option value={CladdingType.WoodBoardOnly}>{t('ceilingConfig.woodBoardOnly')}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Layer Configuration */}
-          <div className="border-t pt-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium">{t('ceilingConfig.layers')}</h3>
-              <button
-                type="button"
-                onClick={() => addLayer({
-                  id: `layer-${Date.now()}`,
-                  name: '',
-                  thickness: 0,
-                  material: '',
-                  density: 0
+      {/* Unterdecke Configuration */}
+      {showUnterdecke && (
+        <div className="card">
+          <h3 className="text-lg font-medium text-gray-900 mb-6">{t('ceilingConfig.unterdecke')}</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="form-group">
+              <label className="form-label">{t('ceilingConfig.cavityHeight')}</label>
+              <input
+                type="number"
+                step="1"
+                min="10"
+                max="500"
+                {...register('cavityHeight', { 
+                  min: { value: 10, message: t('ceilingConfig.errors.cavityHeightMin') },
+                  max: { value: 500, message: t('ceilingConfig.errors.cavityHeightMax') }
                 })}
-                className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
-              >
-                {t('ceilingConfig.addLayer')}
-              </button>
+                className="form-input"
+                placeholder="100"
+              />
+              {errors.cavityHeight && (
+                <p className="text-red-500 text-sm mt-1">{errors.cavityHeight.message}</p>
+              )}
             </div>
 
-            <div className="space-y-3">
-              {layers.map((layer, index) => (
-                <div key={layer.id} className="grid grid-cols-12 gap-2 items-end">
-                  <div className="col-span-3">
-                    <label className="block text-xs text-gray-600 mb-1">{t('ceilingConfig.layerName')}</label>
+            <div className="form-group">
+              <label className="form-label">{t('ceilingConfig.underCeilingType')}</label>
+              <select
+                {...register('underCeilingType')}
+                className="form-select"
+              >
+                <option value="">{t('ceilingConfig.selectOption')}</option>
+                <option value={CladdingType.WoodBoardPlusGK}>{t('ceilingConfig.woodBoardPlusGK')}</option>
+                <option value={CladdingType.GypsusFiber}>{t('ceilingConfig.gypsusFiber')}</option>
+                <option value={CladdingType.WoodBoardOnly}>{t('ceilingConfig.woodBoardOnly')}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Layer Configuration */}
+      <div className="card">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-medium text-gray-900">{t('ceilingConfig.layers')}</h3>
+          <button
+            type="button"
+            onClick={addLayerHandler}
+            className="btn-secondary flex items-center space-x-2"
+          >
+            <Plus className="h-4 w-4" />
+            <span>{t('ceilingConfig.addLayer')}</span>
+          </button>
+        </div>
+
+        {layers.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            <p>{t('ceilingConfig.noLayersYet')}</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {layers.map((layer, index) => (
+              <div key={layer.id} className="border rounded-lg p-4">
+                <div className="flex justify-between items-start mb-4">
+                  <h4 className="font-medium text-gray-900">{t('ceilingConfig.layer')} {index + 1}</h4>
+                  <button
+                    type="button"
+                    onClick={() => removeLayer(index)}
+                    className="text-red-600 hover:text-red-800"
+                    title={t('ceilingConfig.removeLayer')}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="form-group">
+                    <label className="form-label">{t('ceilingConfig.layerMaterial')}</label>
                     <input
-                      {...register(`layers.${index}.name`, { required: t('ceilingConfig.errors.nameRequired') })}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
-                      placeholder={t('ceilingConfig.layerName')}
+                      {...register(`layers.${index}.material`, { required: t('ceilingConfig.errors.materialRequired') })}
+                      className="form-input"
+                      placeholder={t('ceilingConfig.materialDesignation')}
                     />
                   </div>
-                  <div className="col-span-2">
-                    <label className="block text-xs text-gray-600 mb-1">{t('ceilingConfig.layerThickness')}</label>
+
+                  <div className="form-group">
+                    <label className="form-label">{t('ceilingConfig.layerThickness')} (mm)</label>
                     <input
                       type="number"
+                      step="0.1"
+                      min="1"
                       {...register(`layers.${index}.thickness`, { 
                         required: t('ceilingConfig.errors.layerThicknessRequired'),
                         min: { value: 1, message: t('ceilingConfig.errors.layerThicknessMin') }
                       })}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
-                      step="0.1"
+                      className="form-input"
+                      placeholder="160"
                     />
                   </div>
-                  <div className="col-span-3">
-                    <label className="block text-xs text-gray-600 mb-1">{t('ceilingConfig.layerMaterial')}</label>
-                    <input
-                      {...register(`layers.${index}.material`, { required: t('ceilingConfig.errors.materialRequired') })}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
-                      placeholder={t('ceilingConfig.materialDesignation')}
-                    />
-                  </div>
-                  <div className="col-span-3">
-                    <label className="block text-xs text-gray-600 mb-1">{t('ceilingConfig.layerDensity')}</label>
+
+                  <div className="form-group">
+                    <label className="form-label">{t('ceilingConfig.layerDensity')} (kg/m³)</label>
                     <input
                       type="number"
+                      step="1"
+                      min="1"
                       {...register(`layers.${index}.density`, { 
                         required: t('ceilingConfig.errors.densityRequired'),
                         min: { value: 1, message: t('ceilingConfig.errors.densityMin') }
                       })}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
-                      step="1"
+                      className="form-input"
+                      placeholder="470"
                     />
                   </div>
-                  <div className="col-span-1">
-                    <button
-                      type="button"
-                      onClick={() => removeLayer(index)}
-                      className="w-full p-2 bg-red-600 text-white rounded text-sm hover:bg-red-700"
-                      title={t('ceilingConfig.removeLayer')}
-                    >
-                      ×
-                    </button>
-                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
+        )}
+      </div>
 
-          {/* Flanking Elements */}
-          <div className="border-t pt-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium">{t('ceilingConfig.flankingElements')}</h3>
-              <button
-                type="button"
-                onClick={() => addFlankingElement({ 
-                  id: `flanking-${Date.now()}`,
-                  elementType: ElementType.Wall, 
-                  thickness: 0, 
-                  length: 4.0,
-                  material: '', 
-                  position: 'left',
-                  junctionType: JunctionStiffness.RIGID,
-                  connectionDetails: ''
-                })}
-                className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
-              >
-                {t('ceilingConfig.addElement')}
-              </button>
-            </div>
+      {/* Flanking Elements */}
+      <div className="card">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-medium text-gray-900">{t('ceilingConfig.flankingElements')}</h3>
+          <button
+            type="button"
+            onClick={addFlankingElementHandler}
+            className="btn-secondary flex items-center space-x-2"
+          >
+            <Plus className="h-4 w-4" />
+            <span>{t('ceilingConfig.addElement')}</span>
+          </button>
+        </div>
 
-            <div className="space-y-3">
-              {flankingElements.map((element, index) => (
-                <div key={element.id} className="grid grid-cols-12 gap-2 items-end">
-                  <div className="col-span-2">
-                    <label className="block text-xs text-gray-600 mb-1">{t('ceilingConfig.elementType')}</label>
+        {flankingElements.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            <p>{t('ceilingConfig.noFlankingElementsYet')}</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {flankingElements.map((element, index) => (
+              <div key={element.id} className="border rounded-lg p-4">
+                <div className="flex justify-between items-start mb-4">
+                  <h4 className="font-medium text-gray-900">{t('ceilingConfig.flankingElement')} {index + 1}</h4>
+                  <button
+                    type="button"
+                    onClick={() => removeFlankingElement(index)}
+                    className="text-red-600 hover:text-red-800"
+                    title={t('ceilingConfig.removeElement')}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="form-group">
+                    <label className="form-label">{t('ceilingConfig.elementType')}</label>
                     <select
                       {...register(`flankingElements.${index}.elementType`)}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
+                      className="form-select"
                     >
                       <option value="wall">{t('wallConfig.wall')}</option>
                       <option value="ceiling">{t('wallConfig.ceiling')}</option>
                     </select>
                   </div>
-                  <div className="col-span-2">
-                    <label className="block text-xs text-gray-600 mb-1">{t('ceilingConfig.elementThickness')}</label>
+
+                  <div className="form-group">
+                    <label className="form-label">{t('ceilingConfig.elementThickness')} (mm)</label>
                     <input
                       type="number"
+                      step="1"
+                      min="1"
                       {...register(`flankingElements.${index}.thickness`, { 
                         required: t('ceilingConfig.errors.elementThicknessRequired'),
                         min: { value: 1, message: t('ceilingConfig.errors.elementThicknessMin') }
                       })}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
-                      step="1"
+                      className="form-input"
+                      placeholder="200"
                     />
                   </div>
-                  <div className="col-span-4">
-                    <label className="block text-xs text-gray-600 mb-1">{t('ceilingConfig.elementMaterial')}</label>
+
+                  <div className="form-group">
+                    <label className="form-label">{t('ceilingConfig.elementMaterial')}</label>
                     <input
                       {...register(`flankingElements.${index}.material`, { required: t('ceilingConfig.errors.materialRequired') })}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
+                      className="form-input"
                       placeholder={t('ceilingConfig.materialDesignation')}
                     />
                   </div>
-                  <div className="col-span-2">
-                    <label className="block text-xs text-gray-600 mb-1">{t('ceilingConfig.elementPosition')}</label>
+
+                  <div className="form-group">
+                    <label className="form-label">{t('ceilingConfig.elementPosition')}</label>
                     <select
                       {...register(`flankingElements.${index}.position`)}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
+                      className="form-select"
                     >
                       <option value="left">{t('ceilingConfig.positionLeft')}</option>
                       <option value="right">{t('ceilingConfig.positionRight')}</option>
@@ -362,42 +421,45 @@ export function CeilingConfigurationForm({ onNext, onPrev, defaultValues }: Ceil
                       <option value="back">{t('ceilingConfig.positionBack')}</option>
                     </select>
                   </div>
-                  <div className="col-span-1">
-                    <button
-                      type="button"
-                      onClick={() => removeFlankingElement(index)}
-                      className="w-full p-2 bg-red-600 text-white rounded text-sm hover:bg-red-700"
-                      title={t('ceilingConfig.removeElement')}
-                    >
-                      ×
-                    </button>
-                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        </form>
-        
-        {/* Navigation */}
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-          <div className="flex justify-between">
-            <button
-              type="button"
-              onClick={onPrev}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-            >
-              {t('ceilingConfig.back')}
-            </button>
-            <button
-              type="submit"
-              form="ceiling-form"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              {t('ceilingConfig.continue')}
-            </button>
-          </div>
+        )}
+      </div>
+
+      {/* Error Summary */}
+      {Object.keys(errors).length > 0 && (
+        <div className="alert-error">
+          <p className="font-medium">{t('ceilingConfig.errorSummary')}</p>
+          <ul className="list-disc list-inside mt-2 text-sm">
+            {Object.entries(errors).map(([key, error]) => (
+              <li key={key}>{error?.message}</li>
+            ))}
+          </ul>
         </div>
+      )}
+    </form>
+
+    {/* Action Buttons */}
+    <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+      <div className="flex justify-between">
+        <button 
+          type="button" 
+          onClick={onPrev}
+          className="btn-secondary"
+        >
+          {t('ceilingConfig.backToProjectConfig')}
+        </button>
+        <button 
+          type="submit" 
+          form="ceiling-form"
+          className="btn-primary"
+        >
+          {t('ceilingConfig.continueToCalculationParams')}
+        </button>
       </div>
     </div>
+    </div>
   );
-}
+};
