@@ -254,6 +254,7 @@ export const CalculationWizard: React.FC = () => {
               onNext={handleElementConfigSubmit}
               onPrev={handlePrevious}
               defaultValues={elementConfig as CeilingConfiguration || undefined}
+              projectConfig={projectConfig}
             />
           );
         }
