@@ -93,28 +93,20 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
         <div className="space-y-4">
           <div className="form-group">
             <label className="form-label">{t('ceilingConfig.ceilingSystem')}</label>
-            <div className="space-y-2">
-              {[
-                { value: FloorConstructionType.TimberBeamOpen, label: t('ceilingConfig.timberBeamOpen') },
-                { value: FloorConstructionType.TimberBeamWithBattensGK, label: t('ceilingConfig.timberBeamWithBattensGK') },
-                { value: FloorConstructionType.TimberBeamWithCeilingGK, label: t('ceilingConfig.timberBeamWithCeilingGK') },
-                { value: FloorConstructionType.TimberBeamWithCeiling2GK, label: t('ceilingConfig.timberBeamWithCeiling2GK') },
-                { value: FloorConstructionType.MassTimberFloor, label: t('ceilingConfig.massTimberFloor') },
-                { value: FloorConstructionType.MassTimberWithCeiling, label: t('ceilingConfig.massTimberWithCeiling') },
-                { value: FloorConstructionType.MassTimberRibbed, label: t('ceilingConfig.massTimberRibbed') },
-                { value: FloorConstructionType.TimberConcreteComposite, label: t('ceilingConfig.timberConcreteComposite') }
-              ].map((option) => (
-                <label key={option.value} className="flex items-center">
-                  <input
-                    type="radio"
-                    value={option.value}
-                    {...register('ceilingType', { required: t('ceilingConfig.errors.ceilingTypeRequired') })}
-                    className="mr-2"
-                  />
-                  <span className="text-sm">{option.label}</span>
-                </label>
-              ))}
-            </div>
+            <select
+              {...register('ceilingType', { required: t('ceilingConfig.errors.ceilingTypeRequired') })}
+              className="form-select"
+            >
+              <option value="">{t('ceilingConfig.selectOption')}</option>
+              <option value={FloorConstructionType.TimberBeamOpen}>{t('ceilingConfig.timberBeamOpen')}</option>
+              <option value={FloorConstructionType.TimberBeamWithBattensGK}>{t('ceilingConfig.timberBeamWithBattensGK')}</option>
+              <option value={FloorConstructionType.TimberBeamWithCeilingGK}>{t('ceilingConfig.timberBeamWithCeilingGK')}</option>
+              <option value={FloorConstructionType.TimberBeamWithCeiling2GK}>{t('ceilingConfig.timberBeamWithCeiling2GK')}</option>
+              <option value={FloorConstructionType.MassTimberFloor}>{t('ceilingConfig.massTimberFloor')}</option>
+              <option value={FloorConstructionType.MassTimberWithCeiling}>{t('ceilingConfig.massTimberWithCeiling')}</option>
+              <option value={FloorConstructionType.MassTimberRibbed}>{t('ceilingConfig.massTimberRibbed')}</option>
+              <option value={FloorConstructionType.TimberConcreteComposite}>{t('ceilingConfig.timberConcreteComposite')}</option>
+            </select>
             {errors.ceilingType && (
               <p className="text-red-500 text-sm mt-1">{errors.ceilingType.message}</p>
             )}
@@ -177,23 +169,15 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
           <div className="space-y-4">
             <div className="form-group">
               <label className="form-label">{t('ceilingConfig.estrichType')}</label>
-              <div className="space-y-2">
-                {[
-                  { value: ScreedType.CementOnMineralFiber, label: t('ceilingConfig.cementOnMineralFiber') },
-                  { value: ScreedType.CementOnWoodFiber, label: t('ceilingConfig.cementOnWoodFiber') },
-                  { value: ScreedType.DryScreed, label: t('ceilingConfig.dryScreed') }
-                ].map((option) => (
-                  <label key={option.value} className="flex items-center">
-                    <input
-                      type="radio"
-                      value={option.value}
-                      {...register('estrichType')}
-                      className="mr-2"
-                    />
-                    <span className="text-sm">{option.label}</span>
-                  </label>
-                ))}
-              </div>
+              <select
+                {...register('estrichType')}
+                className="form-select"
+              >
+                <option value="">{t('ceilingConfig.selectOption')}</option>
+                <option value={ScreedType.CementOnMineralFiber}>{t('ceilingConfig.cementOnMineralFiber')}</option>
+                <option value={ScreedType.CementOnWoodFiber}>{t('ceilingConfig.cementOnWoodFiber')}</option>
+                <option value={ScreedType.DryScreed}>{t('ceilingConfig.dryScreed')}</option>
+              </select>
             </div>
 
             <div className="form-group">
