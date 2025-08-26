@@ -51,12 +51,8 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
   });
 
   const ceilingType = watch('ceilingType');
-  const showEstrich = [
-    FloorConstructionType.MassTimberFloor, 
-    FloorConstructionType.MassTimberWithCeiling, 
-    FloorConstructionType.MassTimberRibbed, 
-    FloorConstructionType.TimberConcreteComposite
-  ].includes(ceilingType);
+  // Estrich (screed) is available for ALL ceiling types according to VBA implementation
+  const showEstrich = Boolean(ceilingType);
   const showUnterdecke = ceilingType === FloorConstructionType.MassTimberWithCeiling;
 
   const addLayerHandler = () => {
