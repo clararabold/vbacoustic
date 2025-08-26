@@ -9,12 +9,6 @@ export enum StandardType {
     VIBROAKUSTIK = 'VIBROAKUSTIK'
 }
 
-export enum CalculationMethod {
-    SIMPLIFIED = 'simplified',
-    DETAILED = 'detailed',
-    EXPERIMENTAL = 'experimental'
-}
-
 export enum ElementType {
     SEPARATING_WALL = 'separating_wall',
     SEPARATING_FLOOR = 'separating_floor', 
@@ -115,7 +109,6 @@ export interface StandardValidationResult {
     deviations: StandardDeviation[];
     recommendedActions?: string[];
     standard: StandardType;
-    method: CalculationMethod;
 }
 
 export interface StandardDeviation {
@@ -131,12 +124,10 @@ export interface StandardDeviation {
  */
 export abstract class AcousticStandard {
     public readonly type: StandardType;
-    public readonly method: CalculationMethod;
     public readonly version: string;
 
-    constructor(type: StandardType, method: CalculationMethod, version: string) {
+    constructor(type: StandardType, version: string) {
         this.type = type;
-        this.method = method;
         this.version = version;
     }
 

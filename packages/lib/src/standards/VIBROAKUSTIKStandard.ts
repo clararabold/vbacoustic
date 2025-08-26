@@ -1,7 +1,6 @@
 import { 
     AcousticStandard, 
     StandardType, 
-    CalculationMethod, 
     StandardLimits, 
     StandardValidationResult, 
     StandardDeviation,
@@ -22,7 +21,7 @@ import {
 export class VIBROAKUSTIKStandard extends AcousticStandard {
     
     constructor() {
-        super(StandardType.VIBROAKUSTIK, CalculationMethod.EXPERIMENTAL, '2019');
+        super(StandardType.VIBROAKUSTIK, '2019');
     }
 
     /**
@@ -105,8 +104,7 @@ export class VIBROAKUSTIKStandard extends AcousticStandard {
             isCompliant: deviations.length === 0,
             deviations,
             recommendedActions: this.getTimberRecommendations(deviations, results),
-            standard: this.type,
-            method: this.method
+            standard: this.type
         };
     }
 
@@ -233,15 +231,17 @@ export class VIBROAKUSTIKStandard extends AcousticStandard {
      * Classify timber junction type
      */
     private classifyTimberJunction(junctionType: JunctionType, masses: number[]): JunctionType {
-        // Simplified classification - in practice would be more complex
+        // Use provided junction type as default, but reclassify based on mass if needed
         const avgMass = masses.reduce((a, b) => a + b, 0) / masses.length;
         
         if (avgMass > 300) {
             return JunctionType.CLT_CLT_RIGID;       // Heavy timber elements
         } else if (avgMass > 150) {
             return JunctionType.CLT_FRAME_RIGID;     // Medium mass elements
-        } else {
+        } else if (junctionType === JunctionType.RIGID_RIGID || junctionType === JunctionType.RIGID_LIGHTWEIGHT) {
             return JunctionType.FRAME_FRAME_FLEXIBLE; // Light frame construction
+        } else {
+            return junctionType; // Keep original type if within expected range
         }
     }
 

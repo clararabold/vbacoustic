@@ -14,7 +14,6 @@ export interface ProjectConfiguration {
   constructionMethod: 'holzbau' | 'massivbau' | 'leichtbau';
   elementType: ElementType; // Use library enum directly
   calculationStandard: StandardType;
-  calculationType: 'single-value' | 'frequency-dependent';
 }
 
 export interface ElementDimensions {

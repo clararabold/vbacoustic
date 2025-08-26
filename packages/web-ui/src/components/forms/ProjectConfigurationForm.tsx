@@ -32,7 +32,6 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
       constructionMethod: 'holzbau',
       elementType: ElementType.Wall,
       calculationStandard: StandardType.ISO12354,
-      calculationType: 'single-value',
       ...defaultValues
     }
   });
@@ -56,7 +55,6 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
         setValue('constructionMethod', sample.project.constructionMethod);
         setValue('elementType', sample.project.elementType);
         setValue('calculationStandard', sample.project.calculationStandard);
-        setValue('calculationType', sample.project.calculationType);
       }
     }
   };
@@ -229,42 +227,6 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
           </div>
           {errors.calculationStandard && (
             <p className="text-red-500 text-sm mt-1">{errors.calculationStandard.message}</p>
-          )}
-        </div>
-
-        {/* Calculation Type */}
-        <div className="space-y-4">
-          <h4 className="text-md font-medium text-gray-800">{t('projectConfig.calculationType')}</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
-              <input
-                type="radio"
-                value="single-value"
-                {...register('calculationType', { required: t('projectConfig.errors.calculationTypeRequired') })}
-                className="text-primary-600"
-              />
-              <div>
-                <div className="font-medium">{t('projectConfig.singleValue')}</div>
-                <div className="text-sm text-gray-500">{t('projectConfig.singleValueDesc')}</div>
-              </div>
-            </label>
-            
-            <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50 opacity-50">
-              <input
-                type="radio"
-                value="frequency-dependent"
-                {...register('calculationType')}
-                disabled
-                className="text-primary-600"
-              />
-              <div>
-                <div className="font-medium">{t('projectConfig.frequencySpectrum')}</div>
-                <div className="text-sm text-gray-500">{t('projectConfig.frequencySpectrumDesc')}</div>
-              </div>
-            </label>
-          </div>
-          {errors.calculationType && (
-            <p className="text-red-500 text-sm mt-1">{errors.calculationType.message}</p>
           )}
         </div>
       </div>

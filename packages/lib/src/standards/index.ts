@@ -2,7 +2,6 @@
 export { 
     AcousticStandard, 
     StandardType, 
-    CalculationMethod,
     ElementType,
     BuildingClass,
     JunctionType,

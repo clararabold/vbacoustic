@@ -24,22 +24,19 @@ export const sampleProjectConfigurations: ProjectConfiguration[] = [
     inputMode: 'manual',
     constructionMethod: 'holzbau',
     elementType: ElementType.Wall,
-    calculationStandard: StandardType.DIN4109,
-    calculationType: 'single-value'
+    calculationStandard: StandardType.DIN4109
   },
   {
     inputMode: 'manual',
     constructionMethod: 'holzbau',
     elementType: ElementType.Ceiling,
-    calculationStandard: StandardType.DIN4109,
-    calculationType: 'frequency-dependent'
+    calculationStandard: StandardType.DIN4109
   },
   {
     inputMode: 'manual',
     constructionMethod: 'massivbau',
     elementType: ElementType.Wall,
-    calculationStandard: StandardType.ISO12354,
-    calculationType: 'single-value'
+    calculationStandard: StandardType.ISO12354
   }
 ];
 

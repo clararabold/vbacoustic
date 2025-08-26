@@ -1,7 +1,6 @@
 import { 
     AcousticStandard, 
     StandardType, 
-    CalculationMethod, 
     StandardLimits, 
     StandardValidationResult, 
     StandardDeviation,
@@ -19,7 +18,7 @@ import {
 export class DIN4109Standard extends AcousticStandard {
     
     constructor() {
-        super(StandardType.DIN4109, CalculationMethod.SIMPLIFIED, '2018-01');
+        super(StandardType.DIN4109, '2018-01');
     }
 
     /**
@@ -84,8 +83,7 @@ export class DIN4109Standard extends AcousticStandard {
             isCompliant: deviations.length === 0,
             deviations,
             recommendedActions: this.getRecommendations(deviations),
-            standard: this.type,
-            method: this.method
+            standard: this.type
         };
     }
 
@@ -134,7 +132,7 @@ export class DIN4109Standard extends AcousticStandard {
 
         // Classify junction based on element masses
         const avgMass = masses.reduce((a, b) => a + b, 0) / masses.length;
-        let classifiedType = JunctionType.RIGID_RIGID;
+        let classifiedType = junctionType; // Use provided junction type as default
         
         if (avgMass < 150) {
             classifiedType = JunctionType.LIGHTWEIGHT_LIGHTWEIGHT;

@@ -1,7 +1,6 @@
 import { 
     AcousticStandard, 
     StandardType, 
-    CalculationMethod, 
     StandardLimits, 
     StandardValidationResult, 
     StandardDeviation,
@@ -19,7 +18,7 @@ import {
 export class ISO12354Standard extends AcousticStandard {
     
     constructor() {
-        super(StandardType.ISO12354, CalculationMethod.DETAILED, '2017');
+        super(StandardType.ISO12354, '2017');
     }
 
     /**
@@ -90,8 +89,7 @@ export class ISO12354Standard extends AcousticStandard {
             isCompliant: deviations.length === 0,
             deviations,
             recommendedActions: this.getDetailedRecommendations(deviations, results),
-            standard: this.type,
-            method: this.method
+            standard: this.type
         };
     }
 

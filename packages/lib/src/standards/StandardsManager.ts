@@ -78,8 +78,7 @@ export class StandardsManager {
                         severity: 'critical'
                     }],
                     recommendedActions: [`Failed to validate against ${standardType}: ${errorMessage}`],
-                    standard: standardType,
-                    method: this.getStandard(standardType).method
+                    standard: standardType
                 });
             }
         }
