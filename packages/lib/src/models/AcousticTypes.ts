@@ -110,6 +110,7 @@ export enum WallConstructionType {
     // Lightweight - VBA: HSTW, MSTW
     TimberFrame = 'timber_frame',                           // HSTW "Holztafel-/Holzständerwand"
     MetalStud = 'metal_stud',                               // MSTW "Metallständerwand"
+    MetalStudDouble = 'metal_stud_double',                  // MSTW_DOPPEL "Doppelständer-Metallständerwand"
     
     // Roof types
     ConcreteFlat = 'concrete_flat',                         // SB_FLACHD "Stahlbeton-Flachdach"
