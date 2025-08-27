@@ -416,6 +416,7 @@
     "soundReductionIndex": "Sound Reduction Index",
     "spectrumAdaptationValue": "Spectrum Adaptation Value",
     "noActiveFlankingPaths": "No active flanking paths",
+    "noFlankingElementsConfigured": "No flanking elements configured. Add flanking elements for complete analysis.",
     "calculationAccordingTo": "Calculated according to",
     "detailedBreakdown": "Detailed Results Breakdown"
   },

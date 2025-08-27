@@ -382,7 +382,7 @@
     }
   },
   "results": {
-    "title": "Berechnungsergebnisse",
+    "title": "Ergebnisse",
     "subtitle": "Detaillierte bauakustische Berechnungsergebnisse und Compliance-Analyse",
     "overallStatus": "Gesamtstatus",
     "requirementsMet": "Anforderungen erfüllt",
@@ -419,6 +419,7 @@
     "soundReductionIndex": "Schalldämmmaß",
     "spectrumAdaptationValue": "Spektrum-Anpassungswert",
     "noActiveFlankingPaths": "Keine aktiven Nebenwege",
+    "noFlankingElementsConfigured": "Keine Flankenelemente konfiguriert. Fügen Sie Flankenelemente für eine vollständige Analyse hinzu.",
     "calculationAccordingTo": "Berechnung nach",
     "detailedBreakdown": "Detaillierte Ergebnisaufschlüsselung"
   },

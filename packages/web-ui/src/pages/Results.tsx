@@ -22,11 +22,11 @@ const Results = () => {
               <span className="text-lg font-semibold text-gray-900">-- dB</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-              <span className="text-sm font-medium text-gray-700">Spectrum Adaptation C</span>
+              <span className="text-sm font-medium text-gray-700">{t('results.spectrumAdaptationValue')} C</span>
               <span className="text-lg font-semibold text-gray-900">-- dB</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-              <span className="text-sm font-medium text-gray-700">Spectrum Adaptation Ctr</span>
+              <span className="text-sm font-medium text-gray-700">{t('results.spectrumAdaptationValue')} Ctr</span>
               <span className="text-lg font-semibold text-gray-900">-- dB</span>
             </div>
           </div>
@@ -34,10 +34,10 @@ const Results = () => {
 
         {/* Flanking Analysis */}
         <div className="card">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Flanking Transmission</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('results.flankingTransmission')}</h2>
           <div className="space-y-3">
             <div className="text-sm text-gray-600">
-              No flanking elements configured. Add flanking elements for complete analysis.
+              {t('results.noFlankingElementsConfigured')}
             </div>
           </div>
         </div>
