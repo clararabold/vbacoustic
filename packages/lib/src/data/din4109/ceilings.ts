@@ -53,7 +53,7 @@ export const DIN4109_TABLE_15_TIMBER_BEAM_CEMENT_SCREED: DIN4109CeilingComponent
     },
     applicableFor: {
       ceilingTypes: [FloorConstructionType.TimberBeamOpen],
-      screedTypes: [ScreedType.CementOnMineralFiber]
+      screedTypes: [ScreedType.CementOnMineralFiber, ScreedType.Gussasphalt]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 15, Zeile 1'
   },
@@ -97,7 +97,7 @@ export const DIN4109_TABLE_15_TIMBER_BEAM_CEMENT_SCREED: DIN4109CeilingComponent
     },
     applicableFor: {
       ceilingTypes: [FloorConstructionType.TimberBeamOpen],
-      screedTypes: [ScreedType.CementOnMineralFiber]
+      screedTypes: [ScreedType.CementOnMineralFiber, ScreedType.Gussasphalt]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 15, Zeile 2'
   }
@@ -239,7 +239,7 @@ export const DIN4109_TABLE_17_TIMBER_BEAM_MASTIC_ASPHALT: DIN4109CeilingComponen
     },
     applicableFor: {
       ceilingTypes: [FloorConstructionType.TimberBeamOpen],
-      screedTypes: [ScreedType.Gussasphalt]
+      screedTypes: [ScreedType.CementOnMineralFiber, ScreedType.Gussasphalt]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 17, Zeile 1'
   },
@@ -283,7 +283,7 @@ export const DIN4109_TABLE_17_TIMBER_BEAM_MASTIC_ASPHALT: DIN4109CeilingComponen
     },
     applicableFor: {
       ceilingTypes: [FloorConstructionType.TimberBeamOpen],
-      screedTypes: [ScreedType.Gussasphalt]
+      screedTypes: [ScreedType.CementOnMineralFiber, ScreedType.Gussasphalt]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 17, Zeile 2'
   }
@@ -326,7 +326,7 @@ export const DIN4109_TABLE_18_TIMBER_BEAM_RESILIENT_CHANNELS: DIN4109CeilingComp
     },
     applicableFor: {
       ceilingTypes: [FloorConstructionType.TimberBeamWithBattensGK],
-      screedTypes: []
+      screedTypes: [ScreedType.CementOnMineralFiber, ScreedType.Gussasphalt]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 18, Zeile 1'
   }
@@ -368,8 +368,8 @@ export const DIN4109_TABLE_19_TIMBER_BEAM_SUSPENDED_CEILING: DIN4109CeilingCompo
       ]
     },
     applicableFor: {
-      ceilingTypes: [FloorConstructionType.TimberBeamWithCeilingGK],
-      screedTypes: []
+      ceilingTypes: [FloorConstructionType.TimberBeamWithBattensGK],
+      screedTypes: [ScreedType.DryScreed]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 19, Zeile 1'
   },
@@ -408,8 +408,8 @@ export const DIN4109_TABLE_19_TIMBER_BEAM_SUSPENDED_CEILING: DIN4109CeilingCompo
       ]
     },
     applicableFor: {
-      ceilingTypes: [FloorConstructionType.TimberBeamWithCeiling2GK],
-      screedTypes: []
+      ceilingTypes: [FloorConstructionType.TimberBeamWithBattensGK],
+      screedTypes: [ScreedType.DryScreed]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 19, Zeile 2'
   }
@@ -448,7 +448,7 @@ export const DIN4109_TABLE_20_TIMBER_BEAM_EXPOSED: DIN4109CeilingComponent[] = [
     },
     applicableFor: {
       ceilingTypes: [FloorConstructionType.TimberBeamOpen],
-      screedTypes: []
+      screedTypes: [ScreedType.CementOnMineralFiber]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 20, Zeile 1'
   }
@@ -488,8 +488,8 @@ export const DIN4109_TABLE_21_MASS_TIMBER_CEMENT_SCREED: DIN4109CeilingComponent
       ]
     },
     applicableFor: {
-      ceilingTypes: [FloorConstructionType.MassTimberFloor],
-      screedTypes: [ScreedType.CementOnMineralFiber]
+      ceilingTypes: [FloorConstructionType.TimberBeamWithCeilingGK, FloorConstructionType.TimberBeamWithCeiling2GK],
+      screedTypes: [ScreedType.CementOnMineralFiber, ScreedType.Gussasphalt]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 21, Zeile 1'
   }
@@ -529,7 +529,7 @@ export const DIN4109_TABLE_22_MASS_TIMBER_DRY_SCREED: DIN4109CeilingComponent[] 
       ]
     },
     applicableFor: {
-      ceilingTypes: [FloorConstructionType.MassTimberFloor],
+      ceilingTypes: [FloorConstructionType.TimberBeamWithCeilingGK, FloorConstructionType.TimberBeamWithCeiling2GK],
       screedTypes: [ScreedType.DryScreed]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 22, Zeile 1'
@@ -570,8 +570,8 @@ export const DIN4109_TABLE_23_MASS_TIMBER_MASTIC_ASPHALT: DIN4109CeilingComponen
       ]
     },
     applicableFor: {
-      ceilingTypes: [FloorConstructionType.MassTimberFloor],
-      screedTypes: [ScreedType.Gussasphalt]
+      ceilingTypes: [FloorConstructionType.TimberBeamWithCeilingGK, FloorConstructionType.TimberBeamWithCeiling2GK],
+      screedTypes: [ScreedType.DryScreed]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 23, Zeile 1'
   }
@@ -611,8 +611,8 @@ export const DIN4109_TABLE_24_MASS_TIMBER_SUSPENDED_CEILING: DIN4109CeilingCompo
       ]
     },
     applicableFor: {
-      ceilingTypes: [FloorConstructionType.MassTimberWithCeiling],
-      screedTypes: []
+      ceilingTypes: [FloorConstructionType.MassTimberFloor],
+      screedTypes: [ScreedType.CementOnMineralFiber, ScreedType.Gussasphalt]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 24, Zeile 1'
   }
@@ -650,8 +650,8 @@ export const DIN4109_TABLE_25_TIMBER_CONCRETE_COMPOSITE: DIN4109CeilingComponent
       ]
     },
     applicableFor: {
-      ceilingTypes: [FloorConstructionType.TimberConcreteComposite],
-      screedTypes: []
+      ceilingTypes: [FloorConstructionType.MassTimberFloor],
+      screedTypes: [ScreedType.CementOnMineralFiber, ScreedType.Gussasphalt]
     },
     source: 'DIN 4109-33:2016-07, Tabelle 25, Zeile 1'
   }
