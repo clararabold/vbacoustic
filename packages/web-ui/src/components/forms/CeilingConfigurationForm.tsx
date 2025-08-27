@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, FileText } from 'lucide-react';
 import { CeilingConfiguration, ProjectConfiguration } from '../../types/CalculationTypes';
 import { 
   FloorConstructionType, 
@@ -10,6 +10,8 @@ import {
   ElementType 
 } from '@vbacoustic/lib/src/models/AcousticTypes';
 import { JunctionStiffness, StandardType } from '@vbacoustic/lib/src/standards/AcousticStandard';
+import { DIN4109ComponentPicker } from '../DIN4109ComponentPicker';
+import { DIN4109CeilingComponent, DIN4109FlankingComponent } from '../../types/DIN4109Types';
 
 interface CeilingConfigurationFormProps {
   onNext: (data: CeilingConfiguration) => void;
@@ -28,7 +30,7 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
   defaultValues,
   projectConfig
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { register, control, watch, handleSubmit, setValue, formState: { errors } } = useForm<CeilingConfiguration>({
     defaultValues: {
       ceilingType: FloorConstructionType.MassTimberFloor,
@@ -42,7 +44,7 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
     }
   });
 
-  const { fields: layers, append: addLayer, remove: removeLayer } = useFieldArray({
+  const { fields: layers, append: addLayer, remove: removeLayer, replace: replaceLayers } = useFieldArray({
     control,
     name: 'layers'
   });
@@ -54,6 +56,11 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
 
   const ceilingType = watch('ceilingType');
   const estrichType = watch('estrichType');
+  
+  // DIN 4109 Component Picker state
+  const [showComponentPicker, setShowComponentPicker] = useState(false);
+  const [pickerMode, setPickerMode] = useState<'ceiling' | 'flanking'>('ceiling');
+  const [selectedDINComponent, setSelectedDINComponent] = useState<DIN4109CeilingComponent | null>(null);
   
   // Check if we're using DIN 4109 standard for flanking element restrictions
   const isDIN4109 = projectConfig?.calculationStandard === StandardType.DIN4109;
@@ -109,6 +116,99 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
       junctionType: JunctionStiffness.RIGID,
       connectionDetails: ''
     });
+  };
+
+  // DIN 4109 Component Picker handlers
+  const openCeilingComponentPicker = () => {
+    setPickerMode('ceiling');
+    setShowComponentPicker(true);
+  };
+
+  const handleComponentSelect = (component: DIN4109CeilingComponent | DIN4109FlankingComponent) => {
+    console.log('CeilingConfigurationForm: handleComponentSelect called with:', component);
+    
+    if ('rw' in component) {
+      // It's a ceiling component - use pre-generated layers
+      if (component.applicableFor?.ceilingTypes?.length > 0) {
+        const newCeilingType = component.applicableFor.ceilingTypes[0];
+        if (newCeilingType) {
+          setValue('ceilingType', newCeilingType);
+        }
+      }
+      if (component.applicableFor?.screedTypes?.length > 0) {
+        const newScreedType = component.applicableFor.screedTypes[0];  
+        if (newScreedType) {
+          setValue('estrichType', newScreedType);
+        }
+      }
+      
+      // Use pre-generated layers instead of parsing - much more efficient!
+      const language = i18n.language.startsWith('de') ? 'de' : 'en';
+      console.log('CeilingConfigurationForm: Using language:', language);
+      console.log('CeilingConfigurationForm: Component layers:', component.layers);
+      
+      const preGeneratedLayers = component.layers?.[language];
+      console.log('CeilingConfigurationForm: Pre-generated layers:', preGeneratedLayers);
+      
+      if (!preGeneratedLayers || !Array.isArray(preGeneratedLayers)) {
+        console.error('CeilingConfigurationForm: No pre-generated layers found for language:', language);
+        return;
+      }
+      
+      // Clear existing layers and replace with pre-generated ones
+      // Use replace method to avoid array manipulation issues
+      const layersToAdd = preGeneratedLayers.map(layer => ({
+        id: layer.id,
+        name: layer.name,
+        thickness: layer.thickness,
+        material: layer.material,
+        density: layer.density
+      }));
+      
+      replaceLayers(layersToAdd);
+      
+      // Track the selected component for display
+      setSelectedDINComponent(component);
+      
+      // Set acoustic values and thickness from component data
+      if (component.thickness) {
+        setValue('thickness', component.thickness);
+      }
+      
+      console.log(`Loaded ${preGeneratedLayers.length} pre-generated layers from DIN component - no runtime parsing needed`);
+      console.log(`Source: DIN 4109-33:2016-07, Table ${component.tableNumber}, Row ${component.rowNumber}`);
+      
+    } else {
+      // It's a flanking component
+      console.log(`Adding flanking element with Dn,f,w: ${component.dnfw} dB`);
+      
+      addFlankingElement({
+        id: `flanking-${Date.now()}`,
+        elementType: ElementType.Wall,
+        thickness: component.thickness || 200,
+        length: 4.0,
+        material: component.descriptions 
+          ? (i18n.language.startsWith('de') ? component.descriptions.de.short : component.descriptions.en.short)
+          : '',
+        position: 'left',
+        junctionType: JunctionStiffness.RIGID,
+        connectionDetails: component.descriptions 
+          ? (i18n.language.startsWith('de') ? component.descriptions.de.constructionDetails : component.descriptions.en.constructionDetails)
+          : ''
+      });
+    }
+    
+    setShowComponentPicker(false);
+  };
+
+  const clearDINComponent = () => {
+    setSelectedDINComponent(null);
+    
+    // Clear all auto-generated layers when clearing DIN component
+    // Use replace with empty array to safely clear all layers
+    replaceLayers([]);
+    
+    // User can now add manual layers if needed
   };
 
   return (
@@ -167,6 +267,61 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                 </p>
               )}
             </div>
+            
+            {/* DIN 4109 Component Selection */}
+            {isDIN4109 && (
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="text-sm font-medium text-blue-900 mb-3">
+                  {t('din4109.picker.ceilingTitle')}
+                </h4>
+                <p className="text-sm text-blue-700 mb-4">
+                  {t('din4109.picker.ceilingDescription')}
+                </p>
+                <button
+                  type="button"
+                  onClick={openCeilingComponentPicker}
+                  className="btn btn-secondary flex items-center gap-2"
+                >
+                  <FileText className="h-4 w-4" />
+                  <span>{t('din4109.picker.selectCeilingComponent')}</span>
+                </button>
+              </div>
+            )}
+            
+            {/* Selected DIN Component Display */}
+            {selectedDINComponent && (
+              <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="text-sm font-medium text-green-900 mb-2">
+                      {t('din4109.selectedComponent')}
+                    </h4>
+                    <div className="text-sm text-green-800">
+                      <p className="font-medium">
+                        {selectedDINComponent.descriptions 
+                          ? (i18n.language.startsWith('de') ? selectedDINComponent.descriptions.de.short : selectedDINComponent.descriptions.en.short)
+                          : 'DIN Component'}
+                      </p>
+                      <p className="text-xs mt-1">
+                        DIN 4109-33:2016-07, Table {selectedDINComponent.tableNumber}, Row {selectedDINComponent.rowNumber}
+                      </p>
+                      <div className="mt-2 flex gap-4 text-xs">
+                        <span>R'w: {selectedDINComponent.rw} dB</span>
+                        <span>L'n,w: {selectedDINComponent.lnw} dB</span>
+                        {selectedDINComponent.thickness && <span>Thickness: {selectedDINComponent.thickness} mm</span>}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={clearDINComponent}
+                    className="text-green-600 hover:text-green-800 text-xs"
+                  >
+                    {t('din4109.clearSelection')}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -364,22 +519,37 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
             <h3 className="text-lg font-medium text-gray-900">
               {t("ceilingConfig.layers")}
             </h3>
-            <button
-              type="button"
-              onClick={addLayerHandler}
-              className="btn-secondary flex items-center space-x-2"
-            >
-              <Plus className="h-4 w-4" />
-              <span>{t("ceilingConfig.addLayer")}</span>
-            </button>
+            {!selectedDINComponent && (
+              <button
+                type="button"
+                onClick={addLayerHandler}
+                className="btn-secondary flex items-center space-x-2"
+              >
+                <Plus className="h-4 w-4" />
+                <span>{t("ceilingConfig.addLayer")}</span>
+              </button>
+            )}
           </div>
 
           {/* Explanation text for layers */}
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-blue-800">
-              {t("ceilingConfig.layersExplanation")}
-            </p>
-          </div>
+          {selectedDINComponent ? (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-sm text-green-800">
+                <strong>{t("ceilingConfig.layersAutoGenerated", {
+                  component: selectedDINComponent.descriptions
+                    ? (i18n.language.startsWith('de') ? selectedDINComponent.descriptions.de.short : selectedDINComponent.descriptions.en.short)
+                    : 'DIN Component'
+                })}</strong><br />
+                <em>{t("ceilingConfig.layersNotEditable")}</em>
+              </p>
+            </div>
+          ) : (
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                {t("ceilingConfig.layersExplanation")}
+              </p>
+            </div>
+          )}
 
           {layers.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
@@ -392,15 +562,22 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                   <div className="flex justify-between items-start mb-4">
                     <h4 className="font-medium text-gray-900">
                       {t("ceilingConfig.layer")} {index + 1}
+                      {selectedDINComponent && (
+                        <span className="ml-2 text-xs text-green-600 font-normal">
+                          ({t("ceilingConfig.autoGenerated")})
+                        </span>
+                      )}
                     </h4>
-                    <button
-                      type="button"
-                      onClick={() => removeLayer(index)}
-                      className="text-red-600 hover:text-red-800"
-                      title={t("ceilingConfig.removeLayer")}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    {!selectedDINComponent && (
+                      <button
+                        type="button"
+                        onClick={() => removeLayer(index)}
+                        className="text-red-600 hover:text-red-800"
+                        title={t("ceilingConfig.removeLayer")}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -412,8 +589,9 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                         {...register(`layers.${index}.material`, {
                           required: t("ceilingConfig.errors.materialRequired"),
                         })}
-                        className="form-input"
+                        className={`form-input ${selectedDINComponent ? 'bg-gray-50' : ''}`}
                         placeholder={t("ceilingConfig.materialDesignation")}
+                        readOnly={!!selectedDINComponent}
                       />
                     </div>
 
@@ -436,8 +614,9 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                             ),
                           },
                         })}
-                        className="form-input"
+                        className={`form-input ${selectedDINComponent ? 'bg-gray-50' : ''}`}
                         placeholder="160"
+                        readOnly={!!selectedDINComponent}
                       />
                     </div>
 
@@ -456,8 +635,9 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                             message: t("ceilingConfig.errors.densityMin"),
                           },
                         })}
-                        className="form-input"
+                        className={`form-input ${selectedDINComponent ? 'bg-gray-50' : ''}`}
                         placeholder="470"
+                        readOnly={!!selectedDINComponent}
                       />
                     </div>
                   </div>
@@ -613,6 +793,16 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
           </div>
         )}
       </form>
+
+      {/* DIN 4109 Component Picker Modal */}
+      {showComponentPicker && (
+        <DIN4109ComponentPicker
+          isOpen={showComponentPicker}
+          mode={pickerMode}
+          onSelect={handleComponentSelect}
+          onClose={() => setShowComponentPicker(false)}
+        />
+      )}
 
       {/* Action Buttons */}
       <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
