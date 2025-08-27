@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ProjectConfiguration, WallConfiguration, CeilingConfiguration, CalculationParameters, BuildingContext } from '../../types';
+import { ProjectConfiguration, WallConfiguration, CeilingConfiguration, CalculationParameters } from '../../types';
 import { getSampleConfiguration } from '../../data/sampleConfigurations';
 import { ElementType } from '@vbacoustic/lib/src/models/AcousticTypes';
 import { StandardType } from '@vbacoustic/lib/src/standards/AcousticStandard';
@@ -11,7 +11,7 @@ interface ProjectConfigurationFormProps {
   onSampleConfigurationLoad?: (sampleConfig: {
     project: ProjectConfiguration;
     element: WallConfiguration | CeilingConfiguration;
-    parameters: CalculationParameters & BuildingContext;
+    parameters: CalculationParameters;
   }) => void;
   defaultValues?: Partial<ProjectConfiguration>;
 }
@@ -26,7 +26,7 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
   defaultValues
 }) => {
   const { t } = useTranslation();
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<ProjectConfiguration>({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<ProjectConfiguration>({
     defaultValues: {
       inputMode: 'manual',
       constructionMethod: 'holzbau',
@@ -36,8 +36,7 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
     }
   });
 
-  const elementType = watch('elementType');
-  const calculationStandard = watch('calculationStandard');
+  // Watch for changes (removed unused variables)
 
   const loadSampleConfiguration = () => {
     const sample = getSampleConfiguration(0);
@@ -47,7 +46,7 @@ export const ProjectConfigurationForm: React.FC<ProjectConfigurationFormProps> =
         onSampleConfigurationLoad(sample as {
           project: ProjectConfiguration;
           element: WallConfiguration | CeilingConfiguration;
-          parameters: CalculationParameters & BuildingContext;
+          parameters: CalculationParameters;
         });
       } else {
         // Fallback to just loading project config

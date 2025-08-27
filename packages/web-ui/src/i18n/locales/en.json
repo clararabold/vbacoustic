@@ -340,6 +340,8 @@
     "safetyMarginNote": "Additional margin for calculation uncertainty",
     "includeFlankingTransmission": "Include Flanking Transmission",
     "flankingTransmissionNote": "Calculates sound transmission through flanking elements according to ISO 12354",
+    "din4109Note": "DIN 4109 Note",
+    "din4109FlankingNote": "Flanking transmission calculations are not applicable for DIN 4109 standard. The standard uses simplified approaches that do not require detailed flanking element analysis.",
     "includeStructuralResonances": "Include Structural Resonances",
     "environmentalConditions": "Environmental Conditions",
     "temperature": "Temperature [°C]",

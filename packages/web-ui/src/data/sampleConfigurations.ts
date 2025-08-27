@@ -2,8 +2,7 @@ import {
   ProjectConfiguration, 
   WallConfiguration, 
   CeilingConfiguration, 
-  CalculationParameters,
-  BuildingContext
+  CalculationParameters
 } from '../types/CalculationTypes';
 import { 
   WallConstructionType, 
@@ -330,56 +329,21 @@ export const sampleCeilingConfigurations: CeilingConfiguration[] = [
   }
 ];
 
-export const sampleCalculationParameters: (CalculationParameters & BuildingContext)[] = [
+export const sampleCalculationParameters: CalculationParameters[] = [
   {
-    // Calculation Parameters
-    frequencyRange: '100-3150',
-    includeFlankingTransmission: true,
-    includeStructuralResonances: false,
-    safetyMargin: 2,
-    measurementData: {
-      airborneInsulation: 55,
-      impactInsulation: 53,
-      measurementStandard: 'iso140'
-    },
-    
-    // Building Context
-    buildingType: 'residential',
-    usageCategory: 'living',
-    requiredAirborneInsulation: 53,
-    requiredImpactInsulation: 53,
-    temperature: 20,
-    humidity: 50
+    // Basic DIN 4109 calculation (no flanking transmission)
+    includeFlankingTransmission: false,
+    safetyMargin: 0
   },
   {
-    // Calculation Parameters
-    frequencyRange: '100-3150',
+    // ISO 12354 calculation with flanking transmission
     includeFlankingTransmission: true,
-    includeStructuralResonances: true,
-    safetyMargin: 3,
-    
-    // Building Context
-    buildingType: 'office',
-    usageCategory: 'open-office',
-    requiredAirborneInsulation: 47,
-    requiredImpactInsulation: 57,
-    temperature: 22,
-    humidity: 45
+    safetyMargin: 2
   },
   {
-    // Calculation Parameters
-    frequencyRange: '50-5000',
+    // Conservative ISO 12354 calculation
     includeFlankingTransmission: true,
-    includeStructuralResonances: true,
-    safetyMargin: 5,
-    
-    // Building Context
-    buildingType: 'educational',
-    usageCategory: 'classroom',
-    requiredAirborneInsulation: 50,
-    requiredImpactInsulation: 50,
-    temperature: 21,
-    humidity: 48
+    safetyMargin: 3
   }
 ];
 
@@ -408,9 +372,8 @@ export function getSampleConfiguration(index: number = 0) {
 }
 
 /**
- * Get sample configuration for a specific building type
+ * Get sample configuration by index
  */
-export function getSampleByBuildingType(buildingType: 'residential' | 'office' | 'educational') {
-  const paramIndex = sampleCalculationParameters.findIndex(p => p.buildingType === buildingType);
-  return getSampleConfiguration(paramIndex >= 0 ? paramIndex : 0);
+export function getSampleByIndex(index: number = 0) {
+  return getSampleConfiguration(index);
 }

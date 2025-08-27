@@ -343,6 +343,8 @@
     "safetyMarginNote": "Zusätzlicher Zuschlag für Berechnungsunsicherheit",
     "includeFlankingTransmission": "Flankenübertragung einbeziehen",
     "flankingTransmissionNote": "Berechnet Schallübertragung über Flankenelemente nach ISO 12354",
+    "din4109Note": "DIN 4109 Hinweis",
+    "din4109FlankingNote": "Flankenübertragungsberechnungen sind für die DIN 4109 Norm nicht anwendbar. Die Norm verwendet vereinfachte Ansätze, die keine detaillierte Analyse der Flankenelemente erfordern.",
     "includeStructuralResonances": "Strukturresonanzen einbeziehen",
     "environmentalConditions": "Umgebungsbedingungen",
     "temperature": "Temperatur [°C]",

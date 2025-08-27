@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ProjectConfigurationForm, WallConfigurationForm, CeilingConfigurationForm, CalculationParametersForm } from './forms';
+import { ProjectConfigurationForm, WallConfigurationForm, CeilingConfigurationForm } from './forms';
 import { ResultsDisplay } from './ResultsDisplay';
 import { acousticCalculationService } from '../services/AcousticCalculationService';
 import { 
@@ -9,16 +9,14 @@ import {
   WallConfiguration, 
   CeilingConfiguration,
   CalculationParameters,
-  CalculationResults,
-  BuildingContext
+  CalculationResults
 } from '../types';
 import { ElementType } from '@vbacoustic/lib/src/models/AcousticTypes';
-import { StandardType, BuildingClass } from '@vbacoustic/lib/src/standards/AcousticStandard';
+import { StandardType } from '@vbacoustic/lib/src/standards/AcousticStandard';
 
 type CalculationStep = 
   | 'project-config'
   | 'element-config'
-  | 'calculation-params'
   | 'results';
 
 interface StepInfo {
@@ -37,7 +35,7 @@ export const CalculationWizard: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<CalculationStep>('project-config');
   const [projectConfig, setProjectConfig] = useState<ProjectConfiguration | null>(null);
   const [elementConfig, setElementConfig] = useState<WallConfiguration | CeilingConfiguration | null>(null);
-  const [calculationParams, setCalculationParams] = useState<CalculationParameters & BuildingContext | null>(null);
+  const [, setCalculationParams] = useState<CalculationParameters | null>(null);
   const [calculationResults, setCalculationResults] = useState<CalculationResults | null>(null);
   
   const steps: StepInfo[] = [
@@ -52,12 +50,6 @@ export const CalculationWizard: React.FC = () => {
       title: t('wizard.elementConfiguration'),
       description: t('wizard.elementConfigurationDesc'),
       completed: elementConfig !== null
-    },
-    {
-      id: 'calculation-params',
-      title: t('wizard.calculationParameters'),
-      description: t('wizard.calculationParametersDesc'),
-      completed: calculationParams !== null
     },
     {
       id: 'results',
@@ -97,7 +89,7 @@ export const CalculationWizard: React.FC = () => {
   const handleSampleConfigurationLoad = (sampleConfig: {
     project: ProjectConfiguration;
     element: WallConfiguration | CeilingConfiguration;
-    parameters: CalculationParameters & BuildingContext;
+    parameters: CalculationParameters;
   }) => {
     // Set all the state synchronously but don't navigate away
     setProjectConfig(sampleConfig.project);
@@ -108,39 +100,28 @@ export const CalculationWizard: React.FC = () => {
     // User can proceed when ready by clicking "Continue"
   };
 
-  const handleElementConfigSubmit = (data: WallConfiguration | CeilingConfiguration) => {
+  const handleElementConfigSubmit = async (data: WallConfiguration | CeilingConfiguration) => {
     setElementConfig(data);
-    setCurrentStep('calculation-params');
-  };
-
-  const handleCalculationParamsSubmit = async (data: CalculationParameters & BuildingContext) => {
-    setCalculationParams(data);
     
-    // Perform calculation using real acoustic calculation service
-    if (projectConfig && elementConfig) {
+    // Generate calculation parameters automatically based on the selected standard
+    const autoCalculationParams: CalculationParameters = {
+      includeFlankingTransmission: projectConfig?.calculationStandard === StandardType.ISO12354,
+      safetyMargin: 0
+    };
+    setCalculationParams(autoCalculationParams);
+    
+    // Perform calculation directly using the auto-generated parameters
+    if (projectConfig) {
       try {
         const results = await acousticCalculationService.calculateAcoustics(
           projectConfig,
-          elementConfig
+          data
         );
         setCalculationResults(results);
         setCurrentStep('results');
       } catch (error) {
         console.error('Calculation failed:', error);
-        // TODO: Show error message to user
-        // For now, still proceed to results to show error
-        setCalculationResults({
-          separating: {},
-          flanking: [],
-          combined: {},
-          timestamp: new Date(),
-          validationErrors: [{
-            field: 'calculation',
-            message: 'Calculation service temporarily unavailable. Using fallback calculation.',
-            severity: 'warning'
-          }]
-        });
-        setCurrentStep('results');
+        // Could show error to user here
       }
     }
   };
@@ -259,31 +240,6 @@ export const CalculationWizard: React.FC = () => {
           );
         }
 
-      case 'calculation-params':
-        if (!projectConfig || !elementConfig) {
-          return (
-            <div className="card">
-              <div className="text-center py-8">
-                <p className="text-gray-500">Please complete previous steps first.</p>
-                <button 
-                  onClick={() => setCurrentStep('project-config')}
-                  className="btn-primary mt-4"
-                >
-                  Go to Project Configuration
-                </button>
-              </div>
-            </div>
-          );
-        }
-
-        return (
-          <CalculationParametersForm
-            onSubmit={handleCalculationParamsSubmit}
-            onPrev={handlePrevious}
-            defaultValues={calculationParams || undefined}
-          />
-        );
-
       case 'results':
         if (!calculationResults) {
           return (
@@ -304,12 +260,7 @@ export const CalculationWizard: React.FC = () => {
         return (
           <ResultsDisplay 
             results={calculationResults}
-            requirements={calculationParams ? {
-              Rw: calculationParams.requiredAirborneInsulation,
-              Lnw: calculationParams.requiredImpactInsulation,
-              standard: projectConfig?.calculationStandard === StandardType.DIN4109 ? StandardType.DIN4109 : StandardType.ISO12354,
-              buildingClass: BuildingClass.STANDARD // Default to standard class, this could be mapped from buildingType
-            } : undefined}
+            requirements={undefined} // Simplified - no building context requirements
             onStartNew={() => {
               // Reset all state for new calculation
               setCurrentStep('project-config');

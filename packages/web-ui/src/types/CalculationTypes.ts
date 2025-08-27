@@ -119,44 +119,32 @@ export interface FlankingElement {
   vibrationReductionIndex?: number; // Kij values
 }
 
-export interface BuildingContext {
-  // Building type and usage
-  buildingType: 'residential' | 'office' | 'educational' | 'healthcare';
-  usageCategory: string;
-  
-  // Requirements
-  requiredAirborneInsulation?: number; // dB
-  requiredImpactInsulation?: number;   // dB
-  
-  // Environmental factors
-  temperature?: number;     // °C
-  humidity?: number;       // %
-}
+// Building context - REMOVED: Not used in actual calculations, only for UI display
+// export interface BuildingContext {
+//   buildingType: 'residential' | 'office' | 'educational' | 'healthcare';
+//   usageCategory: string;
+//   requiredAirborneInsulation?: number; // dB
+//   requiredImpactInsulation?: number;   // dB
+// }
 
 export interface CalculationParameters {
-  // Frequency range
-  frequencyRange: '100-3150' | '50-5000';
+  // Essential calculation parameters - only what VBA actually uses
+  includeFlankingTransmission: boolean;  // Controls DIN 4109 vs ISO 12354 mode
   
-  // Calculation options
-  includeFlankingTransmission: boolean;
-  includeStructuralResonances: boolean;
+  // Optional parameters
+  safetyMargin?: number; // dB - applied to final results only
   
-  // Safety factors
-  safetyMargin?: number; // dB
-  
-  // Measurement conditions (from frmBaumessung)
-  measurementData?: {
-    airborneInsulation?: number;
-    impactInsulation?: number;
-    measurementStandard: 'iso140' | 'iso16283';
-  };
+  // Removed parameters not used in VBA calculations:
+  // - frequencyRange: VBA only has single-value calculations
+  // - includeStructuralResonances: Not clearly used in VBA
+  // - measurementData: Only for validation comparison
 }
 
 export interface CalculationInput {
   project: ProjectConfiguration;
-  building: BuildingContext;
   element: WallConfiguration | CeilingConfiguration;
   parameters: CalculationParameters;
+  // Removed: building context not needed for calculations
 }
 
 // Re-export acoustic calculation result types for consistency
