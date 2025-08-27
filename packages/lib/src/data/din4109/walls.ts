@@ -403,20 +403,16 @@ export const DIN4109_TABLE_2_METAL_STUD_WALLS: DIN4109WallComponent[] = [
     },
     layers: {
       de: [
-        { id: 'layer-1', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm äußere Lage' },
-        { id: 'layer-2', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm innere Lage' },
-        { id: 'layer-3', name: 'Mineralwolle', material: 'Mineralwolle', thickness: 100, density: 60, description: 'Mineralwolldämmung zwischen CW-Ständern' },
-        { id: 'layer-4', name: 'CW-Ständer', material: 'Stahl', thickness: 100, density: 7800, description: 'C-Wandständer CW 100' },
-        { id: 'layer-5', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm innere Lage' },
-        { id: 'layer-6', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm äußere Lage' }
+        { id: 'layer-1', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm' },
+        { id: 'layer-2', name: 'Mineralwolle', material: 'Mineralwolle', thickness: 100, density: 60, description: 'Mineralwolldämmung zwischen CW-Ständern' },
+        { id: 'layer-3', name: 'CW-Ständer', material: 'Stahl', thickness: 100, density: 7800, description: 'C-Wandständer CW 100' },
+        { id: 'layer-4', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm' }
       ],
       en: [
-        { id: 'layer-1', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm outer layer' },
-        { id: 'layer-2', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm inner layer' },
-        { id: 'layer-3', name: 'Mineral wool', material: 'Mineral wool', thickness: 100, density: 60, description: 'Mineral wool insulation between CW studs' },
-        { id: 'layer-4', name: 'CW studs', material: 'Steel', thickness: 100, density: 7800, description: 'C-shaped wall studs CW 100' },
-        { id: 'layer-5', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm inner layer' },
-        { id: 'layer-6', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm outer layer' }
+        { id: 'layer-1', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm' },
+        { id: 'layer-2', name: 'Mineral wool', material: 'Mineral wool', thickness: 100, density: 60, description: 'Mineral wool insulation between CW studs' },
+        { id: 'layer-3', name: 'CW studs', material: 'Steel', thickness: 100, density: 7800, description: 'C-shaped wall studs CW 100' },
+        { id: 'layer-4', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm' }
       ]
     },
     applicableFor: {
@@ -446,20 +442,16 @@ export const DIN4109_TABLE_2_METAL_STUD_WALLS: DIN4109WallComponent[] = [
     },
     layers: {
       de: [
-        { id: 'layer-1', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm äußere Lage' },
-        { id: 'layer-2', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm innere Lage' },
-        { id: 'layer-3', name: 'Mineralwolle', material: 'Mineralwolle', thickness: 100, density: 80, description: 'Mineralwolldämmung zwischen CW-Ständern' },
-        { id: 'layer-4', name: 'CW-Ständer', material: 'Stahl', thickness: 100, density: 7800, description: 'C-Wandständer CW 100' },
-        { id: 'layer-5', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm innere Lage' },
-        { id: 'layer-6', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm äußere Lage' }
+        { id: 'layer-1', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm' },
+        { id: 'layer-2', name: 'Mineralwolle', material: 'Mineralwolle', thickness: 100, density: 80, description: 'Mineralwolldämmung zwischen CW-Ständern' },
+        { id: 'layer-3', name: 'CW-Ständer', material: 'Stahl', thickness: 100, density: 7800, description: 'C-Wandständer CW 100' },
+        { id: 'layer-4', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm' }
       ],
       en: [
-        { id: 'layer-1', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm outer layer' },
-        { id: 'layer-2', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm inner layer' },
-        { id: 'layer-3', name: 'Mineral wool', material: 'Mineral wool', thickness: 100, density: 80, description: 'Mineral wool insulation between CW studs' },
-        { id: 'layer-4', name: 'CW studs', material: 'Steel', thickness: 100, density: 7800, description: 'C-shaped wall studs CW 100' },
-        { id: 'layer-5', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm inner layer' },
-        { id: 'layer-6', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm outer layer' }
+        { id: 'layer-1', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm' },
+        { id: 'layer-2', name: 'Mineral wool', material: 'Mineral wool', thickness: 100, density: 80, description: 'Mineral wool insulation between CW studs' },
+        { id: 'layer-3', name: 'CW studs', material: 'Steel', thickness: 100, density: 7800, description: 'C-shaped wall studs CW 100' },
+        { id: 'layer-4', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm' }
       ]
     },
     applicableFor: {
@@ -614,6 +606,134 @@ export const DIN4109_TABLE_3_TIMBER_FRAME_NO_INSTALLATION: DIN4109WallComponent[
 ];
 
 /**
+ * Table 4: Interior walls in timber frame construction with installation layer
+ */
+export const DIN4109_TABLE_4_TIMBER_FRAME_WITH_INSTALLATION: DIN4109WallComponent[] = [
+  {
+    id: 'T4.1',
+    tableNumber: 4,
+    rowNumber: 1,
+    rw: 54,
+    mass: 65,
+    thickness: 175,
+    descriptions: {
+      de: {
+        short: 'HSW 100 + MW 40 + 1xGP 12,5 + Inst.-Ebene 50mm',
+        description: 'Holzständerwand 100mm mit Mineralwolle 40kg/m³ und einfacher Gipskartonbeplankung, mit 50mm Installationsebene',
+        constructionDetails: 'Holzständer 100mm, Mineralwolldämmung 40kg/m³, Gipskartonplatte 12,5mm beidseitig, raumseitig 50mm Installationsebene mit 12,5mm Gipskartonplatte'
+      },
+      en: {
+        short: 'TFW 100 + MW 40 + 1xGB 12.5 + Inst. Layer 50mm',
+        description: 'Timber frame wall 100mm with mineral wool 40kg/m³ and single gypsum board cladding, with 50mm installation layer',
+        constructionDetails: 'Timber frame 100mm, mineral wool insulation 40kg/m³, gypsum board 12.5mm both sides, room-side 50mm installation layer with 12.5mm gypsum board'
+      }
+    },
+    layers: { de: [], en: [] },
+    applicableFor: {
+      wallTypes: [WallConstructionType.TimberFrame],
+      claddingTypes: [CladdingType.SingleGypsum]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 4, Zeile 1'
+  }
+];
+
+/**
+ * Table 5: Building separation walls in timber frame construction
+ */
+export const DIN4109_TABLE_5_TIMBER_FRAME_SEPARATION_WALLS: DIN4109WallComponent[] = [
+    {
+    id: 'T5.1',
+    tableNumber: 5,
+    rowNumber: 1,
+    rw: 70,
+    mass: 120,
+    thickness: 270,
+    descriptions: {
+      de: {
+        short: 'Doppel-HSW 100 + MW 40 + 2xGP 12,5 + 50mm Hohlraum',
+        description: 'Doppelte Holzständerwand 100mm mit Mineralwolle 40kg/m³ und doppelter Gipskartonbeplankung, mit 50mm Hohlraum',
+        constructionDetails: '2x Holzständerwand (100mm Ständer, MW 40kg/m³, 2x12,5mm GP), 50mm Hohlraum dazwischen'
+      },
+      en: {
+        short: 'Double TFW 100 + MW 40 + 2xGB 12.5 + 50mm cavity',
+        description: 'Double timber frame wall 100mm with mineral wool 40kg/m³ and double gypsum board cladding, with 50mm cavity',
+        constructionDetails: '2x Timber frame wall (100mm studs, MW 40kg/m³, 2x12.5mm GB), 50mm cavity in between'
+      }
+    },
+    layers: { de: [], en: [] },
+    applicableFor: {
+      wallTypes: [WallConstructionType.TimberFrame],
+      claddingTypes: [CladdingType.DoubleGypsum]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 5, Zeile 1'
+  }
+];
+
+/**
+ * Table 6: Exterior walls in timber frame construction without room-side installation layer
+ */
+export const DIN4109_TABLE_6_TIMBER_FRAME_EXTERIOR_NO_INSTALLATION: DIN4109WallComponent[] = [
+  {
+    id: 'T6.1',
+    tableNumber: 6,
+    rowNumber: 1,
+    rw: 48,
+    mass: 50,
+    thickness: 188,
+    descriptions: {
+      de: {
+        short: 'HSW 160 + MW 40 + 1xGP 12,5 + Holzfassade',
+        description: 'Holzständer-Außenwand 160mm mit Mineralwolle 40kg/m³, raumseitig 1x12,5mm GP, außenseitig Holzfassade',
+        constructionDetails: 'Holzständer 160mm, MW 40kg/m³, raumseitig 12,5mm GP, außenseitig 16mm Holzwerkstoffplatte und Holzfassade'
+      },
+      en: {
+        short: 'TFW 160 + MW 40 + 1xGB 12.5 + Timber facade',
+        description: 'Timber frame exterior wall 160mm with mineral wool 40kg/m³, room-side 1x12.5mm GB, exterior timber facade',
+        constructionDetails: 'Timber frame 160mm, MW 40kg/m³, room-side 12.5mm GB, exterior 16mm wood-based panel and timber facade'
+      }
+    },
+    layers: { de: [], en: [] },
+    applicableFor: {
+      wallTypes: [WallConstructionType.TimberFrame],
+      claddingTypes: [CladdingType.SingleGypsum]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 6, Zeile 1'
+  }
+];
+
+/**
+ * Table 7: Exterior walls in timber frame construction with room-side installation layer
+ */
+export const DIN4109_TABLE_7_TIMBER_FRAME_EXTERIOR_WITH_INSTALLATION: DIN4109WallComponent[] = [
+    {
+    id: 'T7.1',
+    tableNumber: 7,
+    rowNumber: 1,
+    rw: 52,
+    mass: 65,
+    thickness: 238,
+    descriptions: {
+      de: {
+        short: 'HSW 160 + MW 40 + Inst.-Ebene 50mm + 1xGP 12,5 + Holzfassade',
+        description: 'Holzständer-Außenwand 160mm mit 50mm Installationsebene, raumseitig 1x12,5mm GP, außenseitig Holzfassade',
+        constructionDetails: 'Holzständer 160mm, MW 40kg/m³, raumseitig 50mm Installationsebene mit 12,5mm GP, außenseitig 16mm Holzwerkstoffplatte und Holzfassade'
+      },
+      en: {
+        short: 'TFW 160 + MW 40 + Inst. Layer 50mm + 1xGB 12.5 + Timber facade',
+        description: 'Timber frame exterior wall 160mm with 50mm installation layer, room-side 1x12.5mm GB, exterior timber facade',
+        constructionDetails: 'Timber frame 160mm, MW 40kg/m³, room-side 50mm installation layer with 12.5mm GB, exterior 16mm wood-based panel and timber facade'
+      }
+    },
+    layers: { de: [], en: [] },
+    applicableFor: {
+      wallTypes: [WallConstructionType.TimberFrame],
+      claddingTypes: [CladdingType.SingleGypsum]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 7, Zeile 1'
+  }
+];
+
+/**
  * Table 8: Mass timber walls (Massivholzwände)
  */
 export const DIN4109_TABLE_8_MASS_TIMBER_WALLS: DIN4109WallComponent[] = [
@@ -658,6 +778,10 @@ export const DIN4109_TABLE_8_MASS_TIMBER_WALLS: DIN4109WallComponent[] = [
 export const DIN4109_WALL_COMPONENTS: DIN4109WallComponent[] = [
   ...DIN4109_TABLE_2_METAL_STUD_WALLS,
   ...DIN4109_TABLE_3_TIMBER_FRAME_NO_INSTALLATION,
+  ...DIN4109_TABLE_4_TIMBER_FRAME_WITH_INSTALLATION,
+  ...DIN4109_TABLE_5_TIMBER_FRAME_SEPARATION_WALLS,
+  ...DIN4109_TABLE_6_TIMBER_FRAME_EXTERIOR_NO_INSTALLATION,
+  ...DIN4109_TABLE_7_TIMBER_FRAME_EXTERIOR_WITH_INSTALLATION,
   ...DIN4109_TABLE_8_MASS_TIMBER_WALLS
 ];
 
