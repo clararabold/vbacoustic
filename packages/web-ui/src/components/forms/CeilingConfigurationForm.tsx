@@ -1245,7 +1245,7 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
             {t("ceilingConfig.backToProjectConfig")}
           </button>
           <button type="submit" form="ceiling-form" className="btn-primary">
-            {t("ceilingConfig.continueToCalculationParams")}
+            {t("ceilingConfig.startCalculation")}
           </button>
         </div>
       </div>

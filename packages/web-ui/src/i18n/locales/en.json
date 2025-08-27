@@ -145,6 +145,7 @@
     "errorSummary": "Please correct the following errors:",
     "backToProjectConfig": "Back to Project Configuration",
     "continueToCalculationParams": "Continue to Calculation Parameters",
+    "startCalculation": "Start Calculation",
     "errors": {
       "wallTypeRequired": "Wall type is required",
       "applicationContextRequired": "Application context is required",
@@ -264,6 +265,7 @@
     "continue": "Continue",
     "backToProjectConfig": "Back to Project Configuration",
     "continueToCalculationParams": "Continue to Calculation Parameters",
+    "startCalculation": "Start Calculation",
     "errors": {
       "ceilingTypeRequired": "Please select a ceiling system",
       "thicknessRequired": "Thickness is required",

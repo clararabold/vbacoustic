@@ -145,6 +145,7 @@
     "errorSummary": "Bitte korrigieren Sie die folgenden Fehler:",
     "backToProjectConfig": "Zurück zur Projektkonfiguration",
     "continueToCalculationParams": "Weiter zu Berechnungsparametern",
+    "startCalculation": "Berechnung starten",
     "errors": {
       "wallTypeRequired": "Wandtyp ist erforderlich",
       "applicationContextRequired": "Anwendungskontext ist erforderlich",
@@ -264,6 +265,7 @@
     "continue": "Weiter",
     "backToProjectConfig": "Zurück zur Projektkonfiguration",
     "continueToCalculationParams": "Weiter zu Berechnungsparametern",
+    "startCalculation": "Berechnung starten",
     "errors": {
       "ceilingTypeRequired": "Bitte wählen Sie ein Deckensystem",
       "thicknessRequired": "Dicke ist erforderlich",

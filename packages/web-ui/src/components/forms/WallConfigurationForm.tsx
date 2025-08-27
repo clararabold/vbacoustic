@@ -445,7 +445,7 @@ export const WallConfigurationForm: React.FC<WallConfigurationFormProps> = ({
           form="wall-form"
           className="btn-primary"
         >
-          {t('wallConfig.continueToCalculationParams')}
+          {t('wallConfig.startCalculation')}
         </button>
       </div>
     </div>

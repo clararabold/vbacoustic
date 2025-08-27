@@ -130,63 +130,116 @@ export const CalculationWizard: React.FC = () => {
     return (
       <div className="mb-8">
         <nav aria-label="Progress">
-          <div className="relative">
-            {/* Simple connector line - just connects all dots */}
-            <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-300" style={{ 
-              left: 'calc(10% + 20px)',
-              right: 'calc(10% + 20px)',
-              zIndex: 0
-            }} />
-          
-            <ol className="relative flex items-start justify-between" style={{ zIndex: 1 }}>
-              {steps.map((step) => {
+          {/* Desktop/Tablet Layout */}
+          <div className="hidden sm:block">
+            <div className="relative">
+              {/* Connector line */}
+              <div className="absolute top-5 h-0.5 bg-gray-300" style={{ 
+                left: '15%',
+                right: '15%',
+                zIndex: 0
+              }} />
+            
+              <ol className="relative flex items-start justify-between" style={{ zIndex: 1 }}>
+                {steps.map((step) => {
+                  const isCompleted = step.completed;
+                  const isCurrent = currentStep === step.id;
+                  const isClickable = isCompleted || isCurrent || steps.findIndex(s => s.id === step.id) < currentStepIndex;
+                  
+                  return (
+                    <li key={step.id} className="flex flex-col items-center flex-1">
+                      {/* Step indicator circle */}
+                      <div 
+                        className={`relative z-10 mb-3 ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}
+                        onClick={() => isClickable && handleStepClick(step.id)}
+                      >
+                        {isCompleted ? (
+                          <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
+                            <CheckCircle className="h-6 w-6 text-white" />
+                          </div>
+                        ) : isCurrent ? (
+                          <div className="h-10 w-10 rounded-full border-4 border-primary-600 bg-white flex items-center justify-center shadow-md">
+                            <div className="h-3 w-3 rounded-full bg-primary-600" />
+                          </div>
+                        ) : (
+                          <div className="h-10 w-10 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center shadow-sm">
+                            <div className="h-2 w-2 rounded-full bg-gray-400" />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Step content */}
+                      <div 
+                        className={`text-center ${isClickable ? 'cursor-pointer' : 'cursor-default'}`} 
+                        style={{ maxWidth: '150px', minWidth: '120px' }}
+                        onClick={() => isClickable && handleStepClick(step.id)}
+                      >
+                        <div className={`text-sm font-semibold mb-1 leading-tight ${
+                          isCurrent ? 'text-primary-700' : 'text-gray-500'
+                        }`}>
+                          {step.title}
+                        </div>
+                        <div className={`text-xs leading-tight ${
+                          isCurrent ? 'text-gray-600' : 'text-gray-400'
+                        }`}>
+                          {step.description}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          </div>
+
+          {/* Mobile Layout */}
+          <div className="sm:hidden">
+            <div className="flex items-center justify-center space-x-4 mb-6">
+              {steps.map((step, index) => {
                 const isCompleted = step.completed;
                 const isCurrent = currentStep === step.id;
                 const isClickable = isCompleted || isCurrent || steps.findIndex(s => s.id === step.id) < currentStepIndex;
                 
                 return (
-                  <li key={step.id} className="flex flex-col items-center flex-1">
+                  <div key={step.id} className="flex items-center">
                     {/* Step indicator circle */}
                     <div 
-                      className={`relative z-10 mb-3 ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}
+                      className={`${isClickable ? 'cursor-pointer' : 'cursor-default'}`}
                       onClick={() => isClickable && handleStepClick(step.id)}
                     >
                       {isCompleted ? (
-                        <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
-                          <CheckCircle className="h-6 w-6 text-white" />
+                        <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
+                          <CheckCircle className="h-5 w-5 text-white" />
                         </div>
                       ) : isCurrent ? (
-                        <div className="h-10 w-10 rounded-full border-4 border-primary-600 bg-white flex items-center justify-center shadow-md">
-                          <div className="h-3 w-3 rounded-full bg-primary-600" />
+                        <div className="h-8 w-8 rounded-full border-3 border-primary-600 bg-white flex items-center justify-center shadow-md">
+                          <div className="h-2.5 w-2.5 rounded-full bg-primary-600" />
                         </div>
                       ) : (
-                        <div className="h-10 w-10 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center shadow-sm">
+                        <div className="h-8 w-8 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center shadow-sm">
                           <div className="h-2 w-2 rounded-full bg-gray-400" />
                         </div>
                       )}
                     </div>
-
-                    {/* Step content */}
-                    <div 
-                      className={`text-center ${isClickable ? 'cursor-pointer' : 'cursor-default'}`} 
-                      style={{ maxWidth: '150px', minWidth: '120px' }}
-                      onClick={() => isClickable && handleStepClick(step.id)}
-                    >
-                      <div className={`text-sm font-semibold mb-1 leading-tight ${
-                        isCurrent ? 'text-primary-700' : 'text-gray-500'
-                      }`}>
-                        {step.title}
-                      </div>
-                      <div className={`text-xs leading-tight ${
-                        isCurrent ? 'text-gray-600' : 'text-gray-400'
-                      }`}>
-                        {step.description}
-                      </div>
-                    </div>
-                  </li>
+                    
+                    {/* Connector line between steps */}
+                    {index < steps.length - 1 && (
+                      <div className="w-8 h-0.5 bg-gray-300 mx-2" />
+                    )}
+                  </div>
                 );
               })}
-            </ol>
+            </div>
+            
+            {/* Current step info */}
+            <div className="text-center">
+              <div className="text-lg font-semibold text-primary-700 mb-1">
+                {steps.find(step => step.id === currentStep)?.title}
+              </div>
+              <div className="text-sm text-gray-600">
+                {steps.find(step => step.id === currentStep)?.description}
+              </div>
+            </div>
           </div>
         </nav>
       </div>
@@ -278,7 +331,7 @@ export const CalculationWizard: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
       {renderStepIndicator()}
       
       <div className="bg-white rounded-lg shadow-sm">
