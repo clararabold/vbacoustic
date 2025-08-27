@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Calculator, Home, Info, LogOut, Menu, X } from 'lucide-react';
+import { Calculator, Home, Info, LogOut, Menu, X, Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
@@ -8,7 +8,7 @@ import LanguageSelector from './LanguageSelector';
 
 const Navigation = () => {
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -108,11 +108,18 @@ const Navigation = () => {
             </Link>
           ))}
           
-          {/* Mobile Language Selector */}
-          <div className="px-3 py-3">
-            <div className="text-sm font-medium text-gray-700 mb-2">Language</div>
-            <LanguageSelector />
-          </div>
+          {/* Mobile Language Toggle */}
+          <button
+            onClick={() => {
+              const currentLang = i18n.language;
+              const newLang = currentLang === 'en' ? 'de' : 'en';
+              i18n.changeLanguage(newLang);
+            }}
+            className="flex items-center space-x-2 w-full px-3 py-3 rounded-md text-base font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+          >
+            <Languages className="h-5 w-5" />
+            <span>{i18n.language === 'en' ? 'English' : 'Deutsch'}</span>
+          </button>
           
           {/* Mobile Logout Button */}
           {AUTH_CONFIG.enabled && (
