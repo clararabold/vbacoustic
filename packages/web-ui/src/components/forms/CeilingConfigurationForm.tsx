@@ -37,7 +37,9 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
     defaultValues: {
       ceilingType: FloorConstructionType.MassTimberFloor,
       thickness: 160,
-      spanWidth: 4.0,
+      roomLength: 4.0,
+      roomWidth: 4.0,
+      isRectangularRoom: true,
       estrichType: ScreedType.CementOnMineralFiber,
       estrichThickness: 50,
       layers: [],
@@ -837,36 +839,131 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                 </p>
               )}
             </div>
+          </div>
 
-            <div className="form-group">
-              <label className="form-label">
-                {t("ceilingConfig.spanWidth")} (m)
+          {/* Room Dimensions Section */}
+          <div className="mt-6">
+            <h4 className="text-md font-medium text-gray-800 mb-4">
+              {t("ceilingConfig.roomDimensions")}
+            </h4>
+            
+            {/* Rectangular Room Toggle */}
+            <div className="form-group mb-4">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  {...register("isRectangularRoom")}
+                  className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                />
+                <span className="ml-2 text-sm text-gray-700">
+                  {t("ceilingConfig.rectangularRoom")}
+                </span>
               </label>
-              <input
-                type="number"
-                step="0.1"
-                min="1.0"
-                max="20.0"
-                {...register("spanWidth", {
-                  required: t("ceilingConfig.errors.spanWidthRequired"),
-                  min: {
-                    value: 1.0,
-                    message: t("ceilingConfig.errors.spanWidthMin"),
-                  },
-                  max: {
-                    value: 20.0,
-                    message: t("ceilingConfig.errors.spanWidthMax"),
-                  },
-                })}
-                className="form-input"
-                placeholder="4.0"
-              />
-              {errors.spanWidth && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.spanWidth.message}
-                </p>
-              )}
+              <p className="text-xs text-gray-500 mt-1">
+                {t("ceilingConfig.rectangularRoomHelp")}
+              </p>
             </div>
+
+            {/* Room Dimensions - shown when rectangular room is checked */}
+            {watch('isRectangularRoom') && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="form-group">
+                  <label className="form-label">
+                    {t("ceilingConfig.roomLength")} (m)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="1.0"
+                    max="50.0"
+                    {...register("roomLength", {
+                      required: watch('isRectangularRoom') ? t("ceilingConfig.errors.roomLengthRequired") : false,
+                      min: {
+                        value: 1.0,
+                        message: t("ceilingConfig.errors.roomLengthMin"),
+                      },
+                      max: {
+                        value: 50.0,
+                        message: t("ceilingConfig.errors.roomLengthMax"),
+                      },
+                    })}
+                    className="form-input"
+                    placeholder="4.0"
+                  />
+                  {errors.roomLength && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.roomLength.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">
+                    {t("ceilingConfig.roomWidth")} (m)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="1.0"
+                    max="50.0"
+                    {...register("roomWidth", {
+                      required: watch('isRectangularRoom') ? t("ceilingConfig.errors.roomWidthRequired") : false,
+                      min: {
+                        value: 1.0,
+                        message: t("ceilingConfig.errors.roomWidthMin"),
+                      },
+                      max: {
+                        value: 50.0,
+                        message: t("ceilingConfig.errors.roomWidthMax"),
+                      },
+                    })}
+                    className="form-input"
+                    placeholder="4.0"
+                  />
+                  {errors.roomWidth && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.roomWidth.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Custom Area - shown when rectangular room is NOT checked */}
+            {!watch('isRectangularRoom') && (
+              <div className="form-group">
+                <label className="form-label">
+                  {t("ceilingConfig.customArea")} (m²)
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="1.0"
+                  max="1000.0"
+                  {...register("customArea", {
+                    required: !watch('isRectangularRoom') ? t("ceilingConfig.errors.customAreaRequired") : false,
+                    min: {
+                      value: 1.0,
+                      message: t("ceilingConfig.errors.customAreaMin"),
+                    },
+                    max: {
+                      value: 1000.0,
+                      message: t("ceilingConfig.errors.customAreaMax"),
+                    },
+                  })}
+                  className="form-input"
+                  placeholder="16.0"
+                />
+                {errors.customArea && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.customArea.message}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500 mt-1">
+                  {t("ceilingConfig.customAreaHelp")}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

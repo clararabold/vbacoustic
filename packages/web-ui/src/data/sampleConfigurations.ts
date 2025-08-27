@@ -189,7 +189,9 @@ export const sampleCeilingConfigurations: CeilingConfiguration[] = [
   {
     ceilingType: FloorConstructionType.MassTimberFloor,
     thickness: 160,
-    spanWidth: 4.5,
+    roomLength: 4.5,
+    roomWidth: 4.0,
+    isRectangularRoom: true,
     estrichType: ScreedType.CementOnMineralFiber,
     estrichThickness: 60,
     layers: [
@@ -261,7 +263,9 @@ export const sampleCeilingConfigurations: CeilingConfiguration[] = [
   {
     ceilingType: FloorConstructionType.MassTimberWithCeiling,
     thickness: 140,
-    spanWidth: 3.8,
+    roomLength: 4.0,
+    roomWidth: 3.8,
+    isRectangularRoom: true,
     cavityHeight: 50,
     underCeilingType: CladdingType.WoodBoardPlusGK,
     layers: [

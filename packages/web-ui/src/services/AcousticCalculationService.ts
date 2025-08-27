@@ -59,6 +59,11 @@ export class AcousticCalculationService {
       };
     } else if (!isWall && 'ceilingType' in elementConfig) {
       // Convert ceiling configuration
+      // Calculate area based on VBA logic (txtL1 * txtL2 for rectangular, or custom area)
+      const calculatedArea = elementConfig.isRectangularRoom 
+        ? elementConfig.roomLength * elementConfig.roomWidth
+        : (elementConfig.customArea || 16.0); // Default to 16m² if no custom area
+
       return {
         id: 'separating-ceiling',
         type: ElementType.Ceiling,
@@ -68,8 +73,8 @@ export class AcousticCalculationService {
           thickness: elementConfig.thickness,
           constructionType: this.mapCeilingTypeToConstructionType(elementConfig.ceilingType)
         },
-        area: elementConfig.spanWidth * elementConfig.spanWidth,
-        length: elementConfig.spanWidth,
+        area: calculatedArea,
+        length: elementConfig.roomLength, // Use room length instead of spanWidth
         Rw: this.estimateRw(elementConfig),
         massPerArea: this.calculateMass(elementConfig.layers),
         constructionType: this.mapCeilingTypeToConstructionType(elementConfig.ceilingType),

@@ -50,7 +50,12 @@ export interface CeilingConfiguration {
   
   // Basic dimensions
   thickness: number;        // mm - ceiling thickness
-  spanWidth: number;        // m - span width
+  
+  // Room dimensions (from VBA txtL1, txtL2 and chkRechteckraum)
+  roomLength: number;       // m - L1 from VBA
+  roomWidth: number;        // m - L2 from VBA
+  isRectangularRoom: boolean; // chkRechteckraum from VBA
+  customArea?: number;      // m² - for non-rectangular rooms (txtSDecke from VBA)
   
   // Estrich configuration (for solid timber ceilings)
   estrichType?: ScreedType; // Use library enum directly
