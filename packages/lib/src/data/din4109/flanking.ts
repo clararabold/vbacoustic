@@ -470,6 +470,182 @@ export const DIN4109_TABLE_27_FLANKING_TIMBER_STUD: DIN4109FlankingComponent[] =
 ];
 
 /**
+ * Table 28: Flanking timber beam ceilings (Flankierende Holzbalkendecken)
+ */
+export const DIN4109_TABLE_28_FLANKING_TIMBER_BEAM_CEILING: DIN4109FlankingComponent[] = [
+  {
+    id: 'T28.1',
+    tableNumber: 28,
+    rowNumber: 1,
+    dnfw: 50,
+    flankingType: 'timber-beam-ceiling-exposed',
+    mass: 80,
+    thickness: 220,
+    descriptions: {
+      de: {
+        short: 'HBD sichtbar',
+        description: 'Holzbalkendecke mit sichtbarer Balkenlage',
+        constructionDetails: 'Holzbalkendecke, Balkenlage offen sichtbar, Dielenboden, d ≥ 220mm, m\' ≥ 80 kg/m²'
+      },
+      en: {
+        short: 'TBC exposed',
+        description: 'Timber beam ceiling with exposed beams',
+        constructionDetails: 'Timber beam ceiling, exposed beam layer, floorboards, d ≥ 220mm, m\' ≥ 80 kg/m²'
+      }
+    },
+    layers: {
+      de: [
+        { id: 'layer-1', name: 'Dielenboden', material: 'Holz', thickness: 28, density: 500, description: 'Dielenboden' },
+        { id: 'layer-2', name: 'Holzbalken', material: 'Holz', thickness: 220, density: 500, description: 'Sichtbare Holzbalkenlage' }
+      ],
+      en: [
+        { id: 'layer-1', name: 'Floorboards', material: 'Timber', thickness: 28, density: 500, description: 'Floorboards' },
+        { id: 'layer-2', name: 'Timber beams', material: 'Timber', thickness: 220, density: 500, description: 'Exposed timber beams' }
+      ]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 28, Zeile 1'
+  },
+  {
+    id: 'T28.2',
+    tableNumber: 28,
+    rowNumber: 2,
+    dnfw: 58,
+    flankingType: 'timber-beam-ceiling-battens',
+    mass: 90,
+    thickness: 250,
+    descriptions: {
+      de: {
+        short: 'HBD mit Lattung',
+        description: 'Holzbalkendecke mit Unterdecke an Lattung',
+        constructionDetails: 'Holzbalkendecke, Unterdecke an Lattung, d ≥ 250mm, m\' ≥ 90 kg/m²'
+      },
+      en: {
+        short: 'TBC with battens',
+        description: 'Timber beam ceiling with sub-ceiling on battens',
+        constructionDetails: 'Timber beam ceiling, sub-ceiling on battens, d ≥ 250mm, m\' ≥ 90 kg/m²'
+      }
+    },
+    layers: {
+      de: [
+        { id: 'layer-1', name: 'Gipskarton', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte' },
+        { id: 'layer-2', name: 'Lattung', material: 'Holz', thickness: 30, density: 500, description: 'Lattung' },
+        { id: 'layer-3', name: 'Holzbalken', material: 'Holz', thickness: 220, density: 500, description: 'Holzbalkenlage' }
+      ],
+      en: [
+        { id: 'layer-1', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board' },
+        { id: 'layer-2', name: 'Battens', material: 'Timber', thickness: 30, density: 500, description: 'Battens' },
+        { id: 'layer-3', name: 'Timber beams', material: 'Timber', thickness: 220, density: 500, description: 'Timber beam layer' }
+      ]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 28, Zeile 2'
+  },
+  {
+    id: 'T28.3',
+    tableNumber: 28,
+    rowNumber: 3,
+    dnfw: 65,
+    flankingType: 'timber-beam-ceiling-suspended',
+    mass: 100,
+    thickness: 320,
+    descriptions: {
+      de: {
+        short: 'HBD mit abgehängter Decke',
+        description: 'Holzbalkendecke mit abgehängter Unterdecke',
+        constructionDetails: 'Holzbalkendecke, abgehängte Unterdecke, d ≥ 320mm, m\' ≥ 100 kg/m²'
+      },
+      en: {
+        short: 'TBC with suspended ceiling',
+        description: 'Timber beam ceiling with suspended sub-ceiling',
+        constructionDetails: 'Timber beam ceiling, suspended sub-ceiling, d ≥ 320mm, m\' ≥ 100 kg/m²'
+      }
+    },
+    layers: {
+      de: [
+        { id: 'layer-1', name: 'Gipskarton', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte' },
+        { id: 'layer-2', name: 'Luftschicht', material: 'Luft', thickness: 100, density: 1.2, description: 'Abgehängte Decke' },
+        { id: 'layer-3', name: 'Holzbalken', material: 'Holz', thickness: 220, density: 500, description: 'Holzbalkenlage' }
+      ],
+      en: [
+        { id: 'layer-1', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board' },
+        { id: 'layer-2', name: 'Air gap', material: 'Air', thickness: 100, density: 1.2, description: 'Suspended ceiling' },
+        { id: 'layer-3', name: 'Timber beams', material: 'Timber', thickness: 220, density: 500, description: 'Timber beam layer' }
+      ]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 28, Zeile 3'
+  }
+];
+
+/**
+ * Table 29: Flanking mass timber ceilings (Flankierende Massivholzdecken)
+ */
+export const DIN4109_TABLE_29_FLANKING_MASS_TIMBER_CEILING: DIN4109FlankingComponent[] = [
+  {
+    id: 'T29.1',
+    tableNumber: 29,
+    rowNumber: 1,
+    dnfw: 63,
+    flankingType: 'mass-timber-ceiling',
+    mass: 140,
+    thickness: 140,
+    descriptions: {
+      de: {
+        short: 'MHD',
+        description: 'Massivholzdecke',
+        constructionDetails: 'Massivholzdecke, d ≥ 140mm, m\' ≥ 140 kg/m²'
+      },
+      en: {
+        short: 'MTC',
+        description: 'Mass timber ceiling',
+        constructionDetails: 'Mass timber ceiling, d ≥ 140mm, m\' ≥ 140 kg/m²'
+      }
+    },
+    layers: {
+      de: [
+        { id: 'layer-1', name: 'Massivholz', material: 'Holz', thickness: 140, density: 500, description: 'Massivholzdecke' }
+      ],
+      en: [
+        { id: 'layer-1', name: 'Mass timber', material: 'Timber', thickness: 140, density: 500, description: 'Mass timber ceiling' }
+      ]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 29, Zeile 1'
+  },
+  {
+    id: 'T29.2',
+    tableNumber: 29,
+    rowNumber: 2,
+    dnfw: 70,
+    flankingType: 'mass-timber-ceiling-suspended',
+    mass: 150,
+    thickness: 240,
+    descriptions: {
+      de: {
+        short: 'MHD mit abgehängter Decke',
+        description: 'Massivholzdecke mit abgehängter Unterdecke',
+        constructionDetails: 'Massivholzdecke, abgehängte Unterdecke, d ≥ 240mm, m\' ≥ 150 kg/m²'
+      },
+      en: {
+        short: 'MTC with suspended ceiling',
+        description: 'Mass timber ceiling with suspended sub-ceiling',
+        constructionDetails: 'Mass timber ceiling, suspended sub-ceiling, d ≥ 240mm, m\' ≥ 150 kg/m²'
+      }
+    },
+    layers: {
+      de: [
+        { id: 'layer-1', name: 'Gipskarton', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte' },
+        { id: 'layer-2', name: 'Luftschicht', material: 'Luft', thickness: 100, density: 1.2, description: 'Abgehängte Decke' },
+        { id: 'layer-3', name: 'Massivholz', material: 'Holz', thickness: 140, density: 500, description: 'Massivholzdecke' }
+      ],
+      en: [
+        { id: 'layer-1', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board' },
+        { id: 'layer-2', name: 'Air gap', material: 'Air', thickness: 100, density: 1.2, description: 'Suspended ceiling' },
+        { id: 'layer-3', name: 'Mass timber', material: 'Timber', thickness: 140, density: 500, description: 'Mass timber ceiling' }
+      ]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 29, Zeile 2'
+  }
+];
+
+/**
  * Table 36: Sand-lime brick masonry (Kalksandstein-Mauerwerk)
  */
 export const DIN4109_TABLE_36_SAND_LIME_BRICK: DIN4109FlankingComponent[] = [
@@ -549,8 +725,9 @@ export const DIN4109_TABLE_36_SAND_LIME_BRICK: DIN4109FlankingComponent[] = [
 export const DIN4109_FLANKING_COMPONENTS: DIN4109FlankingComponent[] = [
   ...DIN4109_TABLE_26_FLANKING_METAL_STUD,
   ...DIN4109_TABLE_27_FLANKING_TIMBER_STUD,
+  ...DIN4109_TABLE_28_FLANKING_TIMBER_BEAM_CEILING,
+  ...DIN4109_TABLE_29_FLANKING_MASS_TIMBER_CEILING,
   ...DIN4109_TABLE_36_SAND_LIME_BRICK
-  // TODO: Add Table 28 if it exists separately from 27
 ];
 
 /**
@@ -567,8 +744,12 @@ export function getFlankingTableDescription(tableNumber: number): DIN4109TableDe
       en: 'Flanking timber stud walls'
     },
     28: {
-      de: 'Flankierende Holzständerwände - weitere Ausführungen',
-      en: 'Flanking timber stud walls - additional versions'
+      de: 'Flankierende Holzbalkendecken',
+      en: 'Flanking timber beam ceilings'
+    },
+    29: {
+      de: 'Flankierende Massivholzdecken',
+      en: 'Flanking mass timber ceilings'
     },
     36: {
       de: 'Kalksandstein-Mauerwerk',

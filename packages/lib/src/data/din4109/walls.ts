@@ -569,11 +569,96 @@ export const DIN4109_TABLE_2_METAL_STUD_WALLS: DIN4109WallComponent[] = [
 ];
 
 /**
+ * Table 3: Interior walls in timber frame construction without installation layer
+ */
+export const DIN4109_TABLE_3_TIMBER_FRAME_NO_INSTALLATION: DIN4109WallComponent[] = [
+  {
+    id: 'T3.1',
+    tableNumber: 3,
+    rowNumber: 1,
+    rw: 45,
+    mass: 40,
+    thickness: 125,
+    descriptions: {
+      de: {
+        short: 'HSW 100 + MW 40 + 1xGP 12,5',
+        description: 'Holzständerwand 100mm mit Mineralwolle 40kg/m³ und einfacher Gipskartonbeplankung',
+        constructionDetails: 'Holzständer 100mm, Mineralwolldämmung 40kg/m³, Gipskartonplatte 12,5mm beidseitig'
+      },
+      en: {
+        short: 'TFW 100 + MW 40 + 1xGB 12.5',
+        description: 'Timber frame wall 100mm with mineral wool 40kg/m³ and single gypsum board cladding',
+        constructionDetails: 'Timber frame 100mm, mineral wool insulation 40kg/m³, gypsum board 12.5mm both sides'
+      }
+    },
+    layers: {
+      de: [
+        { id: 'layer-1', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm' },
+        { id: 'layer-2', name: 'Mineralwolle', material: 'Mineralwolle', thickness: 100, density: 40, description: 'Mineralwolldämmung zwischen Holzständern' },
+        { id: 'layer-3', name: 'Holzständer', material: 'Holz', thickness: 100, density: 500, description: 'Holzständer 100mm' },
+        { id: 'layer-4', name: 'Gipskartonplatte', material: 'Gipskarton', thickness: 12.5, density: 900, description: 'Gipskartonplatte 12,5mm' }
+      ],
+      en: [
+        { id: 'layer-1', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm' },
+        { id: 'layer-2', name: 'Mineral wool', material: 'Mineral wool', thickness: 100, density: 40, description: 'Mineral wool insulation between timber frames' },
+        { id: 'layer-3', name: 'Timber frame', material: 'Timber', thickness: 100, density: 500, description: 'Timber frame 100mm' },
+        { id: 'layer-4', name: 'Gypsum board', material: 'Gypsum', thickness: 12.5, density: 900, description: 'Gypsum board 12.5mm' }
+      ]
+    },
+    applicableFor: {
+      wallTypes: [WallConstructionType.TimberFrame],
+      claddingTypes: [CladdingType.SingleGypsum]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 3, Zeile 1'
+  }
+];
+
+/**
+ * Table 8: Mass timber walls (Massivholzwände)
+ */
+export const DIN4109_TABLE_8_MASS_TIMBER_WALLS: DIN4109WallComponent[] = [
+  {
+    id: 'T8.1',
+    tableNumber: 8,
+    rowNumber: 1,
+    rw: 35,
+    mass: 50,
+    thickness: 100,
+    descriptions: {
+      de: {
+        short: 'MHW 100',
+        description: 'Massivholzwand 100mm',
+        constructionDetails: 'Massivholzwand (BSP, MHM, etc.), d=100mm, m\' ≥ 50 kg/m²'
+      },
+      en: {
+        short: 'MTW 100',
+        description: 'Mass timber wall 100mm',
+        constructionDetails: 'Mass timber wall (CLT, MHM, etc.), d=100mm, m\' ≥ 50 kg/m²'
+      }
+    },
+    layers: {
+      de: [
+        { id: 'layer-1', name: 'Massivholz', material: 'Holz', thickness: 100, density: 500, description: 'Massivholzwand' }
+      ],
+      en: [
+        { id: 'layer-1', name: 'Mass timber', material: 'Timber', thickness: 100, density: 500, description: 'Mass timber wall' }
+      ]
+    },
+    applicableFor: {
+      wallTypes: [WallConstructionType.MassTimberWall],
+      claddingTypes: [CladdingType.MassTimber]
+    },
+    source: 'DIN 4109-33:2016-07, Tabelle 8, Zeile 1'
+  }
+];
+
+/**
  * All wall components from DIN 4109-33 tables
  */
 export const DIN4109_WALL_COMPONENTS: DIN4109WallComponent[] = [
-  ...DIN4109_TABLE_2_METAL_STUD_WALLS
-  // TODO: Add Tables 3-8 (Timber frame walls, mass timber walls, etc.)
+  ...DIN4109_TABLE_2_METAL_STUD_WALLS,
+  ...DIN4109_TABLE_3_TIMBER_FRAME_NO_INSTALLATION,
+  ...DIN4109_TABLE_8_MASS_TIMBER_WALLS
 ];
 
 /**
