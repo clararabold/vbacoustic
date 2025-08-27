@@ -147,19 +147,25 @@ export const DIN4109ComponentPicker: React.FC<DIN4109ComponentPickerProps> = ({
         {/* Filter Info */}
         {mode === DIN4109ComponentMode.CEILING && (filter.ceilingType || filter.screedType) && (
           <div className="px-6 py-3 bg-blue-50 border-b border-blue-200">
-            <div className="flex items-center space-x-2 text-sm text-blue-800">
-              <Info className="h-4 w-4" />
-              <span>{t('din4109.picker.filterInfo')}:</span>
-              {filter.ceilingType && (
-                <span className="bg-blue-100 px-2 py-1 rounded">
-                  {t(`ceilingConfig.${filter.ceilingType}`)}
-                </span>
-              )}
-              {filter.screedType && (
-                <span className="bg-blue-100 px-2 py-1 rounded">
-                  {t(`ceilingConfig.${filter.screedType}`)}
-                </span>
-              )}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2 text-sm text-blue-800">
+                <Info className="h-4 w-4" />
+                <span>{t('din4109.picker.activeFilters')}:</span>
+                <div className="flex space-x-2">
+                  {filter.ceilingType && (
+                    <span className="inline-flex items-center gap-1 bg-blue-100 px-3 py-1 rounded-full text-blue-800 text-xs">
+                      <span className="font-medium">Ceiling:</span>
+                      <span>{t(`ceilingConfig.${filter.ceilingType}`)}</span>
+                    </span>
+                  )}
+                  {filter.screedType && (
+                    <span className="inline-flex items-center gap-1 bg-blue-100 px-3 py-1 rounded-full text-blue-800 text-xs">
+                      <span className="font-medium">Screed:</span>
+                      <span>{t(`ceilingConfig.${filter.screedType}`)}</span>
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}
