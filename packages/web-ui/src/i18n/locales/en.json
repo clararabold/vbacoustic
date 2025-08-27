@@ -242,6 +242,8 @@
     "roomWidth": "Room Width", 
     "customArea": "Custom Area",
     "customAreaHelp": "Enter the total floor area for non-rectangular rooms.",
+    "setByDINComponent": "Set by DIN component",
+    "thicknessSetAutomatically": "Thickness is automatically set from the selected DIN 4109 component.",
     "back": "Back",
     "continue": "Continue",
     "backToProjectConfig": "Back to Project Configuration",

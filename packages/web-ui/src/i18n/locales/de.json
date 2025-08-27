@@ -242,6 +242,8 @@
     "roomWidth": "Raumbreite",
     "customArea": "Benutzerdefinierte Fläche",
     "customAreaHelp": "Geben Sie die Gesamtfläche für nicht-rechteckige Räume ein.",
+    "setByDINComponent": "Von DIN-Komponente gesetzt",
+    "thicknessSetAutomatically": "Die Dicke wird automatisch aus der ausgewählten DIN 4109-Komponente übernommen.",
     "back": "Zurück",
     "continue": "Weiter",
     "backToProjectConfig": "Zurück zur Projektkonfiguration",

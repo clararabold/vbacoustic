@@ -197,6 +197,9 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
     replaceLayers([]);
   };
 
+  // Check if thickness should be disabled (when DIN component is selected)
+  const isThicknessDisabled = selectedDINComponent !== null;
+
   return (
     <div>
       <form
@@ -813,12 +816,18 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
             <div className="form-group">
               <label className="form-label">
                 {t("ceilingConfig.thickness")} (mm)
+                {isThicknessDisabled && (
+                  <span className="ml-2 text-xs text-blue-600 font-normal">
+                    ({t("ceilingConfig.setByDINComponent")})
+                  </span>
+                )}
               </label>
               <input
                 type="number"
                 step="1"
                 min="10"
                 max="1000"
+                disabled={isThicknessDisabled}
                 {...register("thickness", {
                   required: t("ceilingConfig.errors.thicknessRequired"),
                   min: {
@@ -830,9 +839,14 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                     message: t("ceilingConfig.errors.thicknessMax"),
                   },
                 })}
-                className="form-input"
+                className={`form-input ${isThicknessDisabled ? 'bg-gray-100 text-gray-600 cursor-not-allowed' : ''}`}
                 placeholder="160"
               />
+              {isThicknessDisabled && (
+                <p className="text-blue-600 text-xs mt-1">
+                  {t("ceilingConfig.thicknessSetAutomatically")}
+                </p>
+              )}
               {errors.thickness && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.thickness.message}
