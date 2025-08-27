@@ -6,7 +6,7 @@
  */
 
 import { WallConstructionType, CladdingType } from '../../models/AcousticTypes';
-import { DIN4109WallComponent } from './types';
+import { DIN4109WallComponent, DIN4109TableDescription } from './types';
 
 /**
  * Table 2: Metal stud walls (Metallständerwände)
@@ -577,17 +577,38 @@ export const DIN4109_WALL_COMPONENTS: DIN4109WallComponent[] = [
 ];
 
 /**
- * Get table description by table number
+ * Get table description by table number with multilingual support
  */
-export function getWallTableDescription(tableNumber: number): string | null {
-  const descriptions: Record<number, string> = {
-    2: 'Metallständerwände (Metal stud walls)',
-    3: 'Innenwände in Holzrahmenbauweise ohne Installationsebene (Interior walls in timber frame construction without installation layer)',
-    4: 'Innenwände in Holzrahmenbauweise mit Installationsebene (Interior walls in timber frame construction with installation layer)',
-    5: 'Gebäudetrennwände in Holzrahmenbauweise (Building separation walls in timber frame construction)',
-    6: 'Außenwände in Holzrahmenbauweise ohne raumseitige Installationsebene (Exterior walls in timber frame construction without room-side installation layer)',
-    7: 'Außenwände in Holzrahmenbauweise mit raumseitige Installationsebene (Exterior walls in timber frame construction with room-side installation layer)',
-    8: 'Massivholzwände (Mass timber walls)'
+export function getWallTableDescription(tableNumber: number): DIN4109TableDescription | null {
+  const descriptions: Record<number, DIN4109TableDescription> = {
+    2: {
+      de: 'Metallständerwände',
+      en: 'Metal stud walls'
+    },
+    3: {
+      de: 'Innenwände in Holzrahmenbauweise ohne Installationsebene',
+      en: 'Interior walls in timber frame construction without installation layer'
+    },
+    4: {
+      de: 'Innenwände in Holzrahmenbauweise mit Installationsebene', 
+      en: 'Interior walls in timber frame construction with installation layer'
+    },
+    5: {
+      de: 'Gebäudetrennwände in Holzrahmenbauweise',
+      en: 'Building separation walls in timber frame construction'
+    },
+    6: {
+      de: 'Außenwände in Holzrahmenbauweise ohne raumseitige Installationsebene',
+      en: 'Exterior walls in timber frame construction without room-side installation layer'
+    },
+    7: {
+      de: 'Außenwände in Holzrahmenbauweise mit raumseitige Installationsebene',
+      en: 'Exterior walls in timber frame construction with room-side installation layer'
+    },
+    8: {
+      de: 'Massivholzwände',
+      en: 'Mass timber walls'
+    }
   };
   return descriptions[tableNumber] || null;
 }

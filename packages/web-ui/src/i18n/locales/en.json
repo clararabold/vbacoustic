@@ -463,35 +463,6 @@
       "lnwLabel": "L'n,w", 
       "thicknessLabel": "Thickness"
     },
-    "reference": "DIN 4109-33:2016-07, Table {{tableNumber}}, Row {{rowNumber}}",
-    "tables": {
-      "t15": {
-        "title": "Table 15: Timber beam ceilings with mineral bonded screeds"
-      },
-      "t16": {
-        "title": "Table 16: Timber beam ceilings with floating screeds"
-      },
-      "t20": {
-        "title": "Table 20: Cross-laminated timber ceilings"
-      },
-      "t21": {
-        "title": "Table 21: CLT ceilings with floating screeds"
-      },
-      "t24": {
-        "title": "Table 24: Concrete ceilings"
-      },
-      "t25": {
-        "title": "Table 25: Concrete ceilings with floating screeds"
-      },
-      "t26": {
-        "title": "Table 26: Steel stud walls"
-      },
-      "t27": {
-        "title": "Table 27: Timber stud walls"
-      },
-      "t36": {
-        "title": "Table 36: Flanking elements"
-      }
-    }
+    "reference": "DIN 4109-33:2016-07, Table {{tableNumber}}, Row {{rowNumber}}"
   }
 }

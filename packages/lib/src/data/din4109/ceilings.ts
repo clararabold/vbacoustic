@@ -6,7 +6,7 @@
  */
 
 import { FloorConstructionType, ScreedType } from '../../models/AcousticTypes';
-import { DIN4109CeilingComponent } from './types';
+import { DIN4109CeilingComponent, DIN4109TableDescription } from './types';
 
 /**
  * Table 15: Timber beam ceilings with mineral-bonded screeds and raw ceiling ballast
@@ -450,21 +450,54 @@ export const DIN4109_CEILING_COMPONENTS: DIN4109CeilingComponent[] = [
 ];
 
 /**
- * Get table description by table number
+ * Get table description by table number with multilingual support
  */
-export function getCeilingTableDescription(tableNumber: number): string | null {
-  const descriptions: Record<number, string> = {
-    15: 'Holzbalkendecken mit mineralisch gebundenen Estrichen und Rohdeckenbeschwerung (Timber beam ceilings with mineral-bonded screeds and raw ceiling ballast)',
-    16: 'Holzbalkendecken mit Fertigteilestrichen und Rohdeckenbeschwerung (Timber beam ceilings with dry screeds and raw ceiling ballast)',
-    17: 'Holzbalkendecken mit Zementestrichen und Unterdecken an Lattung - leichte Ausführung (Timber beam ceilings with cement screeds and suspended ceilings on battens - light version)',
-    18: 'Holzbalkendecken mit Zementestrichen und Unterdecken an Lattung - schwere Ausführung (Timber beam ceilings with cement screeds and suspended ceilings on battens - heavy version)',
-    19: 'Holzbalkendecken mit Fertigteilestrichen und Unterdecken an Lattung (Timber beam ceilings with dry screeds and suspended ceilings on battens)',
-    20: 'Holzbalkendecken mit Zementestrichen und abgehängten Unterdecken - leichte Ausführung (Timber beam ceilings with cement screeds and suspended ceilings - light version)',
-    21: 'Holzbalkendecken mit Zementestrichen und abgehängten Unterdecken - schwere Ausführung (Timber beam ceilings with cement screeds and suspended ceilings - heavy version)',
-    22: 'Holzbalkendecken mit Fertigteilestrichen und abgehängten Unterdecken - leichte Ausführung (Timber beam ceilings with dry screeds and suspended ceilings - light version)',
-    23: 'Holzbalkendecken mit Fertigteilestrichen und abgehängten Unterdecken - schwere Ausführung (Timber beam ceilings with dry screeds and suspended ceilings - heavy version)',
-    24: 'Massivholzdecken mit Zementestrichen - leichte Ausführung (Mass timber ceilings with cement screeds - light version)',
-    25: 'Massivholzdecken mit Zementestrichen - schwere Ausführung (Mass timber ceilings with cement screeds - heavy version)'
+export function getCeilingTableDescription(tableNumber: number): DIN4109TableDescription | null {
+  const descriptions: Record<number, DIN4109TableDescription> = {
+    15: {
+      de: 'Holzbalkendecken mit mineralisch gebundenen Estrichen und Rohdeckenbeschwerung',
+      en: 'Timber beam ceilings with mineral-bonded screeds and raw ceiling ballast'
+    },
+    16: {
+      de: 'Holzbalkendecken mit Fertigteilestrichen und Rohdeckenbeschwerung',
+      en: 'Timber beam ceilings with dry screeds and raw ceiling ballast'
+    },
+    17: {
+      de: 'Holzbalkendecken mit Zementestrichen und Unterdecken an Lattung - leichte Ausführung',
+      en: 'Timber beam ceilings with cement screeds and suspended ceilings on battens - light version'
+    },
+    18: {
+      de: 'Holzbalkendecken mit Zementestrichen und Unterdecken an Lattung - schwere Ausführung',
+      en: 'Timber beam ceilings with cement screeds and suspended ceilings on battens - heavy version'
+    },
+    19: {
+      de: 'Holzbalkendecken mit Fertigteilestrichen und Unterdecken an Lattung',
+      en: 'Timber beam ceilings with dry screeds and suspended ceilings on battens'
+    },
+    20: {
+      de: 'Holzbalkendecken mit Zementestrichen und abgehängten Unterdecken - leichte Ausführung',
+      en: 'Timber beam ceilings with cement screeds and suspended ceilings - light version'
+    },
+    21: {
+      de: 'Holzbalkendecken mit Zementestrichen und abgehängten Unterdecken - schwere Ausführung',
+      en: 'Timber beam ceilings with cement screeds and suspended ceilings - heavy version'
+    },
+    22: {
+      de: 'Holzbalkendecken mit Fertigteilestrichen und abgehängten Unterdecken - leichte Ausführung',
+      en: 'Timber beam ceilings with dry screeds and suspended ceilings - light version'
+    },
+    23: {
+      de: 'Holzbalkendecken mit Fertigteilestrichen und abgehängten Unterdecken - schwere Ausführung',
+      en: 'Timber beam ceilings with dry screeds and suspended ceilings - heavy version'
+    },
+    24: {
+      de: 'Massivholzdecken mit Zementestrichen - leichte Ausführung',
+      en: 'Mass timber ceilings with cement screeds - light version'
+    },
+    25: {
+      de: 'Massivholzdecken mit Zementestrichen - schwere Ausführung',
+      en: 'Mass timber ceilings with cement screeds - heavy version'
+    }
   };
   return descriptions[tableNumber] || null;
 }

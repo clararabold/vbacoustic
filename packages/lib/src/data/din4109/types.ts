@@ -34,6 +34,14 @@ export interface DIN4109Description {
 }
 
 /**
+ * Multilingual table descriptions
+ */
+export interface DIN4109TableDescription {
+    de: string;
+    en: string;
+}
+
+/**
  * Base interface for all DIN 4109-33 components
  */
 export interface DIN4109BaseComponent {
@@ -131,5 +139,5 @@ export interface DIN4109Database {
     findFlankingComponents(filter?: DIN4109ComponentFilter): DIN4109FlankingComponent[];
     getComponentById(id: string): DIN4109WallComponent | DIN4109CeilingComponent | DIN4109FlankingComponent | null;
     getAllTables(): number[];
-    getTableDescription(tableNumber: number): string | null;
+    getTableDescription(tableNumber: number, language?: 'de' | 'en'): string | null;
 }

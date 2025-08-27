@@ -234,20 +234,20 @@ export class DIN4109ComponentDatabase implements DIN4109Database {
   }
 
   /**
-   * Get description for a specific table number
+   * Get description for a specific table number in a specific language
    */
-  getTableDescription(tableNumber: number): string | null {
+  getTableDescription(tableNumber: number, language: 'de' | 'en' = 'en'): string | null {
     // Try wall tables first
     let description = getWallTableDescription(tableNumber);
-    if (description) return description;
+    if (description) return language === 'de' ? description.de : description.en;
 
     // Try ceiling tables
     description = getCeilingTableDescription(tableNumber);
-    if (description) return description;
+    if (description) return language === 'de' ? description.de : description.en;
 
     // Try flanking tables
     description = getFlankingTableDescription(tableNumber);
-    if (description) return description;
+    if (description) return language === 'de' ? description.de : description.en;
 
     return null;
   }
@@ -309,7 +309,7 @@ export class DIN4109ComponentDatabase implements DIN4109Database {
    */
   static parseComponentId(id: string): { tableNumber: number; rowNumber: number } | null {
     const match = id.match(/^T(\d+)\.(\d+)$/);
-    if (!match) return null;
+    if (!match || !match[1] || !match[2]) return null;
 
     return {
       tableNumber: parseInt(match[1], 10),

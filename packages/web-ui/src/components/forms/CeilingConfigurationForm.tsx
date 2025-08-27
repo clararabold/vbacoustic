@@ -9,8 +9,11 @@ import {
   ElementType 
 } from '@vbacoustic/lib/src/models/AcousticTypes';
 import { JunctionStiffness, StandardType } from '@vbacoustic/lib/src/standards/AcousticStandard';
-import { DIN4109ComponentPicker } from '../DIN4109ComponentPicker';
-import { DIN4109CeilingComponent, DIN4109FlankingComponent, DIN4109ComponentMode } from '../../types/DIN4109Types';
+import { DIN4109ComponentPicker, DIN4109ComponentMode } from '../DIN4109ComponentPicker';
+import { 
+  DIN4109CeilingComponent, 
+  DIN4109FlankingComponent
+} from '@vbacoustic/lib/src/data/din4109';
 
 interface CeilingConfigurationFormProps {
   onNext: (data: CeilingConfiguration) => void;

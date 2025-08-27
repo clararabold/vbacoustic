@@ -5,7 +5,7 @@
  * Data extracted from VBA legacy implementation and DIN 4109-33:2016-07 standard
  */
 
-import { DIN4109FlankingComponent } from './types';
+import { DIN4109FlankingComponent, DIN4109TableDescription } from './types';
 
 /**
  * Table 26: Flanking metal stud walls (Flankierende Metallständerwände)
@@ -554,14 +554,26 @@ export const DIN4109_FLANKING_COMPONENTS: DIN4109FlankingComponent[] = [
 ];
 
 /**
- * Get table description by table number
+ * Get table description by table number with multilingual support
  */
-export function getFlankingTableDescription(tableNumber: number): string | null {
-  const descriptions: Record<number, string> = {
-    26: 'Flankierende Metallständerwände (Flanking metal stud walls)',
-    27: 'Flankierende Holzständerwände (Flanking timber stud walls)',
-    28: 'Flankierende Holzständerwände - weitere Ausführungen (Flanking timber stud walls - additional versions)',
-    36: 'Kalksandstein-Mauerwerk (Sand-lime brick masonry)'
+export function getFlankingTableDescription(tableNumber: number): DIN4109TableDescription | null {
+  const descriptions: Record<number, DIN4109TableDescription> = {
+    26: {
+      de: 'Flankierende Metallständerwände',
+      en: 'Flanking metal stud walls'
+    },
+    27: {
+      de: 'Flankierende Holzständerwände',
+      en: 'Flanking timber stud walls'
+    },
+    28: {
+      de: 'Flankierende Holzständerwände - weitere Ausführungen',
+      en: 'Flanking timber stud walls - additional versions'
+    },
+    36: {
+      de: 'Kalksandstein-Mauerwerk',
+      en: 'Sand-lime brick masonry'
+    }
   };
   return descriptions[tableNumber] || null;
 }

@@ -431,35 +431,6 @@
       "lnwLabel": "L'n,w", 
       "thicknessLabel": "Dicke"
     },
-    "reference": "DIN 4109-33:2016-07, Tabelle {{tableNumber}}, Zeile {{rowNumber}}",
-    "tables": {
-      "t15": {
-        "title": "Tabelle 15: Holzbalkendecken mit mineralisch gebundenen Estrichen"
-      },
-      "t16": {
-        "title": "Tabelle 16: Holzbalkendecken mit schwimmenden Estrichen"
-      },
-      "t20": {
-        "title": "Tabelle 20: Brettsperrholzdecken"
-      },
-      "t21": {
-        "title": "Tabelle 21: BSH-Decken mit schwimmenden Estrichen"
-      },
-      "t24": {
-        "title": "Tabelle 24: Betondecken"
-      },
-      "t25": {
-        "title": "Tabelle 25: Betondecken mit schwimmenden Estrichen"
-      },
-      "t26": {
-        "title": "Tabelle 26: Metallständerwände"
-      },
-      "t27": {
-        "title": "Tabelle 27: Holzständerwände"
-      },
-      "t36": {
-        "title": "Tabelle 36: Flankenbauteile"
-      }
-    }
+    "reference": "DIN 4109-33:2016-07, Tabelle {{tableNumber}}, Zeile {{rowNumber}}"
   }
 }

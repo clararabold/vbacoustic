@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, FileText, Info } from 'lucide-react';
-import { DIN4109CeilingComponent, DIN4109FlankingComponent, DIN4109ComponentFilter, DIN4109ComponentMode } from '../types/DIN4109Types';
+import { 
+  DIN4109CeilingComponent, 
+  DIN4109FlankingComponent, 
+  DIN4109ComponentFilter 
+} from '@vbacoustic/lib/src/data/din4109';
+import { 
+  getCeilingTableDescription,
+  getFlankingTableDescription 
+} from '@vbacoustic/lib/src/data/din4109';
 import { DIN4109ComponentService } from '../services/DIN4109ComponentService';
+
+export enum DIN4109ComponentMode {
+  CEILING = 'ceiling',
+  FLANKING = 'flanking'
+}
 
 interface DIN4109ComponentPickerProps {
   isOpen: boolean;
@@ -63,7 +76,7 @@ export const DIN4109ComponentPicker: React.FC<DIN4109ComponentPickerProps> = ({
         setCurrentTable(null);
       }
     }
-  }, [isOpen, mode, filter?.ceilingType, filter?.screedType, flankingType]);
+  }, [isOpen, mode, filter && filter.ceilingType, filter && filter.screedType, flankingType]);
 
   const handleSelect = () => {
     if (!selectedComponent) {
@@ -91,22 +104,27 @@ export const DIN4109ComponentPicker: React.FC<DIN4109ComponentPickerProps> = ({
   };
 
   const getTableTitle = (tableNumber: number): string => {
-    const tableTitles: Record<number, string> = {
-      15: t('din4109.tables.t15.title'),
-      16: t('din4109.tables.t16.title'), 
-      20: t('din4109.tables.t20.title'),
-      21: t('din4109.tables.t21.title'),
-      24: t('din4109.tables.t24.title'),
-      25: t('din4109.tables.t25.title'),
-      26: t('din4109.tables.t26.title'),
-      27: t('din4109.tables.t27.title'),
-      36: t('din4109.tables.t36.title')
-    };
-    return tableTitles[tableNumber] || `Table ${tableNumber}`;
+    let tableDescription = null;
+    
+    if (mode === DIN4109ComponentMode.CEILING) {
+      tableDescription = getCeilingTableDescription(tableNumber);
+    } else {
+      tableDescription = getFlankingTableDescription(tableNumber);
+    }
+    
+    if (tableDescription) {
+      const description = i18n.language === 'de' ? tableDescription.de : tableDescription.en;
+      const tablePrefix = i18n.language === 'de' ? `Tabelle ${tableNumber}` : `Table ${tableNumber}`;
+      return `${tablePrefix}: ${description}`;
+    }
+    
+    return `Table ${tableNumber}`;
   };
 
   const getAvailableTables = (): number[] => {
-    const tables = [...new Set(components.map(c => c.tableNumber))];
+    const tableSet = new Set<number>();
+    components.forEach(c => tableSet.add(c.tableNumber));
+    const tables = Array.from(tableSet);
     return tables.sort();
   };
 
@@ -145,20 +163,20 @@ export const DIN4109ComponentPicker: React.FC<DIN4109ComponentPickerProps> = ({
         </div>
 
         {/* Filter Info */}
-        {mode === DIN4109ComponentMode.CEILING && (filter.ceilingType || filter.screedType) && (
+        {mode === DIN4109ComponentMode.CEILING && filter && (filter.ceilingType || filter.screedType) && (
           <div className="px-6 py-3 bg-blue-50 border-b border-blue-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2 text-sm text-blue-800">
                 <Info className="h-4 w-4" />
                 <span>{t('din4109.picker.activeFilters')}:</span>
                 <div className="flex space-x-2">
-                  {filter.ceilingType && (
+                  {filter && filter.ceilingType && (
                     <span className="inline-flex items-center gap-1 bg-blue-100 px-3 py-1 rounded-full text-blue-800 text-xs">
                       <span className="font-medium">Ceiling:</span>
                       <span>{t(`ceilingConfig.${filter.ceilingType}`)}</span>
                     </span>
                   )}
-                  {filter.screedType && (
+                  {filter && filter.screedType && (
                     <span className="inline-flex items-center gap-1 bg-blue-100 px-3 py-1 rounded-full text-blue-800 text-xs">
                       <span className="font-medium">Screed:</span>
                       <span>{t(`ceilingConfig.${filter.screedType}`)}</span>
