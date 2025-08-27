@@ -11,7 +11,7 @@ import {
 } from '@vbacoustic/lib/src/models/AcousticTypes';
 import { JunctionStiffness, StandardType } from '@vbacoustic/lib/src/standards/AcousticStandard';
 import { DIN4109ComponentPicker } from '../DIN4109ComponentPicker';
-import { DIN4109CeilingComponent, DIN4109FlankingComponent } from '../../types/DIN4109Types';
+import { DIN4109CeilingComponent, DIN4109FlankingComponent, DIN4109ComponentMode } from '../../types/DIN4109Types';
 
 interface CeilingConfigurationFormProps {
   onNext: (data: CeilingConfiguration) => void;
@@ -59,7 +59,7 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
   
   // DIN 4109 Component Picker state
   const [showComponentPicker, setShowComponentPicker] = useState(false);
-  const [pickerMode, setPickerMode] = useState<'ceiling' | 'flanking'>('ceiling');
+  const [pickerMode, setPickerMode] = useState<DIN4109ComponentMode>(DIN4109ComponentMode.CEILING);
   const [selectedDINComponent, setSelectedDINComponent] = useState<DIN4109CeilingComponent | null>(null);
   
   // Check if we're using DIN 4109 standard for flanking element restrictions
@@ -120,13 +120,11 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
 
   // DIN 4109 Component Picker handlers
   const openCeilingComponentPicker = () => {
-    setPickerMode('ceiling');
+    setPickerMode(DIN4109ComponentMode.CEILING);
     setShowComponentPicker(true);
   };
 
   const handleComponentSelect = (component: DIN4109CeilingComponent | DIN4109FlankingComponent) => {
-    console.log('CeilingConfigurationForm: handleComponentSelect called with:', component);
-    
     if ('rw' in component) {
       // It's a ceiling component - use pre-generated layers
       if (component.applicableFor?.ceilingTypes?.length > 0) {
@@ -142,21 +140,16 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
         }
       }
       
-      // Use pre-generated layers instead of parsing - much more efficient!
+      // Use pre-generated layers instead of parsing
       const language = i18n.language.startsWith('de') ? 'de' : 'en';
-      console.log('CeilingConfigurationForm: Using language:', language);
-      console.log('CeilingConfigurationForm: Component layers:', component.layers);
-      
       const preGeneratedLayers = component.layers?.[language];
-      console.log('CeilingConfigurationForm: Pre-generated layers:', preGeneratedLayers);
       
       if (!preGeneratedLayers || !Array.isArray(preGeneratedLayers)) {
         console.error('CeilingConfigurationForm: No pre-generated layers found for language:', language);
         return;
       }
       
-      // Clear existing layers and replace with pre-generated ones
-      // Use replace method to avoid array manipulation issues
+      // Replace existing layers with pre-generated ones
       const layersToAdd = preGeneratedLayers.map(layer => ({
         id: layer.id,
         name: layer.name,
@@ -175,13 +168,8 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
         setValue('thickness', component.thickness);
       }
       
-      console.log(`Loaded ${preGeneratedLayers.length} pre-generated layers from DIN component - no runtime parsing needed`);
-      console.log(`Source: DIN 4109-33:2016-07, Table ${component.tableNumber}, Row ${component.rowNumber}`);
-      
     } else {
       // It's a flanking component
-      console.log(`Adding flanking element with Dn,f,w: ${component.dnfw} dB`);
-      
       addFlankingElement({
         id: `flanking-${Date.now()}`,
         elementType: ElementType.Wall,
@@ -203,12 +191,7 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
 
   const clearDINComponent = () => {
     setSelectedDINComponent(null);
-    
-    // Clear all auto-generated layers when clearing DIN component
-    // Use replace with empty array to safely clear all layers
     replaceLayers([]);
-    
-    // User can now add manual layers if needed
   };
 
   return (
@@ -303,12 +286,15 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                           : 'DIN Component'}
                       </p>
                       <p className="text-xs mt-1">
-                        DIN 4109-33:2016-07, Table {selectedDINComponent.tableNumber}, Row {selectedDINComponent.rowNumber}
+                        {t('din4109.reference', { 
+                          tableNumber: selectedDINComponent.tableNumber, 
+                          rowNumber: selectedDINComponent.rowNumber 
+                        })}
                       </p>
                       <div className="mt-2 flex gap-4 text-xs">
-                        <span>R'w: {selectedDINComponent.rw} dB</span>
-                        <span>L'n,w: {selectedDINComponent.lnw} dB</span>
-                        {selectedDINComponent.thickness && <span>Thickness: {selectedDINComponent.thickness} mm</span>}
+                        <span>{t('din4109.acousticValues.rwLabel')}: {selectedDINComponent.rw} dB</span>
+                        <span>{t('din4109.acousticValues.lnwLabel')}: {selectedDINComponent.lnw} dB</span>
+                        {selectedDINComponent.thickness && <span>{t('din4109.acousticValues.thicknessLabel')}: {selectedDINComponent.thickness} mm</span>}
                       </div>
                     </div>
                   </div>

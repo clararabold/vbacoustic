@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, FileText, Info } from 'lucide-react';
-import { DIN4109CeilingComponent, DIN4109FlankingComponent, DIN4109ComponentFilter } from '../types/DIN4109Types';
+import { DIN4109CeilingComponent, DIN4109FlankingComponent, DIN4109ComponentFilter, DIN4109ComponentMode } from '../types/DIN4109Types';
 import { DIN4109ComponentService } from '../services/DIN4109ComponentService';
 
 interface DIN4109ComponentPickerProps {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (component: DIN4109CeilingComponent | DIN4109FlankingComponent) => void;
-  mode: 'ceiling' | 'flanking';
+  mode: DIN4109ComponentMode;
   filter?: DIN4109ComponentFilter;
   flankingType?: string;
 }
@@ -42,7 +42,7 @@ export const DIN4109ComponentPicker: React.FC<DIN4109ComponentPickerProps> = ({
     // Always reset selection when opening, regardless of mode
     setSelectedComponent(null);
 
-    if (mode === 'ceiling') {
+    if (mode === DIN4109ComponentMode.CEILING) {
       const ceilingComponents = DIN4109ComponentService.getApplicableCeilingComponents(filter);
       setComponents(ceilingComponents);
       
@@ -126,7 +126,7 @@ export const DIN4109ComponentPicker: React.FC<DIN4109ComponentPickerProps> = ({
             <FileText className="h-6 w-6 text-blue-600" />
             <div>
               <h2 className="text-xl font-semibold text-gray-900">
-                {mode === 'ceiling' 
+                {mode === DIN4109ComponentMode.CEILING 
                   ? t('din4109.picker.ceilingTitle') 
                   : t('din4109.picker.flankingTitle')
                 }
@@ -145,7 +145,7 @@ export const DIN4109ComponentPicker: React.FC<DIN4109ComponentPickerProps> = ({
         </div>
 
         {/* Filter Info */}
-        {mode === 'ceiling' && (filter.ceilingType || filter.screedType) && (
+        {mode === DIN4109ComponentMode.CEILING && (filter.ceilingType || filter.screedType) && (
           <div className="px-6 py-3 bg-blue-50 border-b border-blue-200">
             <div className="flex items-center space-x-2 text-sm text-blue-800">
               <Info className="h-4 w-4" />

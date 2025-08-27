@@ -1,5 +1,10 @@
 import { FloorConstructionType, ScreedType } from '@vbacoustic/lib/src/models/AcousticTypes';
 
+export enum DIN4109ComponentMode {
+  CEILING = 'ceiling',
+  FLANKING = 'flanking'
+}
+
 export interface LayerDefinition {
   id: string;
   name: string;
