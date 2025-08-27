@@ -89,17 +89,31 @@ export interface ElementLayer {
 
 export interface FlankingElement {
   id: string;
-  position: 'top' | 'bottom' | 'left' | 'right'; // For walls
-  elementType: ElementType; // Use library enum directly
+  position: 'top' | 'bottom' | 'left' | 'right' | 'front' | 'back'; // For walls around ceiling
+  elementType: ElementType; // Use library enum directly - always Wall for ceilings
+  
+  // VBA-style wall type selection (HSTW, MHW, MSTW, MW)
+  wallType?: WallConstructionType; // Wall construction type (timber frame, mass timber, metal stud, masonry)
+  claddingType?: string; // Wall cladding/planking type (GF, HWST_GK, HWST)
   
   // Dimensions and properties
   thickness: number;
   length: number;
   material: string; // Add material property for UI forms
   
-  // Junction details
+  // VBA-style acoustic properties  
+  rw?: number; // Sound reduction index
+  dnfw?: number; // Flanking sound reduction (for lightweight walls)
+  mass?: number; // Surface mass kg/m²
+  
+  // Junction details (VBA: Stoßstelle)
   junctionType: 'rigid' | 'elastic' | 'isolated';
   connectionDetails: string;
+  
+  // Junction coupling parameters (VBA: Kij values)
+  kFf?: number; // Flanking-to-flanking vibration coupling
+  kDf?: number; // Direct-to-flanking vibration coupling  
+  kFd?: number; // Flanking-to-direct vibration coupling
   
   // Acoustic properties
   vibrationReductionIndex?: number; // Kij values

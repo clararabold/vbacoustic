@@ -6,7 +6,8 @@ import { CeilingConfiguration, ProjectConfiguration } from '../../types/Calculat
 import { 
   FloorConstructionType, 
   ScreedType,
-  ElementType 
+  ElementType,
+  WallConstructionType 
 } from '@vbacoustic/lib/src/models/AcousticTypes';
 import { JunctionStiffness, StandardType } from '@vbacoustic/lib/src/standards/AcousticStandard';
 import { DIN4109ComponentPicker, DIN4109ComponentMode } from '../DIN4109ComponentPicker';
@@ -109,15 +110,38 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
       return; // Prevent adding more than one element for DIN 4109
     }
     
+    // Get current room dimensions for VBA-style auto length setting
+    const isRectangular = watch('isRectangularRoom');
+    const currentRoomLength = watch('roomLength');
+    const currentRoomWidth = watch('roomWidth');
+    
     addFlankingElement({ 
       id: `flanking-${Date.now()}`,
-      elementType: ElementType.Wall, 
-      thickness: 0, 
-      length: 4.0,
-      material: '', 
-      position: 'left',
-      junctionType: JunctionStiffness.RIGID,
-      connectionDetails: ''
+      elementType: ElementType.Wall, // Always Wall for ceilings (matching VBA)
+      wallType: WallConstructionType.TimberFrame, // Default to HSTW equivalent
+      claddingType: 'gypsum_fiber', // Default cladding (GF)
+      thickness: isDIN4109 ? 0 : 200, // DIN 4109: auto-determined from wall type
+      // VBA behavior for wall length:
+      // - Rectangular rooms: use room dimensions (txtL1 or txtL2)
+      // - Non-rectangular rooms: use default value (since user can't specify)
+      length: isDIN4109 
+        ? (isRectangular 
+            ? (currentRoomLength || currentRoomWidth || 4.0) // Rectangular: use room dimension
+            : 4.0 // Non-rectangular: reasonable default since length is hidden
+          )
+        : 4.0, // ISO 12354: user will input manually
+      material: isDIN4109 
+        ? 'Auto-determined from wall type' // DIN 4109: material from standard
+        : '', // ISO 12354: manual input required
+      position: 'left', // Always use valid position
+      junctionType: 'rigid',
+      connectionDetails: '',
+      // VBA-style acoustic properties
+      rw: 45,
+      dnfw: 40,
+      kFf: 12,
+      kDf: 8, 
+      kFd: 8
     });
   };
 
@@ -672,11 +696,11 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
           </div>
         )}
 
-        {/* Flanking Elements */}
+        {/* Flanking Walls (VBA: Flankierende Wände) */}
         <div className="card">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-medium text-gray-900">
-              {t("ceilingConfig.flankingElements")}
+              {t("ceilingConfig.flankingWalls")}
             </h3>
             <button
               type="button"
@@ -689,7 +713,7 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
               }`}
             >
               <Plus className="h-4 w-4" />
-              <span>{t("ceilingConfig.addElement")}</span>
+              <span>{t("ceilingConfig.addWall")}</span>
             </button>
           </div>
 
@@ -704,7 +728,7 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
 
           {flankingElements.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
-              <p>{t("ceilingConfig.noFlankingElementsYet")}</p>
+              <p>{t("ceilingConfig.noFlankingWallsYet")}</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -712,93 +736,238 @@ export const CeilingConfigurationForm: React.FC<CeilingConfigurationFormProps> =
                 <div key={element.id} className="border rounded-lg p-4">
                   <div className="flex justify-between items-start mb-4">
                     <h4 className="font-medium text-gray-900">
-                      {t("ceilingConfig.flankingElement")} {index + 1}
+                      {t("ceilingConfig.flankingWall")} {index + 1}
                     </h4>
                     <button
                       type="button"
                       onClick={() => removeFlankingElement(index)}
                       className="text-red-600 hover:text-red-800"
-                      title={t("ceilingConfig.removeElement")}
+                      title={t("ceilingConfig.removeWall")}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="space-y-4">
+                    {/* Wall Type Selection (VBA: Wandtyp) */}
                     <div className="form-group">
                       <label className="form-label">
-                        {t("ceilingConfig.elementType")}
+                        {t("ceilingConfig.wallType")}
                       </label>
                       <select
-                        {...register(`flankingElements.${index}.elementType`)}
+                        {...register(`flankingElements.${index}.wallType`)}
                         className="form-select"
                       >
-                        <option value="wall">{t("wallConfig.wall")}</option>
-                        <option value="ceiling">
-                          {t("wallConfig.ceiling")}
+                        <option value="">{t("ceilingConfig.selectOption")}</option>
+                        <option value={WallConstructionType.TimberFrame}>
+                          {t("ceilingConfig.timberFrame")} (HSTW)
+                        </option>
+                        <option value={WallConstructionType.MassTimberWall}>
+                          {t("ceilingConfig.massTimberWall")} (MHW)
+                        </option>
+                        <option value={WallConstructionType.MetalStud}>
+                          {t("ceilingConfig.metalStud")} (MSTW)
+                        </option>
+                        <option value={WallConstructionType.Masonry}>
+                          {t("ceilingConfig.masonry")} (MW)
                         </option>
                       </select>
                     </div>
 
+                    {/* Wall Cladding/Planking (VBA: Beplankung) */}
                     <div className="form-group">
                       <label className="form-label">
-                        {t("ceilingConfig.elementThickness")} (mm)
-                      </label>
-                      <input
-                        type="number"
-                        step="1"
-                        min="1"
-                        {...register(`flankingElements.${index}.thickness`, {
-                          required: t(
-                            "ceilingConfig.errors.elementThicknessRequired"
-                          ),
-                          min: {
-                            value: 1,
-                            message: t(
-                              "ceilingConfig.errors.elementThicknessMin"
-                            ),
-                          },
-                        })}
-                        className="form-input"
-                        placeholder="200"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">
-                        {t("ceilingConfig.elementMaterial")}
-                      </label>
-                      <input
-                        {...register(`flankingElements.${index}.material`, {
-                          required: t("ceilingConfig.errors.materialRequired"),
-                        })}
-                        className="form-input"
-                        placeholder={t("ceilingConfig.materialDesignation")}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">
-                        {t("ceilingConfig.elementPosition")}
+                        {t("ceilingConfig.wallCladding")}
                       </label>
                       <select
-                        {...register(`flankingElements.${index}.position`)}
+                        {...register(`flankingElements.${index}.claddingType`)}
                         className="form-select"
                       >
-                        <option value="left">
-                          {t("ceilingConfig.positionLeft")}
+                        <option value="">{t("ceilingConfig.selectOption")}</option>
+                        <option value="gypsum_fiber">
+                          {t("ceilingConfig.gypsumFiber")} (GF)
                         </option>
-                        <option value="right">
-                          {t("ceilingConfig.positionRight")}
+                        <option value="wood_board_gk">
+                          {t("ceilingConfig.woodBoardGK")} (HWST + GK)
                         </option>
-                        <option value="front">
-                          {t("ceilingConfig.positionFront")}
-                        </option>
-                        <option value="back">
-                          {t("ceilingConfig.positionBack")}
+                        <option value="wood_board_only">
+                          {t("ceilingConfig.woodBoardOnly")} (HWST)
                         </option>
                       </select>
                     </div>
+
+                    {/* DIN 4109: Show fewer fields but still allow wall length input */}
+                    {isDIN4109 ? (
+                      <div className="space-y-4">
+                        {/* Wall Length - always show but with smart default */}
+                        <div className="form-group">
+                          <label className="form-label">
+                            {t("ceilingConfig.wallLength")} (m)
+                          </label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            min="0.1"
+                            {...register(`flankingElements.${index}.length`, {
+                              required: t(
+                                "ceilingConfig.errors.wallLengthRequired"
+                              ),
+                              min: {
+                                value: 0.1,
+                                message: t(
+                                  "ceilingConfig.errors.wallLengthMin"
+                                ),
+                              },
+                            })}
+                            className="form-input"
+                            placeholder="4.0"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">
+                            {t("ceilingConfig.din4109LengthHint")}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {/* Wall Position - only for ISO 12354 */}
+                        <div className="form-group">
+                          <label className="form-label">
+                            {t("ceilingConfig.wallPosition")}
+                          </label>
+                          <select
+                            {...register(`flankingElements.${index}.position`)}
+                            className="form-select"
+                          >
+                            <option value="left">
+                              {t("ceilingConfig.positionLeft")}
+                            </option>
+                            <option value="right">
+                              {t("ceilingConfig.positionRight")}
+                            </option>
+                            <option value="front">
+                              {t("ceilingConfig.positionFront")}
+                            </option>
+                            <option value="back">
+                              {t("ceilingConfig.positionBack")}
+                            </option>
+                          </select>
+                        </div>
+
+                        {/* Wall Dimensions and Material - only for ISO 12354 */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="form-group">
+                            <label className="form-label">
+                              {t("ceilingConfig.wallThickness")} (mm)
+                            </label>
+                            <input
+                              type="number"
+                              step="1"
+                              min="1"
+                              {...register(`flankingElements.${index}.thickness`, {
+                                required: t(
+                                  "ceilingConfig.errors.wallThicknessRequired"
+                                ),
+                                min: {
+                                  value: 1,
+                                  message: t(
+                                    "ceilingConfig.errors.wallThicknessMin"
+                                  ),
+                                },
+                              })}
+                              className="form-input"
+                              placeholder="200"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label className="form-label">
+                              {t("ceilingConfig.wallLength")} (m)
+                            </label>
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0.1"
+                              {...register(`flankingElements.${index}.length`, {
+                                required: t(
+                                  "ceilingConfig.errors.wallLengthRequired"
+                                ),
+                                min: {
+                                  value: 0.1,
+                                  message: t(
+                                    "ceilingConfig.errors.wallLengthMin"
+                                  ),
+                                },
+                              })}
+                              className="form-input"
+                              placeholder="4.0"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label className="form-label">
+                              {t("ceilingConfig.wallMaterial")}
+                            </label>
+                            <input
+                              {...register(`flankingElements.${index}.material`, {
+                                required: t("ceilingConfig.errors.materialRequired"),
+                              })}
+                              className="form-input"
+                              placeholder={t("ceilingConfig.materialDesignation")}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* DIN 4109 Explanation - only shown when DIN 4109 is active */}
+                    {isDIN4109 && (
+                      <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-sm text-blue-800">
+                          {t("ceilingConfig.din4109AutoParameters")}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Junction Details (VBA: Stoßstelle) - for mass timber walls */}
+                    {watch(`flankingElements.${index}.wallType`) === WallConstructionType.MassTimberWall && (
+                      <div className="border-t pt-4">
+                        <h5 className="text-md font-medium text-gray-800 mb-3">
+                          {t("ceilingConfig.junctionDetails")}
+                        </h5>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="form-group">
+                            <label className="form-label">
+                              {t("ceilingConfig.junctionType")}
+                            </label>
+                            <select
+                              {...register(`flankingElements.${index}.junctionType`)}
+                              className="form-select"
+                            >
+                              <option value="rigid">
+                                {t("ceilingConfig.rigidJunction")}
+                              </option>
+                              <option value="elastic">
+                                {t("ceilingConfig.elasticJunction")}
+                              </option>
+                              <option value="isolated">
+                                {t("ceilingConfig.isolatedJunction")}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label className="form-label">
+                              {t("ceilingConfig.connectionDetails")}
+                            </label>
+                            <input
+                              {...register(`flankingElements.${index}.connectionDetails`)}
+                              className="form-input"
+                              placeholder={t("ceilingConfig.junctionDescription")}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
